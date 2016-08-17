@@ -4,9 +4,8 @@
 
 
 cpp/
-doc/
+doc/private
 examples/
-m/
 
 
 # temporary files
@@ -15,7 +14,7 @@ tmp/
 *.swp
 *#
 .*#
-nb/
+notebooks/
 build/
 .DS_Store
 ._.DS_Store
@@ -31,7 +30,6 @@ data/
 *.dat
 
 # others
-ref/
 results/
 
 # Compiled lib.
