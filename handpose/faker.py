@@ -97,11 +97,12 @@ def imp_from_angles(num_imp, angles):
     num_samples = angles.size
     
     imp = np.zeros([num_samples, 2*num_imp])
-    
     for i in range(num_imp):
         ii = 2*i
         imp[:, ii]   = angles # Real part
         imp[:, ii+1] = angles # imaginary part
+ 
+    imp = imp / (2.0*num_imp)   
         
     return imp
 
@@ -137,7 +138,7 @@ def generate_wristband_file(filename="fake_wristband_data.csv", num_samples=10, 
     angles = get_joint_angles(num_samples)
     imp_array = imp_from_angles(num_imp, angles)
     ## Add random noise
-    noise_amp = imp_array.max()*0.01 
+    noise_amp = imp_array.max()*0.05
     imp_array += random_noise(imp_array.shape, amp=noise_amp)
     imp_df = pd.DataFrame(imp_array, columns=imp_names)
     
@@ -196,7 +197,7 @@ def generate_glove_file(filename="fake_glove_data.csv", num_samples=10, num_join
     for i in range(num_joints):
         joint_array[:, i] = get_joint_angles(num_samples)
     ## Add random noise
-    noise_amp = joint_array.max()*0.01 
+    noise_amp = joint_array.max()*0.05
 
     joint_array += random_noise(joint_array.shape, amp=noise_amp)
     joint_df = pd.DataFrame(joint_array, columns=joint_names)
