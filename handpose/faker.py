@@ -163,7 +163,7 @@ def generate_wristband_file(filename="fake_wristband_data.csv", num_samples=10, 
     
     # Output as CSV file
     print("Output {}".format(filename))
-    df.to_csv(filename)
+    df.to_csv(filename, index=False)
     
     return df
     
@@ -219,7 +219,7 @@ def generate_glove_file(filename="fake_glove_data.csv", num_samples=10, num_join
     
     # Output as CSV file
     print("Output {}".format(filename))
-    df.to_csv(filename)
+    df.to_csv(filename, index=False)
     
     return df
     
