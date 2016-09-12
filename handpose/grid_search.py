@@ -1,11 +1,34 @@
 import numpy as np
 from operator import itemgetter
 
-
-
-def score_report(scores, num_top=3):
+def search_result_to_file(result, filename='search_result.txt'):
     """
-    Report the best scores from grid search.
+    Save the searching result to file.
+    
+    Parameters:
+    
+    result: dict
+        Search result.
+    filename: string
+        File name.
+    """
+
+    print("Write the result to file: {}".format(filename))
+
+    f = open(filename, 'w')
+
+    f.write("Best score: {0:.5f} with {1:s} \n".format(result.best_score_, 
+        result.best_params_))
+    for params, mean_score, scores in result.grid_scores_:
+        f.write("{:.5f} (std:{:.5f}) with: {} \n".format(scores.mean(), 
+            scores.std(), params))
+
+    f.close()
+
+
+def report_best_scores(scores, num_top=3):
+    """
+    Report the best scores obtained from grid search.
 
     Parameters:
     scores: list
