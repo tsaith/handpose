@@ -1,1 +1,2 @@
 
+from .faker import Faker
