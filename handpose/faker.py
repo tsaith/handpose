@@ -99,10 +99,10 @@ def imp_from_angles(num_imp, angles):
     imp = np.zeros([num_samples, 2*num_imp])
     for i in range(num_imp):
         ii = 2*i
-        imp[:, ii]   = angles # Real part
-        imp[:, ii+1] = angles # imaginary part
+        imp[:, ii]   = i*angles # Real part
+        imp[:, ii+1] = i*angles # imaginary part
  
-    imp = imp / (2.0*num_imp)   
+    imp = imp / num_imp   
         
     return imp
 
