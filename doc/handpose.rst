@@ -6,6 +6,8 @@ Subpackages
 
 .. toctree::
 
+    handpose.devices
+    handpose.engine
     handpose.metrics
     handpose.preprocess
     handpose.utils
