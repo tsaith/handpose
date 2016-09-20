@@ -1,5 +1,6 @@
 import pytest
-from handpose.preprocess import window_method
+import handpose as hp
+from handpose.preprocessing import window_method
 import numpy as np
 from numpy.testing import assert_allclose
 

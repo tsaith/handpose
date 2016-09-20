@@ -37,30 +37,6 @@ def get_timestamp(num_samples, it0=1000000, idt=10):
     return timestamps  
 
 
-#def wristband_header(num_imp=3):
-#    """
-#    Return the header of raw data of wristband.
-#    """
-#    
-#    timestamp_name = ["timestamp"]
-#    
-#    imp_names = []
-#    for i in range(num_imp):
-#        imp_names += ["imp_"+ str(i) + "_real"]
-#        imp_names += ["imp_"+ str(i) + "_img"]
-#    
-#    accel_names = ["accel_x", "accel_y", "accel_z"]
-#    gyro_names = ["gyro_x", "gyro_y", "gyro_z"]
-#    magneto_names = ["magneto_x", "magneto_y", "magneto_z"]
-#    ppg_name = ["ppg_value"]
-#    
-#    header = timestamp_name + imp_names + \
-#        accel_names + gyro_names + magneto_names + ppg_name
-#    
-#    
-#    print(header)
-
-
 def get_joint_angles(num_samples, freq=0.1, dt=1):
     """
     Return the fake joint angles.
