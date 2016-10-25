@@ -1,3 +1,3 @@
 from __future__ import absolute_import
 
-from .core import GestureEngine
+from .core import GestureEngine, EngineConfig

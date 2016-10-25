@@ -1,3 +1,4 @@
+from .sensor_type import SensorType
 
 class PPG:
     """
@@ -5,23 +6,19 @@ class PPG:
 
     """
 
-    def __init__(self, sensor_type):
+    def __init__(self):
         """
         Constructor of PPG.
 
-        Parameters
-        ----------
-        sensor_type: int
-            Sensor type.
         """
-        pass 
+        self.sentor_type = SensorType.PPG
 
     @property
     def sensor_type(self):
         """ 
         Return the sensor type.
         """
-        pass
+        return sensor_type
 
 
     def set_sensor_data(self, sensor_data):

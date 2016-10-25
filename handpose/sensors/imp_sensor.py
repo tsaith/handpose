@@ -1,27 +1,25 @@
+from .sensor_type import SensorType
 
-class ImpedanceSensor:
+
+class ImpSensor:
     """
     Impedance sensor class.
 
     """
 
-    def __init__(self, sensor_type):
+    def __init__(self):
         """
         Constructor of impedance sensor.
 
-        Parameters
-        ----------
-        sensor_type: int
-            Sensor type.
         """
-        pass 
+        self.sensor_type = SensorType.IMPEDANCE_SENSOR
 
     @property
     def sensor_type(self):
         """ 
         Return the sensor type.
         """
-        pass
+        return self.sensor_type
 
 
     def set_sensor_data(self, sensor_data):
