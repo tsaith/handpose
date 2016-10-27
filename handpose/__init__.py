@@ -3,6 +3,7 @@ from .engine.core import EngineConfig, GestureEngine
 from .devices.wristband import Wristband
 
 from .sensors import ImpSensor, Accelerometer, Gyroscope, Magnetometer, PPG 
+from .sensor_data import ImpSensorData
 
 
 from .faker import Faker

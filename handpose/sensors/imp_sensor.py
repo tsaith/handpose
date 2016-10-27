@@ -13,6 +13,7 @@ class ImpSensor:
 
         """
         self.sensor_type = SensorType.IMPEDANCE_SENSOR
+        self.sensor_data = None
 
     @property
     def sensor_type(self):
@@ -32,7 +33,7 @@ class ImpSensor:
             Sensor data.
 
         """
-        pass
+        self.sensor_data = sensor_data
 
     @property
     def sensor_data(self):
@@ -40,5 +41,5 @@ class ImpSensor:
         Return the sensor data.
 
         """
-        pass
+        self.sensor_data
 

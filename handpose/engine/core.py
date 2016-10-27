@@ -1,3 +1,5 @@
+import keras
+
 
 class GestureEngine:
     """
@@ -16,8 +18,7 @@ class GestureEngine:
             pre-processing and post-processing.
 
         """
-        pass 
-
+        self.model_trained = None 
 
 
     def set_config(self, config):
@@ -76,18 +77,46 @@ class GestureEngine:
         """
         pass
 
-    def predict(self, network_type, args):
+    def load_model(self, file_path):
         """
-        Return the predicted hand model.
+        Load the traind model file.
 
         Parameters
         ----------
-	network_type: int
-            Network type
-	args: array-like 
-            Arguments used in the netwrok
+	file_path: str
+            File path to the trained model.
         """
-        pass
+        self.model_trained = keras.models.load_model(file_path)
+
+        return self.model_trained
+        
+
+    def predict_classes(self, x):
+        """
+        Generate class predictions for the input samples.
+
+        Parameters
+        ----------
+	X: array-like
+            Input features.
+        """
+        y = self.model_trained.predict_classes(x, batch_size=32, verbose=0)
+        
+        return y
+
+
+    def predict(self, x):
+        """
+        Generates output predictions for the input samples.
+
+        Parameters
+        ----------
+	x: array-like
+            Input features.
+        """
+        y = self.model_trained.predict(x, batch_size=32, verbose=0)
+
+        return y
 
     def diagnostic(self):
         """

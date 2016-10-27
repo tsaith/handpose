@@ -1,27 +1,27 @@
+from handpose.sensors import SensorType
 
-class ImpedanceSensorData:
+
+class ImpSensorData:
     """
     Impedance sensor data class.
 
     """
 
-    def __init__(self, sensor_type):
+    def __init__(self):
         """
         Constructor of impedance sensor data.
 
-        Parameters
-        ----------
-        sensor_type: int
-            Sensor type.
         """
-        pass 
+        self.sensor_type = SensorType.IMPEDANCE_SENSOR
+        self.data = None
+        self.timestamp = None
 
     @property
     def sensor_type(self):
         """ 
         Return the sensor type.
         """
-        pass
+        return sensor_type
 
 
     def set_data(self, imp, timestamp):
@@ -36,7 +36,8 @@ class ImpedanceSensorData:
             Timestamp.
 
         """
-        pass
+        self.data = imp
+        self.timestamp = timestamp
 
     @property
     def data(self):
@@ -44,7 +45,7 @@ class ImpedanceSensorData:
         Return the impedances and timestamp.
 
         """
-        pass
+        return self.data
 
     @property
     def timestamp(self):
@@ -52,5 +53,5 @@ class ImpedanceSensorData:
         Return the timestamp.
 
         """
-        pass
+        return timestamp
 
