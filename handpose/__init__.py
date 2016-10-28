@@ -1,5 +1,5 @@
 
-from .engine.core import EngineConfig, GestureEngine
+from .engine import EngineConfig, GestureEngine
 from .devices.wristband import Wristband
 
 from .sensors import ImpSensor, Accelerometer, Gyroscope, Magnetometer, PPG 
