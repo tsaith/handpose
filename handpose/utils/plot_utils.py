@@ -37,42 +37,44 @@ def plot_imu_data(data, xlabel="xlabel", ylabel="ylabel", title="title", legend=
     return fig, axes 
 
 
-def plot_imp_x(imps, frame_index, frame_shift, class_name, 
-               notes=None):
+def plot_imp_x(imp, frame_index, frame_shift, title):
     """
-    Plot impedance in spatial space.
+    Plot the spatial impedances.
 
     Parameters
     ----------
-    imps: list
-        List of impedance arrays.
+    imp: list
+        Impedance array.
     frame_index: int
         Frame index.
     frame_shift: int
         Shift frames.
-    class_name: str
-        Class name.
-    notes: list
-        List of notes written in the tilte.
+    title: str
+        Title.
 
     """  
-    num_imps = len(imps)
+    if title == None:
+        title = 'title'
 
-    if notes == None:
-        notes = []
-        for i in range(num_imps):
-             notes.append("subject{}".format(i+1))
-
-    rows, cols = imps[0].shape
-    x = range(cols)
     
     fig, axes = plt.subplots(nrows=1, ncols=2, figsize=(12, 3))
 
-    for i in range(num_imps):
-        axes[i].plot(x, imps[i][frame_index], x, imps[i][frame_index+frame_shift])
-        axes[i].set_title('class: {}, {}'.format(class_name, notes[i]))
-        axes[i].set_xlabel('electrod index')
-        axes[i].set_ylabel('impedances (Ohm)')
+    imp_r = imp[:, 0::2] # Real part
+    imp_i = imp[:, 1::2] # Imaginary part
+
+    rows, cols = imp_r.shape
+    x = range(cols)
+
+    # Make plots
+    axes[0].plot(x, imp_r[frame_index], x, imp_r[frame_index+frame_shift])
+    axes[0].set_title(title)
+    axes[0].set_xlabel('electrod index')
+    axes[0].set_ylabel('real(Z) (Ohm)')
+    
+    axes[1].plot(x, imp_i[frame_index], x, imp_i[frame_index+frame_shift])
+    axes[1].set_title(title)
+    axes[1].set_xlabel('electrod index')
+    axes[1].set_ylabel('imag(Z) (Ohm)')
     
     return fig, axes
 
