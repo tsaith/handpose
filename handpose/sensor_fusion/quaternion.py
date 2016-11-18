@@ -57,6 +57,19 @@ class Quaternion:
         """
         return Quaternion(self._q[0], -self._q[1], -self._q[2], -self._q[3])
 
+    def norm(self):
+        """
+        Returns the norm of quaternion.
+        """
+        return np.linalg.norm(self.q)
+
+    def inv(self):
+        """
+        Returns the inverse of the quaternion.
+        where q_inv = q.conj() / ||q||
+        """
+        return Quaternion(self.conj().q / self.norm())
+
     def to_angle_axis(self):
         """
         Returns the quaternion's rotation represented by an Euler angle and axis.

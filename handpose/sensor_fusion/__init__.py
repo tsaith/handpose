@@ -1,3 +1,3 @@
-from .fusion import Fusion
+from .fusion import *
 from .quaternion import Quaternion
 from .madgwickahrs import MadgwickAHRS
