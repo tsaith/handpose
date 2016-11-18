@@ -66,7 +66,6 @@ class Quaternion:
     def inv(self):
         """
         Returns the inverse of the quaternion.
-        where q_inv = q.conj() / ||q||
         """
         return Quaternion(self.conj().q / self.norm())
 
@@ -158,3 +157,11 @@ class Quaternion:
 
     def __array__(self):
         return self._q
+
+    @property
+    def scaler(self):
+        return self.q[0]
+
+    @property
+    def vector(self):
+        return self.q[1:]
