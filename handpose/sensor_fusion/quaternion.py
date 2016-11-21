@@ -45,7 +45,7 @@ class Quaternion:
             if len(q) != 4:
                 raise ValueError("Expecting a 4-element array or w x y z as parameters")
 
-        self._set_q(q)
+        self._q = q
 
     # Quaternion specific interfaces
 
@@ -63,9 +63,15 @@ class Quaternion:
         """
         return np.linalg.norm(self.q)
 
+    def inv_unit(self):
+        """
+        Returns the inverse of an unit quaternion.
+        """
+        return self.conj()
+
     def inv(self):
         """
-        Returns the inverse of the quaternion.
+        Returns the inverse of an arbitrary quaternion.
         """
         return Quaternion(self.conj().q / self.norm())
 
@@ -144,19 +150,13 @@ class Quaternion:
 
     # Implementing other interfaces to ease working with the class
 
-    def _set_q(self, q):
+    @property
+    def q(self):
+        return self._q
+
+    @q.setter
+    def q(self, q):
         self._q = q
-
-    def _get_q(self):
-        return self._q
-
-    q = property(_get_q, _set_q)
-
-    def __getitem__(self, item):
-        return self._q[item]
-
-    def __array__(self):
-        return self._q
 
     @property
     def scaler(self):
@@ -165,3 +165,10 @@ class Quaternion:
     @property
     def vector(self):
         return self.q[1:]
+
+    def __getitem__(self, item):
+        return self._q[item]
+
+    def __array__(self):
+        return self._q
+
