@@ -71,24 +71,26 @@ def init_madgwick(dt, beta, num_iter=100):
 def fusion_update(fuse, imu, num_iter=100):
     
     gyro, accel, mag = imu
-            
     qs = []
     for i in range(num_iter):
         fuse.update(gyro, accel, mag)
-        q = fuse.quaternion
-        qs.append(q)
+        qs.append(fuse.quaternion)
 
     return fuse, qs     
 
 
-def analytic_imu_data(sensor_angles, earth_mag=36.0, earth_dip=30.0):
+def analytic_imu_data(gyro_e, accel_dyn_e, q_e2s, earth_mag=36.0, earth_dip=30.0):
     """
     Return the raw data of an analytic 9-axis IMU.
 
     Parameters
     ----------
-    sensor_angles: array-like
-        Sensor orientaion angles represented as roll, pitch and jaw in unit of radian.
+    gyro_e: array
+        Angular rate in Earth axes.
+    accel_dyn_e: array
+        Dynamic acceleration in Earth axes.
+    q_e2s: Quaternion
+        Rotation quaternion of earth axes respective to sensor axes.
     earth_mag: float
         Magnitude of Earth magnetic field in muT.
     earth_dip: float
@@ -100,21 +102,33 @@ def analytic_imu_data(sensor_angles, earth_mag=36.0, earth_dip=30.0):
         IMU data which contains gyro, accel and mag.
     """
 
-    roll, pitch, jaw = sensor_angles
-                                              
-    num_dims = 3
-    gyro = np.zeros(num_dims) 
-    accel = np.zeros(num_dims) 
-    mag = np.zeros(num_dims) 
-    
-    accel[0] = np.cos(0.5*np.pi + pitch) 
-    accel[1] = 0 
-    accel[2] = np.sin(0.5*np.pi + pitch) 
-    
-    mag[0] = earth_mag*np.cos(earth_dip + pitch) 
-    mag[1] = 0.0 
-    mag[2] = earth_mag*np.sin(earth_dip + pitch) 
-    
+    q_s2e = q_e2s.inv()
+
+    num_dim = 3
+    g_e = np.zeros(num_dim)
+    mag_e = np.zeros(num_dim) 
+
+    # Gyroscope
+    q_tmp = Quaternion.from_vector(gyro_e)
+    q_tmp = q_s2e*q_tmp*q_s2e.inv()
+    gyro = q_tmp.vector
+
+    # Acceleration
+    g_e[2] = 1.0 # Gravity in Z direction
+    accel_e = accel_dyn_e + g_e
+    q_tmp = Quaternion.from_vector(accel_e)
+    q_tmp = q_s2e*q_tmp*q_s2e.inv()
+    accel = q_tmp.vector
+ 
+    # Magnetometer
+    mag_e[0] = earth_mag*np.cos(earth_dip) 
+    mag_e[1] = 0.0 
+    mag_e[2] = earth_mag*np.sin(earth_dip) 
+    q_tmp = Quaternion.from_vector(mag_e)
+    q_tmp = q_s2e*q_tmp*q_s2e.inv()
+    mag = q_tmp.vector
+
+    # Combine three sensors
     imu = [gyro, accel, mag]
 
     return imu

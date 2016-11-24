@@ -97,6 +97,10 @@ class Quaternion:
         s = np.sin(rad / 2)
         return Quaternion(np.cos(rad / 2), x*s, y*s, z*s)
 
+    @staticmethod
+    def from_vector(v):
+        return Quaternion(0, v[0], v[1], v[2])
+
     def to_euler_angles(self):
         pitch = np.arcsin(2 * self[1] * self[2] + 2 * self[0] * self[3])
         if np.abs(self[1] * self[2] + self[3] * self[0] - 0.5) < 1e-8:
