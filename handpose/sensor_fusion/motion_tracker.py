@@ -21,22 +21,62 @@ class MotionTracker:
         self._beta = beta
         self._num_iter = num_iter
         
+        num_dim = 3 # Number of dimensions
+
         # Initialize Madgwick's model
         self._fuse = init_madgwick(self._dt, self._beta, 
                                    num_iter=self._num_iter)
 
-        # Velocity and displacement
-        num_dim = 3
+        # Translational information
         self._accel_dyn = np.zeros(num_dim) # Dynamic acceleration
         self._vel = np.zeros(num_dim)
         self._dv = np.zeros(num_dim)
         self._dx = np.zeros(num_dim)
+
+        # Angular information
+        self._theta = np.zeros(num_dim)
+        self._dtheta = np.zeros(num_dim)
 
         # IMU information
         self._gyro  = None
         self._accel = None
         self._mag   = None
         
+    def update(self, gyro, accel, mag):
+        """
+        Update the status of tracker.
+
+        Parameters
+        ----------
+        gyro: array
+            Angular rates (rad/s)
+        accel: array
+            Measured acceleration (m/s^2)
+        mag: array
+            Measured magnetic fields (muT)
+        """
+        
+        # Update readings from IMU
+        self.gyro = gyro
+        self.accel = accel
+        self.mag = mag
+
+        # Sensor fusion
+        imu = [gyro, accel, mag]
+        fusion_update(self.fuse, imu, num_iter=self._num_iter)
+
+        # Estimate the dynamic acceleration
+        self.accel_dyn = dynamic_accel(accel, self.q) 
+
+        # Update velocity and displacement
+        self.dv = self.accel_dyn * self.dt    
+        self.vel +=  self.dv
+        self.dx = self.vel * self.dt
+
+        # Update angular velocity and displacement
+        self.dtheta = self.w * self.dt
+        self.theta +=  self.dtheta
+
     @property
     def fuse(self):
         return self._fuse
@@ -85,6 +125,10 @@ class MotionTracker:
     def accel_dyn(self):
         return self._accel_dyn
 
+    @accel_dyn.setter
+    def accel_dyn(self, accel):
+        self._accel_dyn = accel
+
     @property
     def vel(self):
         return self._vel
@@ -109,83 +153,27 @@ class MotionTracker:
     def dx(self, dx_in):
         self._dx = dx_in
 
-    @accel_dyn.setter
-    def accel_dyn(self, accel):
-        self._accel_dyn = accel
+    @property
+    def w(self):
+        return self.gyro
 
-    def update(self, gyro, accel, mag):
-        """
-        Update the status of tracker.
+    @w.setter
+    def w(self, w_in):
+        self.gyro = w_in
 
-        Parameters
-        ----------
-        gyro: array
-            Angular rates (rad/s)
-        accel: array
-            Measured acceleration (m/s^2)
-        mag: array
-            Measured magnetic fields (muT)
-        """
-        
-        # Update readings from IMU
-        self.gyro = gyro
-        self.accel = accel
-        self.mag = mag
+    @property
+    def dtheta(self):
+        return self._dtheta
 
-        # Sensor fusion
-        imu = [gyro, accel, mag]
-        fusion_update(self.fuse, imu, num_iter=self._num_iter)
+    @dtheta.setter
+    def dtheta(self, dtheta_in):
+        self._dtheta = dtheta_in
 
-        # Estimate the dynamic acceleration
-        self.accel_dyn = dynamic_accel(accel, self.q) 
+    @property
+    def theta(self):
+        return self._theta
 
-        # Update velocity and dx
-        self.dv = self.accel_dyn * self._dt    
-        self.vel +=  self.dv
-        self.dx = self.vel * self._dt
+    @theta.setter
+    def theta(self, theta_in):
+        self._theta = theta_in
 
-
-# ----
-def get_velocity(accel, dt, v0):
-    """
-    Estimate the velocity.
-    
-    Parameters
-    ----------
-    accel: array
-        Acceleration.
-    dt: float
-        Time duration.    
-    v0: array
-        Initial velocity.
-        
-    Returns
-    -------
-    v: array
-        Velocity.
-    """
-    dv = accel * dt    
-    v = v0 + dv
-    
-    return v
-    
-def get_dx(v, dt):
-    """
-    Estimate the spatial displacement.
-    
-    Parameters
-    ----------
-    v: array
-        Velocity.
-    dt: float
-        Time duration.  
-        
-    Reurns
-    ------
-    dx: array
-        Spatial displacement. 
-    """
-    dx = v * dt    
-    
-    return dx    
-    
