@@ -1,5 +1,5 @@
 import numpy as np
-from ..sensor_fusion import *
+from ..sensor_fusion import init_madgwick, estimate_dynamic_accel, fusion_update
 
 
 class MotionTracker:
@@ -7,8 +7,10 @@ class MotionTracker:
     Motion tracker based on sensor fustion.
     """
 
-    def __init__(self, dt=0.1, beta=0.041, num_iter=100):
+    def __init__(self, accel_th=0e-4, dt=0.1, beta=0.041, num_iter=100):
         """
+        accel_th: float
+            Threshold of the dynamic acceleration.
         dt: float
             Sampling time duration in seconds.
         beta: float
@@ -17,6 +19,7 @@ class MotionTracker:
             Number of iterations used to update sensor fusion.
         """
 
+        self._accel_th = accel_th
         self._dt = dt
         self._beta = beta
         self._num_iter = num_iter
@@ -66,7 +69,10 @@ class MotionTracker:
         fusion_update(self.fuse, imu, num_iter=self._num_iter)
 
         # Estimate the dynamic acceleration
-        self.accel_dyn = dynamic_accel(accel, self.q) 
+        self.accel_dyn = estimate_dynamic_accel(accel, self.q) 
+
+        # Filter the noises in dynamic acceleration 
+        self.filter_accel_dyn(self.accel_dyn, self.accel_th)
 
         # Update velocity and displacement
         self.dv = self.accel_dyn * self.dt    
@@ -77,6 +83,16 @@ class MotionTracker:
         self.dtheta = self.w * self.dt
         self.theta +=  self.dtheta
 
+
+    def filter_accel_dyn(self, accel, accel_th):
+        """ 
+        Filter the noises in dynamic acceleration.
+        """
+        num_dim = 3
+        for i in range(num_dim):
+            if np.abs(accel[i]) < accel_th:
+                accel[i] = 0.0
+
     @property
     def fuse(self):
         return self._fuse
@@ -84,6 +100,10 @@ class MotionTracker:
     @property
     def q(self):
         return self.fuse.quaternion
+
+    @property
+    def accel_th(self):
+        return self._accel_th
 
     @property
     def dt(self):

@@ -6,7 +6,7 @@ class MotionConverter:
     Convert the motion information from motion sensor to device.
     """
 
-    def __init__(self, tracker=None, vel_th=1e-5, w_th=1e-2,
+    def __init__(self, tracker=None, vel_th=0e-5, w_th=0e-2,
                  x_step=1e1, angular_step=1.745e-3):
         """
         Constructor.
@@ -59,17 +59,20 @@ class MotionConverter:
         mag: array
             Measured magnetic fields (muT)
         """
-
         tracker = self.tracker
+
 
         # Update the tracker
         tracker.update(gyro, accel, mag)
 
-        # Estimate outputs
-        self.dx_out = self.estimate_output(self.vel, self.vel_th, self.x_step)
-        self.dtheta_out = self.estimate_output(self.w, self.w_th, self.angular_step)
+        # Estimate the displacements
+        self.dx_out = self.displace(self.vel, self.vel_th, self.x_step)
+        self.dtheta_out = self.displace(self.w, self.w_th, self.angular_step)
                
-    def estimate_output(self, v, v_th, step):
+    def displace(self, v, v_th, step):
+        """
+        Estimate the displacements.
+        """
 
         num_dim = 3
         out = np.zeros(num_dim)
@@ -85,6 +88,10 @@ class MotionConverter:
     @property
     def tracker(self):
         return self._tracker
+
+    @property
+    def accel_dyn(self):
+        return self.tracker.accel_dyn
 
     @property
     def vel(self):

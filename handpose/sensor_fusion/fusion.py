@@ -2,7 +2,7 @@ import numpy as np
 from .madgwickahrs import MadgwickAHRS 
 from .quaternion import Quaternion
 
-def dynamic_accel(accel, q_e2s):
+def estimate_dynamic_accel(accel, q_e2s):
     """
     Estimate the dynamic acceleration.
     
