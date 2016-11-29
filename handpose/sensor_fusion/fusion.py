@@ -2,60 +2,66 @@ import numpy as np
 from .madgwickahrs import MadgwickAHRS 
 from .quaternion import Quaternion
 
-def estimate_dynamic_accel(accel, q_e2s):
+class SensorFusion:
     """
-    Estimate the dynamic acceleration.
-    
-    Paramters
-    ---------
-    accel: array
-        Acceleration in sensor axes.
-    q_e2s: Quaternion object
-        Rotation quaternion denoting earth axes to sensor axes.
-        
-    Reurns
-    ------
-    accel_dyn: array
-        Dynamic acceleration in sensor axes.
-    
+    Sensor fusion.
     """
-    q_s2e = q_e2s.inv_unit() # Sensor axes to Earth axes 
-    g_e = Quaternion(0, 0, 0, 1) # Gravity in the Earth axes
-    g_s = q_s2e*g_e*q_s2e.inv_unit() # Gravity in the sensor axes
-    
-    accel_dyn = accel - g_s.vector
 
-    return accel_dyn 
+    def __init__(self, dt=0.1, beta=0.41, num_iter=100):
+        """
+        Constructor of SensorFusion.
 
-def gravity_compensate(accel, q):
-    """
-    Compensate the accelerometer readings from gravity. 
-    
-    Parameters
-    ----------
-    q: array
-        The quaternion representing the orientation of a 9DOM MARG sensor array
-    acc: array
-        The readings coming from an accelerometer expressed in g
+        Parameters
+        ----------
+        dt: float
+            Sampling time duration in seconds.
+        beta: float
+            Fusion parameter.
+        num_iter: int
+            Number of iterations.
+        """
+
+        self._fuse = init_madgwick(dt, beta, num_iter=100)
+        self._dt = dt
+        self._beta = beta
+        self._num_iter = num_iter
+
+    def update(self, gyro, accel, mag):
+        """
+        Update of fusion.
+        """
+
+        qs = []
+        for i in range(self.num_iter):
+            self.fuse.update(gyro, accel, mag)
+            qs.append(self.fuse.quaternion)
         
-    Returns
-    -------
-        acc_out: array
-            a 3d vector representing dynamic acceleration expressed in g
-    """
-    num_dim = 3
-    g = np.zeros(num_dim)
-    accel_out = np.zeros(num_dim)
-  
-    # Get expected direction of gravity
-    g[0] = 2 * (q[1] * q[3] - q[0] * q[2])
-    g[1] = 2 * (q[0] * q[1] + q[2] * q[3])
-    g[2] = q[0] * q[0] - q[1] * q[1] - q[2] * q[2] + q[3] * q[3]
-  
-    # Compensate accelerometer readings with the expected direction of gravity
-    accel_out[:] = accel[:] - g[:]
+        return qs     
+
+
+    @property
+    def fuse(self):
+        return self._fuse
     
-    return accel_out
+    @fuse.setter
+    def fuse(self, fuse_in):
+        return self._fuse
+
+    @property
+    def dt(self):
+        return self._dt
+    
+    @property
+    def beta(self):
+        return self._beta
+    
+    @property
+    def num_iter(self):
+        return self._num_iter
+    
+    @property
+    def quaternion(self):
+        return self.fuse.quaternion
 
 
 def init_madgwick(dt, beta, num_iter=100):

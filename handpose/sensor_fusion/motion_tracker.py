@@ -1,5 +1,6 @@
 import numpy as np
-from ..sensor_fusion import init_madgwick, estimate_dynamic_accel, fusion_update
+from ..sensor_fusion import SensorFusion
+from .quaternion import Quaternion
 
 
 class MotionTracker:
@@ -26,9 +27,9 @@ class MotionTracker:
         
         num_dim = 3 # Number of dimensions
 
-        # Initialize Madgwick's model
-        self._fuse = init_madgwick(self._dt, self._beta, 
-                                   num_iter=self._num_iter)
+        # Initialize Fusion model
+        self._fuse = SensorFusion(self._dt, self._beta, 
+                                  num_iter=self._num_iter)
 
         # Translational information
         self._accel_dyn = np.zeros(num_dim) # Dynamic acceleration
@@ -64,9 +65,8 @@ class MotionTracker:
         self.accel = accel
         self.mag = mag
 
-        # Sensor fusion
-        imu = [gyro, accel, mag]
-        fusion_update(self.fuse, imu, num_iter=self._num_iter)
+        # Update the fusion
+        self.fuse.update(gyro, accel, mag)
 
         # Estimate the dynamic acceleration
         self.accel_dyn = estimate_dynamic_accel(accel, self.q) 
@@ -196,4 +196,60 @@ class MotionTracker:
     @theta.setter
     def theta(self, theta_in):
         self._theta = theta_in
+
+
+def estimate_dynamic_accel(accel, q_e2s):
+    """
+    Estimate the dynamic acceleration.
+    
+    Paramters
+    ---------
+    accel: array
+        Acceleration in sensor axes.
+    q_e2s: Quaternion object
+        Rotation quaternion denoting earth axes to sensor axes.
+        
+    Reurns
+    ------
+    accel_dyn: array
+        Dynamic acceleration in sensor axes.
+    
+    """
+    q_s2e = q_e2s.inv_unit() # Sensor axes to Earth axes 
+    g_e = Quaternion(0, 0, 0, 1) # Gravity in the Earth axes
+    g_s = q_s2e*g_e*q_s2e.inv_unit() # Gravity in the sensor axes
+    
+    accel_dyn = accel - g_s.vector
+
+    return accel_dyn 
+
+def gravity_compensate(accel, q):
+    """
+    Compensate the accelerometer readings from gravity. 
+    
+    Parameters
+    ----------
+    q: array
+        The quaternion representing the orientation of a 9DOM MARG sensor array
+    acc: array
+        The readings coming from an accelerometer expressed in g
+        
+    Returns
+    -------
+        acc_out: array
+            a 3d vector representing dynamic acceleration expressed in g
+    """
+    num_dim = 3
+    g = np.zeros(num_dim)
+    accel_out = np.zeros(num_dim)
+  
+    # Get expected direction of gravity
+    g[0] = 2 * (q[1] * q[3] - q[0] * q[2])
+    g[1] = 2 * (q[0] * q[1] + q[2] * q[3])
+    g[2] = q[0] * q[0] - q[1] * q[1] - q[2] * q[2] + q[3] * q[3]
+  
+    # Compensate accelerometer readings with the expected direction of gravity
+    accel_out[:] = accel[:] - g[:]
+    
+    return accel_out
 
