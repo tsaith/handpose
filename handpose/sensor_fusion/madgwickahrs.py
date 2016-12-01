@@ -56,6 +56,11 @@ class MadgwickAHRS:
         accelerometer = np.array(accelerometer, dtype=float).flatten()
         magnetometer = np.array(magnetometer, dtype=float).flatten()
 
+        ## Rotate axes into the Earth axes
+        #accelerometer[1] *= -1
+        #accelerometer[2] *= -1
+
+
         # Normalise accelerometer measurement
         if norm(accelerometer) is 0:
             warnings.warn("accelerometer is zero")

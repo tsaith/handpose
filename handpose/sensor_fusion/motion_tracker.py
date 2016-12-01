@@ -8,10 +8,12 @@ class MotionTracker:
     Motion tracker based on sensor fustion.
     """
 
-    def __init__(self, accel_th=0e-4, dt=0.1, beta=0.041, num_iter=100):
+    def __init__(self, accel_th=0e-3, vel_th=0e-3, w_th=0e-3, dt=0.1, beta=0.041, num_iter=100):
         """
         accel_th: float
             Threshold of the dynamic acceleration.
+        vel_th: float
+            Threshold of velocity
         dt: float
             Sampling time duration in seconds.
         beta: float
@@ -21,6 +23,8 @@ class MotionTracker:
         """
 
         self._accel_th = accel_th
+        self._vel_th = vel_th
+        self._w_th = w_th
         self._dt = dt
         self._beta = beta
         self._num_iter = num_iter
@@ -28,7 +32,7 @@ class MotionTracker:
         num_dim = 3 # Number of dimensions
 
         # Initialize Fusion model
-        self._fuse = SensorFusion(self._dt, self._beta, 
+        self._fusion = SensorFusion(self._dt, self._beta, 
                                   num_iter=self._num_iter)
 
         # Translational information
@@ -66,13 +70,14 @@ class MotionTracker:
         self.mag = mag
 
         # Update the fusion
-        self.fuse.update(gyro, accel, mag)
+        self.fusion.update(gyro, accel, mag)
 
         # Estimate the dynamic acceleration
         self.accel_dyn = estimate_dynamic_accel(accel, self.q) 
 
-        # Filter the noises in dynamic acceleration 
-        self.filter_accel_dyn(self.accel_dyn, self.accel_th)
+        # Filter the noises
+        self.filter_noises(self.accel_dyn, self.accel_th)
+        self.filter_noises(self.vel, self.vel_th)
 
         # Update velocity and displacement
         self.dv = self.accel_dyn * self.dt    
@@ -84,26 +89,34 @@ class MotionTracker:
         self.theta +=  self.dtheta
 
 
-    def filter_accel_dyn(self, accel, accel_th):
+    def filter_noises(self, arr, threshold):
         """ 
-        Filter the noises in dynamic acceleration.
+        Filter the noises.
         """
         num_dim = 3
         for i in range(num_dim):
-            if np.abs(accel[i]) < accel_th:
-                accel[i] = 0.0
+            if np.abs(arr[i]) < threshold:
+                arr[i] = 0.0
 
     @property
-    def fuse(self):
-        return self._fuse
+    def fusion(self):
+        return self._fusion
+
+    @fusion.setter
+    def fusion(self, fusion_in):
+        self.fusion = fusion_in
 
     @property
     def q(self):
-        return self.fuse.quaternion
+        return self.fusion.q
 
     @property
     def accel_th(self):
         return self._accel_th
+
+    @property
+    def vel_th(self):
+        return self._vel_th
 
     @property
     def dt(self):
@@ -216,40 +229,14 @@ def estimate_dynamic_accel(accel, q_e2s):
     
     """
     q_s2e = q_e2s.inv_unit() # Sensor axes to Earth axes 
-    g_e = Quaternion(0, 0, 0, 1) # Gravity in the Earth axes
+    # Gravity in the Earth axes, 
+    # ??? please note that the accelerometer feels -g in z direction
+    # when the sensor is static 
+    g_e = Quaternion(0, 0, 0, 1)
     g_s = q_s2e*g_e*q_s2e.inv_unit() # Gravity in the sensor axes
     
     accel_dyn = accel - g_s.vector
 
     return accel_dyn 
 
-def gravity_compensate(accel, q):
-    """
-    Compensate the accelerometer readings from gravity. 
-    
-    Parameters
-    ----------
-    q: array
-        The quaternion representing the orientation of a 9DOM MARG sensor array
-    acc: array
-        The readings coming from an accelerometer expressed in g
-        
-    Returns
-    -------
-        acc_out: array
-            a 3d vector representing dynamic acceleration expressed in g
-    """
-    num_dim = 3
-    g = np.zeros(num_dim)
-    accel_out = np.zeros(num_dim)
-  
-    # Get expected direction of gravity
-    g[0] = 2 * (q[1] * q[3] - q[0] * q[2])
-    g[1] = 2 * (q[0] * q[1] + q[2] * q[3])
-    g[2] = q[0] * q[0] - q[1] * q[1] - q[2] * q[2] + q[3] * q[3]
-  
-    # Compensate accelerometer readings with the expected direction of gravity
-    accel_out[:] = accel[:] - g[:]
-    
-    return accel_out
 

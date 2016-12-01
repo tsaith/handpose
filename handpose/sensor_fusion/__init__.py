@@ -1,4 +1,4 @@
-from .fusion import SensorFusion, analytic_imu_data
+from .sensor_fusion import SensorFusion
 from .quaternion import Quaternion
 from .imu_simulator import IMUSimulator
 from .madgwickahrs import MadgwickAHRS
