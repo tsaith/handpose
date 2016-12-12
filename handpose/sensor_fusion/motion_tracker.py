@@ -29,6 +29,8 @@ class MotionTracker:
         self._beta = beta
         self._num_iter = num_iter
         
+        self._damping = 0.05 # Damping factor
+
         num_dim = 3 # Number of dimensions
 
         # Initialize Fusion model
@@ -82,12 +84,12 @@ class MotionTracker:
         # Update velocity and displacement
         self.dv = self.accel_dyn * self.dt    
         self.vel +=  self.dv
+        self.vel *= (1.0 - self.damping) # velocity is damping
         self.dx = self.vel * self.dt
 
         # Update angular velocity and displacement
         self.dtheta = self.w * self.dt
         self.theta +=  self.dtheta
-
 
     def filter_noises(self, arr, threshold):
         """ 
@@ -97,6 +99,19 @@ class MotionTracker:
         for i in range(num_dim):
             if np.abs(arr[i]) < threshold:
                 arr[i] = 0.0
+
+    def init_motion_data(self):
+        """
+        Initialize the motion data.
+        """
+        num_dim = 3
+
+        # Translational information
+        self.accel_dyn = np.zeros(num_dim)
+        self.vel = np.zeros(num_dim)
+
+        # Angular information
+        self.theta = np.zeros(num_dim)
 
     @property
     def fusion(self):
@@ -210,6 +225,13 @@ class MotionTracker:
     def theta(self, theta_in):
         self._theta = theta_in
 
+    @property
+    def damping(self):
+        return self._damping
+
+    @damping.setter
+    def damping(self, value):
+        self._damping = value
 
 def estimate_dynamic_accel(accel, q_e2s):
     """

@@ -85,6 +85,29 @@ class MotionConverter:
 
         return out        
 
+    def to_screen_axes(self, a_in):
+        """
+        Convert to the screen axes.
+
+        Parameters
+        ----------
+        a_in: Input array with three elements.
+            Input array.
+
+        Returns 
+        -------
+        a_out: array
+            Output array.
+        """
+
+        a_out = np.zeros_like(a_in)
+
+        a_out[0] =  a_in[0] # x-axis 
+        a_out[1] = -a_in[1] # y-axis
+        a_out[2] = -a_in[2] # z-axis
+
+        return a_out
+
     @property
     def tracker(self):
         return self._tracker
