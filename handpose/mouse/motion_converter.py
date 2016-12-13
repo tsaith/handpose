@@ -165,6 +165,10 @@ class MotionConverter:
         return self.tracker.theta
 
     @property
+    def theta_e(self):
+        return self.tracker.theta_e
+
+    @property
     def angular_step(self):
         return self._angular_step
 

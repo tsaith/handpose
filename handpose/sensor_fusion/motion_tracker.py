@@ -44,8 +44,9 @@ class MotionTracker:
         self._dx = np.zeros(num_dim)
 
         # Angular information
-        self._theta = np.zeros(num_dim)
+        self._theta = np.zeros(num_dim)  # Relative angles
         self._dtheta = np.zeros(num_dim)
+        self._theta_e = np.zeros(num_dim)  # Absolute angles in earth axes
 
         # IMU information
         self._gyro  = None
@@ -89,7 +90,13 @@ class MotionTracker:
 
         # Update angular velocity and displacement
         self.dtheta = self.w * self.dt
+        for i in range(3): # Filter small noises
+            if np.abs(self.dtheta[i]) > 5e-5:
+                 self.dtheta[i] = 0.0
         self.theta +=  self.dtheta
+
+        # Estimate the absolute angles respective to Earth axes 
+        self.estimate_absolute_angles()
 
     def filter_noises(self, arr, threshold):
         """ 
@@ -99,6 +106,25 @@ class MotionTracker:
         for i in range(num_dim):
             if np.abs(arr[i]) < threshold:
                 arr[i] = 0.0
+
+    def estimate_absolute_angles(self):
+        """
+        Estimate the absolute angles respective to Earth axes.
+        """
+        num_dim = 3
+
+        # z-vector representation of earth axes respective to sensor axes 
+        q_s2e = self.q.inv_unit()
+        qz_e = Quaternion(0, 0, 0, 1) # z vector in earth axes
+        qz_s = q_s2e*qz_e*q_s2e.inv_unit()
+        z_es = qz_s.q[1:]
+
+        # Absolute angles respective to Earth axes
+        x_vec = np.array([1, 0, 0])
+        y_vec = np.array([0, 1, 0])
+        self.theta_e[0] = 0.5*np.pi - np.arccos(np.dot(x_vec, z_es))
+        self.theta_e[1] = 0.5*np.pi - np.arccos(np.dot(y_vec, z_es))
+        self.theta_e[2] = 0.0 # This has not been estimated yet.
 
     def init_motion_data(self):
         """
@@ -226,6 +252,14 @@ class MotionTracker:
         self._theta = theta_in
 
     @property
+    def theta_e(self):
+        return self._theta_e
+
+    @theta.setter
+    def theta_e(self, theta_in):
+        self._theta_e = theta_in
+
+    @property
     def damping(self):
         return self._damping
 
@@ -242,7 +276,7 @@ def estimate_dynamic_accel(accel, q_e2s):
     accel: array
         Acceleration in sensor axes.
     q_e2s: Quaternion object
-        Rotation quaternion denoting earth axes to sensor axes.
+        Rotation quaternion, earth axes to sensor axes.
         
     Reurns
     ------
@@ -251,8 +285,8 @@ def estimate_dynamic_accel(accel, q_e2s):
     
     """
     q_s2e = q_e2s.inv_unit() # Sensor axes to Earth axes 
-    # Gravity in the Earth axes, 
-    # ??? please note that the accelerometer feels -g in z direction
+    # Gravity contribution in the Earth axes, 
+    # please note that the accelerometer feels 1g in z direction
     # when the sensor is static 
     g_e = Quaternion(0, 0, 0, 1)
     g_s = q_s2e*g_e*q_s2e.inv_unit() # Gravity in the sensor axes
