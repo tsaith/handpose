@@ -91,7 +91,7 @@ class MotionTracker:
         # Update angular velocity and displacement
         self.dtheta = self.w * self.dt
         for i in range(3): # Filter small noises
-            if np.abs(self.dtheta[i]) > 5e-5:
+            if np.abs(self.dtheta[i]) < 5e-5:
                  self.dtheta[i] = 0.0
         self.theta +=  self.dtheta
 
@@ -106,6 +106,37 @@ class MotionTracker:
         for i in range(num_dim):
             if np.abs(arr[i]) < threshold:
                 arr[i] = 0.0
+
+    def estimate_spherical_angles(self):
+        """
+        Estimate the spherical angles respective to Earth axes.
+        """
+
+        # x vector of sensor axes respective to Earth axes
+        q_e2s = self.q
+        qx_s = Quaternion(0, 1, 0, 0) # x vector in sensor axes
+        qx_e = q_e2s*qx_s*q_e2s.inv_unit()
+        x_se = qx_e.q[1:]
+
+        # Project x_se onto the x-y plane in Earth axes
+        x_proj = np.array([x_se[0], x_se[1], 0.0])
+        norm_proj = np.linalg.norm(x_proj)
+
+        # Poloidal and toroidal angles
+        theta = np.arccos(x_se[2]) # Poloidal angle
+
+        phi_t = np.arccos(x_se[0]/norm_proj) # Poloidal angle
+        if x_se[1] >= 0:
+            phi = phi_t
+        else:
+            phi = -phi_t + 2.0*np.pi
+
+        num_dim = 3
+        angles = np.zeros(num_dim)
+        angles[0] = theta
+        angles[1] = phi
+
+        return angles
 
     def estimate_absolute_angles(self):
         """
