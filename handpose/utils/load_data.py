@@ -58,7 +58,8 @@ def csv2numpy(file_path):
     
     return arr
     
-def load_class_data(candidates, dir_path, equal_weight=True,  verbose=0):
+def load_class_data(candidates, dir_path, 
+    num_cols=None, equal_weight=True,  verbose=0):
     """
     Load the training data for classification.
     
@@ -66,13 +67,12 @@ def load_class_data(candidates, dir_path, equal_weight=True,  verbose=0):
     ----------
     candidates: list
         Class candidates.
-    
     dir_path: str
         Directory path.
-   
+    num_cols: int
+        Number of data colums.
     equal_weight: bool
         Equal weight for each class. 
-
     verbose: int    
         Switch used to show the debug information. 
         Available value is 0, 1 or 2.
@@ -102,7 +102,10 @@ def load_class_data(candidates, dir_path, equal_weight=True,  verbose=0):
             arr = arr[:, 1:] # Remove the timestamp
             if verbose > 1:
                 print("The shape of data is {}".format(arr.shape))
-            class_data[c].append(arr)
+             
+            if num_cols == None:
+                num_cols = arr.shape[1]
+            class_data[c].append(arr[:, :num_cols])
 
         class_data[c] = np.concatenate(class_data[c]) 
  
