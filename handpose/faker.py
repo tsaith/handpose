@@ -2,7 +2,6 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-
 def random_noise(shape, amp=1):
     """"
     Return the random noise.
