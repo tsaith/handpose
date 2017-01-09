@@ -11,7 +11,7 @@ def random_noise(shape, amp=1):
     shape: array shape.
     amp: amplitude of noise.
 
-    """     
+    """
 
     noise = amp * (2*np.random.rand(*shape) - 1)
 
