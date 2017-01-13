@@ -157,6 +157,29 @@ class MotionTracker:
         self.theta_e[1] = 0.5*np.pi - np.arccos(np.dot(y_vec, z_es))
         self.theta_e[2] = 0.0 # This has not been estimated yet.
 
+    def unit_vectors_s2e(self):
+        """
+        The representations of unit vectors of sensor axes respective to Earth axes.
+        """
+        # Rotation quaternion of sensor to Earth axes
+        q_e2s = self.q
+        q_e2s_inv = q_e2s.inv_unit()
+
+        # z-vector representation of earth axes respective to sensor axes 
+        qx_s = Quaternion(0, 1, 0, 0) # x vector in sensor axes
+        qx_e = q_e2s*qx_s*q_e2s_inv
+        x_se = qx_e.q[1:]
+
+        qy_s = Quaternion(0, 0, 1, 0) # y vector in sensor axes
+        qy_e = q_e2s*qy_s*q_e2s_inv
+        y_se = qy_e.q[1:]
+
+        qz_s = Quaternion(0, 0, 0, 1) # y vector in sensor axes
+        qz_e = q_e2s*qz_s*q_e2s_inv
+        z_se = qz_e.q[1:]
+
+        return x_se, y_se, z_se
+
     def init_motion_data(self):
         """
         Initialize the motion data.
