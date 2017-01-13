@@ -27,8 +27,8 @@ class_names = ['relax', 'fist'] # Class Names
 num_classes = len(class_names)
 
 # Directory paths
-train_path = "../data/mouse/train"
-test_path = "../data/mouse/test"
+train_path = "../data/train"
+test_path = "../data/test"
 
 # Output files of model and scaler
 model_file = 'mlp_model.hdf'
