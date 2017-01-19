@@ -125,7 +125,7 @@ class MotionTracker:
         # Poloidal and toroidal angles
         theta = np.arccos(x_se[2]) # Poloidal angle
 
-        phi_t = np.arccos(x_se[0]/norm_proj) # Poloidal angle
+        phi_t = np.arccos(x_se[0]/norm_proj) # Toroidal angle
         if x_se[1] >= 0:
             phi = phi_t
         else:
