@@ -1,5 +1,7 @@
 import keras
 import cPickle as pickle
+from ..preprocessing import preprocess
+
 
 # A walk-around to avoid the bug ('module' object has no attribute 'control_flow_ops')\n",
 import keras
@@ -95,14 +97,18 @@ class GestureEngine:
 
         Parameters
         ----------
-	X: array-like
+        X: array-like
             Input features.
         """
 
-        x = self.scaler.transform(x)
+        X = x.copy()
+        # Preprocess
+        X = preprocess(X, shift_baseline=True, normalize=True)
+        X = self.scaler.transform(X)
 
-        y = self.model_trained.predict_classes(x, batch_size=32, verbose=0)
-        
+        # Make predictions 
+        y = self.model_trained.predict_classes(X, batch_size=32, verbose=0)
+
         return y
 
 
