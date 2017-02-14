@@ -28,3 +28,23 @@ def maximum_multi(arrays):
         out = np.maximum(out, arrays[i])
 
     return out
+
+def fft_windows(wins):
+    """
+    Perform FFT on each window frame.
+    """
+
+    num_wins, size = wins.shape
+
+    # Allocate spectrum array
+    spectra = np.zeros((num_wins, size), dtype=complex)
+
+    # Perform FFTs
+    for i in range(num_wins):
+        y = wins[i, :]
+        Y = np.fft.fft(y) ## FFT
+        Y /= size
+    
+        spectra[i] = Y
+
+    return spectra
