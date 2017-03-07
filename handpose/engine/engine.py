@@ -1,5 +1,5 @@
 import keras
-import cPickle as pickle
+import pickle
 from ..preprocessing import preprocess
 
 

@@ -55,14 +55,14 @@ def csv2numpy(file_path):
 
     # Set the data type as float
     arr = arr.astype(np.float32)
-    
+
     return arr
-    
+
 def load_class_data(candidates, dir_path, 
-    num_cols=None, equal_weight=True,  verbose=0):
+    num_cols=None, equal_weight=True, start_col=1, verbose=0):
     """
     Load the training data for classification.
-    
+
     Parameters
     ----------
     candidates: list
@@ -92,17 +92,17 @@ def load_class_data(candidates, dir_path,
     for c in range(num_classes): 
         filenames = find_class_files(candidates[c], dir_path)
         class_files[c].append(filenames)
-        
+
         # Prepare class data
         for filename in filenames: 
             file_path = "{}/{}".format(dir_path, filename)
             if verbose > 1:
                 print("Reading the file: {}".format(file_path))
             arr = csv2numpy(file_path)
-            arr = arr[:, 1:] # Remove the timestamp
+            arr = arr[:, start_col:] # Remove the timestamp
             if verbose > 1:
                 print("The shape of data is {}".format(arr.shape))
-             
+
             if num_cols == None:
                 num_cols = arr.shape[1]
             class_data[c].append(arr[:, :num_cols])
@@ -131,9 +131,9 @@ def load_class_data(candidates, dir_path,
         if verbose > 0:
             print("--------")
             print("For equal weight, each class uses {} instances".format(num_min))
-    
+
     # Concatenate data and labels
-    data = np.concatenate(class_data) 
+    data = np.concatenate(class_data)
     labels = np.concatenate(class_labels)
 
     if verbose > 0:
@@ -141,7 +141,7 @@ def load_class_data(candidates, dir_path,
         print("--------")
         print("Instance number is {}".format(num_instances))
         print("Feature number is {}".format(num_features))
-        
+
     return data, labels
 
 

@@ -1,5 +1,4 @@
 import keras
-import cPickle as pickle
 
 class EngineConfig:
     """

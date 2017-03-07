@@ -1,6 +1,5 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from obspy.signal.tf_misfit import cwt
 from .stft import stft, istft
 
 
@@ -83,6 +82,8 @@ def cwt_tf_plot(sig, t, f_min=1, f_max=1000, yscale='log', tradeoff=30):
             Y grids of plot.
     """
     
+    from obspy.signal.tf_misfit import cwt
+
     dt = t[1] - t[0] # Time interval
     
     # Wavelet transform
