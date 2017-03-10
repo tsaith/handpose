@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 import os
-from ..utils import load_csv_file, list_files
+from ..utils import csv2numpy, list_files
 
 def accel_abs(accel):
     
@@ -76,7 +76,8 @@ def vib_file_factory(dir_path, keyword="_rec_",
 
         # Load raw data
         fpath = os.path.join(dir_path, f)
-        accel = load_csv_file(fpath)
+        print("...loading {}".format(fpath))
+        accel = csv2numpy(fpath, start_col=1)
 
         # Find the indexes of segmentations
         ax = accel[:,0]

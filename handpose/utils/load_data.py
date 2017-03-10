@@ -2,23 +2,53 @@ import numpy as np
 import pandas as pd
 import os
 
+def csv2numpy(file_path, start_col=0, header='infer'):
+    """
+    Load a CSV file and output as a numpy array.
+
+    Parameters
+    ----------
+    file_path: str
+        Path of the CSV file.
+    start_col: int
+        Starting column index.
+    header: 'infer', None, list
+        Header.
+    Returns
+    -------
+    arr: numpy array
+        Data array.
+    """
+
+    # Read the CSV file as dataframe
+    df  = pd.read_csv(file_path, header=header)
+    arr = df.values
+
+    # Set the data type as float
+    arr = arr.astype(np.float32)
+
+    # Skip the timestamp
+    arr = arr[:, start_col:]
+
+    return arr
+
 def find_class_files(class_label, dir_path):
     """
     Find out the files matching the specific class label. 
-    
+
     Parameters
     ----------
     class_label: str
         The class label.
-        
+
     dir_path: str
         The directory path.
-    
+
     Returns
     -------
     filenames: list
         The list of filenames.
-    """   
+    """
 
     ext = "csv"
     
@@ -28,35 +58,6 @@ def find_class_files(class_label, dir_path):
             filenames.append(f)
 
     return filenames       
-
-def csv2numpy(file_path):
-    """
-    Load a CSV file and convert its content into a numpy array.
-    
-    Parameters
-    ----------
-    file_path: str
-        Path of the CSV file.
-    
-    Returns
-    -------
-    arr: numpy array
-        Data array.
-    """  
-
-    # Read the CSV file as dataframe
-    df  = pd.read_csv(file_path)
-    
-    # Skip the timestamp
-    #df = df.iloc[:, 1:] # skip the timestamp
-
-    # Convert dataframe into numpy array 
-    arr = df.values
-
-    # Set the data type as float
-    arr = arr.astype(np.float32)
-
-    return arr
 
 def load_class_data(candidates, dir_path, 
     num_cols=None, equal_weight=True, start_col=0, verbose=0):
@@ -98,7 +99,7 @@ def load_class_data(candidates, dir_path,
             file_path = "{}/{}".format(dir_path, filename)
             if verbose > 0:
                 print("Reading the file: {}".format(file_path))
-            arr = csv2numpy(file_path)
+            arr = csv2numpy(file_path, start_col=start_col, header=None)
             arr = arr[:, start_col:] # Remove the timestamp
             if verbose > 0:
                 print("The shape of data is {}".format(arr.shape))
@@ -144,34 +145,4 @@ def load_class_data(candidates, dir_path,
 
     return data, labels
 
-
-def load_csv_file(file_path, start_col=0):
-    """
-    Load a CSV file and output as a numpy array.
-
-    Parameters
-    ----------
-    file_path: str
-        Path of the CSV file.
-
-    start_col: int
-        Starting column index. default is 1 because index 0 is for timestamp.
-
-    Returns
-    -------
-    arr: numpy array
-        Data array.
-    """
-
-    # Read the CSV file as dataframe
-    df  = pd.read_csv(file_path)
-    arr = df.values
-
-    # Set the data type as float
-    arr = arr.astype(np.float32)
-
-    # Skip the timestamp
-    arr = arr[:, start_col:]
-
-    return arr
 
