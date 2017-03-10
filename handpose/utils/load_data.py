@@ -59,7 +59,7 @@ def csv2numpy(file_path):
     return arr
 
 def load_class_data(candidates, dir_path, 
-    num_cols=None, equal_weight=True, start_col=1, verbose=0):
+    num_cols=None, equal_weight=True, start_col=0, verbose=0):
     """
     Load the training data for classification.
 
@@ -72,43 +72,43 @@ def load_class_data(candidates, dir_path,
     num_cols: int
         Number of data colums.
     equal_weight: bool
-        Equal weight for each class. 
-    verbose: int    
-        Switch used to show the debug information. 
-        Available value is 0, 1 or 2.
+        Equal weight for each class.
+    verbose: int
+        Switch used to show the debug information.
+        Available value is 0 or 1.
 
     Returns
     -------
     data: array-like
         Training data.
-    """   
+    """
 
     num_classes = len(candidates)
-    
+
     class_files =  [[] for c in range(num_classes)]
     class_data =   [[] for c in range(num_classes)]
     class_labels = [[] for c in range(num_classes)]
-  
-    for c in range(num_classes): 
+
+    for c in range(num_classes):
         filenames = find_class_files(candidates[c], dir_path)
         class_files[c].append(filenames)
 
         # Prepare class data
-        for filename in filenames: 
+        for filename in filenames:
             file_path = "{}/{}".format(dir_path, filename)
-            if verbose > 1:
+            if verbose > 0:
                 print("Reading the file: {}".format(file_path))
             arr = csv2numpy(file_path)
             arr = arr[:, start_col:] # Remove the timestamp
-            if verbose > 1:
+            if verbose > 0:
                 print("The shape of data is {}".format(arr.shape))
 
             if num_cols == None:
                 num_cols = arr.shape[1]
             class_data[c].append(arr[:, :num_cols])
 
-        class_data[c] = np.concatenate(class_data[c]) 
- 
+        class_data[c] = np.concatenate(class_data[c])
+
         # Prepare the class labels
         class_labels[c] = np.full(len(class_data[c]), c, dtype=np.int32)
 
@@ -145,15 +145,15 @@ def load_class_data(candidates, dir_path,
     return data, labels
 
 
-def load_csv_file(file_path, start_col=1):
+def load_csv_file(file_path, start_col=0):
     """
     Load a CSV file and output as a numpy array.
-    
+
     Parameters
     ----------
     file_path: str
         Path of the CSV file.
-    
+
     start_col: int
         Starting column index. default is 1 because index 0 is for timestamp.
 
@@ -161,7 +161,7 @@ def load_csv_file(file_path, start_col=1):
     -------
     arr: numpy array
         Data array.
-    """  
+    """
 
     # Read the CSV file as dataframe
     df  = pd.read_csv(file_path)
@@ -172,6 +172,6 @@ def load_csv_file(file_path, start_col=1):
 
     # Skip the timestamp
     arr = arr[:, start_col:]
-    
+
     return arr
-    
+
