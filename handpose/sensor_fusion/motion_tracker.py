@@ -52,8 +52,8 @@ class MotionTracker:
         self._gyro  = None
         self._accel = None
         self._mag   = None
-        
-    def update(self, gyro, accel, mag):
+
+    def update(self, gyro, accel, mag=None):
         """
         Update the status of tracker.
 
@@ -66,24 +66,27 @@ class MotionTracker:
         mag: array
             Measured magnetic fields (muT)
         """
-        
+
         # Update readings from IMU
         self.gyro = gyro
         self.accel = accel
         self.mag = mag
 
         # Update the fusion
-        self.fusion.update(gyro, accel, mag)
+        if mag is None: # With 6-axis IMU
+            self.fusion.update_imu(gyro, accel)
+        else:
+            self.fusion.update_ahrs(gyro, accel, mag)
 
         # Estimate the dynamic acceleration
-        self.accel_dyn = estimate_dynamic_accel(accel, self.q) 
+        self.accel_dyn = estimate_dynamic_accel(accel, self.q)
 
         # Filter the noises
         self.filter_noises(self.accel_dyn, self.accel_th)
         self.filter_noises(self.vel, self.vel_th)
 
         # Update velocity and displacement
-        self.dv = self.accel_dyn * self.dt    
+        self.dv = self.accel_dyn * self.dt
         self.vel +=  self.dv
         self.vel *= (1.0 - self.damping) # velocity is damping
         self.dx = self.vel * self.dt
@@ -95,7 +98,7 @@ class MotionTracker:
                  self.dtheta[i] = 0.0
         self.theta +=  self.dtheta
 
-        # Estimate the absolute angles respective to Earth axes 
+        # Estimate the absolute angles respective to Earth axes
         self.estimate_absolute_angles()
 
     def filter_noises(self, arr, threshold):
@@ -144,7 +147,7 @@ class MotionTracker:
         """
         num_dim = 3
 
-        # z-vector representation of earth axes respective to sensor axes 
+        # z-vector representation of earth axes respective to sensor axes
         q_s2e = self.q.inv_unit()
         qz_e = Quaternion(0, 0, 0, 1) # z vector in earth axes
         qz_s = q_s2e*qz_e*q_s2e.inv_unit()
@@ -228,7 +231,7 @@ class MotionTracker:
     @property
     def gyro(self):
         return self._gyro
-    
+
     @gyro.setter
     def gyro(self, gyro_in):
         self._gyro = gyro_in
@@ -244,7 +247,7 @@ class MotionTracker:
     @property
     def mag(self):
         return self._mag
-    
+
     @mag.setter
     def mag(self, mag_in):
         self._mag = mag_in

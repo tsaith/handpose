@@ -1,5 +1,5 @@
 import numpy as np
-from .madgwickahrs import MadgwickAHRS 
+from .madgwickahrs import MadgwickAHRS
 from .quaternion import Quaternion
 
 class SensorFusion:
@@ -26,17 +26,29 @@ class SensorFusion:
         self._beta = beta
         self._num_iter = num_iter
 
-    def update(self, gyro, accel, mag):
+    def update_imu(self, gyro, accel):
         """
-        Update of fusion.
+        Update of fusion with 6-axis IMU.
         """
 
         qs = []
         for i in range(self.num_iter):
-            self.fuse.update(gyro, accel, mag)
+            self.fuse.update_imu(gyro, accel)
             qs.append(self.fuse.quaternion)
-        
-        return qs     
+
+        return qs
+
+    def update_ahrs(self, gyro, accel, mag):
+        """
+        Update of fusion with 9-axis motion sensor.
+        """
+
+        qs = []
+        for i in range(self.num_iter):
+            self.fuse.update_ahrs(gyro, accel, mag)
+            qs.append(self.fuse.quaternion)
+
+        return qs
 
 
     @property

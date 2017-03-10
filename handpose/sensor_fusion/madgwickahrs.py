@@ -42,7 +42,7 @@ class MadgwickAHRS:
         if beta is not None:
             self.beta = beta
 
-    def update(self, gyroscope, accelerometer, magnetometer):
+    def update_ahrs(self, gyroscope, accelerometer, magnetometer):
         """
         Perform one update step with data from a AHRS sensor array
         :param gyroscope: A three-element array containing the gyroscope data in radians per second.
