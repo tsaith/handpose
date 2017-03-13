@@ -4,50 +4,70 @@ import os
 from ..utils import csv2numpy, list_files
 
 def accel_abs(accel):
-    
+
     ax = accel[:,0]
     ay = accel[:,1]
     az = accel[:,2]
-    
+
     a_abs = np.sqrt(ax*ax + ay*ay + az*az)
-    
+
     return a_abs
-    
-def find_seg_indexes(data, size=None, noise_ratio=5.0, back = 50):
+
+def find_seg_indexes(data, size=None, peak_ratio=0.25, verbose=0):
     """
     Find the indexes of segmentations.
+
+    data: array
+        1D array.
+
+    peak_ratio: float
+        Signal-to-noise ratio.
+
     """
-    
-    num_samples = len(data)
-    
-    num_noise = 200 # Nummbet of noise data
-    
-    noise_level = np.mean(data[:num_noise])
-    
-    threshold = noise_level * noise_ratio
-    
+
+    num_samples = len(data) # Number of samples
+
+    # Move back to set the left bound.
+    back = int(size/3)
+
+    # When static, the magnitude of acceleration is one
+    mag_static = 1.0
+
+    # Absolute difference
+    diff_abs = np.abs(data - mag_static)
+
+    # Max. peak value
+    peak_abs = np.max(diff_abs)
+
+    if verbose > 0:
+        print("---- abs. peak = {}".format(peak_abs))
+
+    # Determining the threshold
+    threshold = peak_abs * peak_ratio
+    if verbose > 0:
+        print("---- threshod = {}".format(threshold))
+
     # Start and end index of the segmentations
     ia_indexes = []
     iz_indexes = []
-    
-    scan_start = num_noise
+
+    scan_start = back
     scan_end = num_samples - int(0.5*size)
     i = scan_start
     while i < scan_end:
-        
         i += 1
-        if data[i] > threshold:
+        if diff_abs[i] > threshold:
             ia_indexes.append(i-back)
             i += size
-    
-    for e in ia_indexes:
-        iz_indexes.append(e + size)         
-    
-    return ia_indexes, iz_indexes
-    
 
-def get_train_data(data_raw, ia_indexes, iz_indexes):     
-    
+    for e in ia_indexes:
+        iz_indexes.append(e + size)
+
+    return ia_indexes, iz_indexes
+
+
+def get_train_data(data_raw, ia_indexes, iz_indexes):
+
     num_samples = len(ia_indexes)
     size = iz_indexes[0] - ia_indexes[0]
     data = np.zeros((num_samples, size))
@@ -61,7 +81,7 @@ def get_train_data(data_raw, ia_indexes, iz_indexes):
 
 
 def vib_file_factory(dir_path, keyword="_rec_",
-                     seg_size=None, noise_ratio=1.5, back=100, verbose=0):
+                     seg_size=None, peak_ratio=0.25, verbose=0):
     """
     File factory of vibrational data.
     """
@@ -71,12 +91,17 @@ def vib_file_factory(dir_path, keyword="_rec_",
 
     dir_out = "output"
 
-    print("Start to generate files under the {} direcory.".format(dir_out))
+    # Dictionary of segmentations
+    # {file_name: seg_counts}
+    seg_dict = {}
+
+    print("Start to generate files under the {} direcory...".format(dir_out))
     for f in files:
 
         # Load raw data
         fpath = os.path.join(dir_path, f)
-        print("...loading {}".format(fpath))
+        if verbose > 0:
+            print("...loading {}".format(fpath))
         accel = csv2numpy(fpath, start_col=1)
 
         # Find the indexes of segmentations
@@ -84,13 +109,13 @@ def vib_file_factory(dir_path, keyword="_rec_",
         ay = accel[:,1]
         az = accel[:,2]
         a_abs = np.sqrt(ax*ax + ay*ay + az*az)
-        ia_indexes, iz_indexes = find_seg_indexes(a_abs, size=seg_size, noise_ratio=noise_ratio, back=back)
+        ia_indexes, iz_indexes = find_seg_indexes(a_abs, size=seg_size,
+            peak_ratio=peak_ratio, verbose=verbose)
 
         # Prepare the output data
         num_rows = len(ia_indexes)
         num_cols = 3*seg_size
         data = np.zeros((num_rows, num_cols))
-
 
         i = 0
         for ia, iz in zip (ia_indexes, iz_indexes):
@@ -109,6 +134,9 @@ def vib_file_factory(dir_path, keyword="_rec_",
             print("Create file: {}".format(fname_out))
             print("data shape: {}".format(data.shape))
 
+        # Store segmentation information
+        seg_dict[f] = num_rows
+
     print("There are {} files generated.".format(num_files))
 
-    return 0
+    return seg_dict
