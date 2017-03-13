@@ -60,7 +60,7 @@ def find_class_files(class_label, dir_path):
     return filenames       
 
 def load_class_data(candidates, dir_path, 
-    num_cols=None, equal_weight=True, start_col=0, verbose=0):
+    num_cols=None, equal_weight=True, start_col=0, header='infer', verbose=0):
     """
     Load the training data for classification.
 
@@ -99,7 +99,7 @@ def load_class_data(candidates, dir_path,
             file_path = "{}/{}".format(dir_path, filename)
             if verbose > 0:
                 print("Reading the file: {}".format(file_path))
-            arr = csv2numpy(file_path, start_col=start_col, header=None)
+            arr = csv2numpy(file_path, start_col=start_col, header=header)
             arr = arr[:, start_col:] # Remove the timestamp
             if verbose > 0:
                 print("The shape of data is {}".format(arr.shape))
