@@ -140,3 +140,42 @@ def vib_file_factory(dir_path, keyword="_rec_",
     print("There are {} files generated.".format(num_files))
 
     return seg_dict
+
+def to_magnitude(data):
+    """
+    Convert to magnitude from 3D components.
+    """
+
+    num_dims = 3
+    rows, cols_in = data.shape
+    cols = cols_in / num_dims
+
+    arr = np.zeros((rows, cols, num_dims))
+    out = np.zeros((rows, cols))
+
+    for i in range(rows):
+        for k in range(num_dims):
+            ia = k*cols
+            iz = ia + cols
+            arr[i, :, k] = data[i, ia:iz]
+
+        out[i,:] = np.sqrt(arr[i, :, 0]**2 + arr[i, :, 1]**2 + arr[i, :, 2]**2)
+
+    return out
+
+def roll_axis(data, shift, axis=None):
+    """
+    Roll the data about the specific axis.
+    """
+    num_samples = len(data)
+    num_dims = 3
+    fs = num_samples / num_dims
+
+    out = data.copy()
+
+    for d in range(num_dims):
+        ia = d*fs
+        iz = ia + fs
+        out[:, ia:iz] = np.roll(data[:, ia:iz], shift, axis=axis)
+
+    return out
