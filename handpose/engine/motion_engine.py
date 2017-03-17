@@ -1,3 +1,4 @@
+import numpy as np
 import keras
 import pickle
 
@@ -8,9 +9,77 @@ if keras.backend.backend() == 'tensorflow':
     import tensorflow as tf
     tf.python.control_flow_ops = tf
 
-class VibEngine:
+
+def get_motion_class(theta, phi):
     """
-    Vibrational Gesture engine.
+    Return the motion class.
+
+    Parameters
+    ----------
+    theta: array-like
+        Poloidal angles.
+    phi: array-like
+        Toroidal angles.
+
+    Returns
+    -------
+    motion_class: int
+        Motion class, where
+        0, 1, 2, 3, 4 -> static, up, down, left, right
+    """
+
+    angle_c = np.pi / 18.0 # Critical angle
+
+    theta_a = theta[0]
+    theta_z = theta[-1:][0]
+    phi_a = phi[0]
+    phi_z = phi[-1:][0]
+
+    motion_class = 0 # static as default
+
+    is_vertical = False
+    is_horizontal = False
+
+    if np.abs(theta_z - theta_a) > angle_c: # Vertical
+        is_vertical = True
+        if theta_z > theta_a: # Down
+            motion_class = 2
+        else: # Up
+            motion_class = 1
+
+    else: # Not vertical
+
+        if np.abs(phi_z - phi_a) > angle_c: # Horizontal
+            is_horizontal = True
+            if phi_z > phi_a: # left
+                motion_class = 3
+            else: # right
+                motion_class = 4
+
+    return motion_class
+
+
+def predict_classes_analytic(X):
+
+    num_samples, num_features = X.shape
+
+    num_half = num_features / 2
+
+    classes = []
+
+    for i in range(num_samples):
+        theta = X[i, :num_half]
+        phi = X[i, num_half:]
+        
+        # Determine and store the motion class
+        classes.append(get_motion_class(theta, phi))
+
+    return classes
+
+
+class MotionEngine:
+    """
+    Motion engine.
     """
 
     def __init__(self, config):
@@ -29,10 +98,10 @@ class VibEngine:
         self.model_trained = None
 
         # Load the scaler
-        self.load_scaler()
+        #self.load_scaler()
 
         # Load the trained model
-        self.load_model()
+        #self.load_model()
 
     def set_config(self, config):
         """
@@ -98,8 +167,8 @@ class VibEngine:
         X: array-like
             Input features.
         """
-
-        return self.model_trained.predict_classes(x, batch_size=batch_size, verbose=verbose)
+        #return self.model_trained.predict_classes(x, batch_size=batch_size, verbose=verbose)
+        return predict_classes_analytic(x)
 
 
 
