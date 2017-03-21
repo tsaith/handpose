@@ -1,5 +1,6 @@
 import keras
 import pickle
+from handpose.vib import to_spectrum
 
 
 # A walk-around to avoid the bug ('module' object has no attribute 'control_flow_ops')\n",
@@ -88,6 +89,23 @@ class VibEngine:
 
         return self.model_trained
 
+    def preprocess(self, X):
+        """
+        Preprocess the input features
+
+        Parameters
+        ----------
+        scaler_path: str
+            The scaler path.
+        """
+
+        # Convert to spectrum
+        out = to_spectrum(X, keep_dc=False)
+
+        # Scaling
+        out = self.scaler.transform(out)
+
+        return out
 
     def predict_classes(self, x, batch_size=256, verbose=0):
         """

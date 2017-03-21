@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 import os
-from ..utils import csv2numpy, list_files
+from ..utils import csv2numpy, list_files, fourier_spectrum
 
 def accel_abs(accel):
 
@@ -179,3 +179,27 @@ def roll_axis(data, shift, axis=None):
         out[:, ia:iz] = np.roll(data[:, ia:iz], shift, axis=axis)
 
     return out
+
+def to_spectrum(data, keep_dc=True):
+
+    num_dims = 3
+    num_samples, num_features = data.shape
+    size = num_features / num_dims
+    spec = np.zeros((num_samples, num_dims, size/2))
+    out = [[] for i in range(num_samples)]
+    dt = 1.0 # Time duration in seconds
+
+    for s in range(num_samples):
+        for d in range(num_dims):
+            ia = d*size
+            iz = ia+size
+            spec[s, d, :], _ = fourier_spectrum(data[s, ia:iz], dt, spectrum_type='power')
+
+            # Filter the DC component
+            if not keep_dc:
+                spec[s, d, 0] = 0.0
+
+        out[s] = np.hstack(spec[s])
+
+    return np.array(out)
+

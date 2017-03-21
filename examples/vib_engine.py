@@ -23,13 +23,17 @@ num_features = fs*num_dims
 
 X_test = np.zeros(num_features)
 
-gesture_exists = has_gesture(X_test)
+# Detect if there is a gesture
+gesture_existed = has_gesture(X_test)
 
+# Preprocess the features
 X_test = X_test[np.newaxis,:]
+X_test = engine.preprocess(X_test)
 
+# Make prediction
 [proba_pred] = engine.predict_proba(X_test)
 
-print("Has a gesture? {}".format(gesture_exists))
+print("Has a gesture? {}".format(gesture_existed))
 print("Probability information:")
 for c in range(len(proba_pred)):
     print("    class: {}, proba: {}".format(c, proba_pred[c]))
