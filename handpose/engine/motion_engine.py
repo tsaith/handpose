@@ -70,7 +70,7 @@ def predict_classes_analytic(X):
     for i in range(num_samples):
         theta = X[i, :num_half]
         phi = X[i, num_half:]
-        
+
         # Determine and store the motion class
         classes.append(get_motion_class(theta, phi))
 
@@ -193,6 +193,20 @@ class MotionEngine:
             Input features.
         """
         return self.model_trained.predict(x, batch_size=batch_size, verbose=verbose)
+
+    def get_MGclass(self, motion_class, vib_class):
+        """
+        Return the class of motion gesture.
+
+        motion_class: int
+            Motion trajectory class.
+            0, 1, 2, 3, 4 -> static, up, down, left, right
+        vib_class: int
+            Vibrational gesture class.
+            0, 1 -> snap, flick
+        """
+
+        return (motion_class+1)*(vib_class+1) - 1
 
     def diagnostic(self):
         """
