@@ -28,7 +28,7 @@ def get_motion_class(theta, phi):
         0, 1, 2, 3, 4 -> static, up, down, left, right
     """
 
-    angle_c = np.pi / 18.0 # Critical angle
+    angle_c = 3.0* np.pi/18.0 # Critical angle, 30 degree as default
 
     theta_a = theta[0]
     theta_z = theta[-1:][0]
