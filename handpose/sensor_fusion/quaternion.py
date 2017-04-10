@@ -19,7 +19,6 @@
 import numpy as np
 import numbers
 
-
 class Quaternion:
     """
     A simple class implementing basic quaternion arithmetic.

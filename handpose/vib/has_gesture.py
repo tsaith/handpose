@@ -14,7 +14,7 @@ def has_gesture(X):
     out : bool
         True when it has gesture else False.
     """
-    thresh = 0.8 # Threshold for gesture detection
+    thresh = 0.7 # Threshold for gesture detection
 
     num_dims = 3
     num_features = len(X)

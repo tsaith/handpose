@@ -57,7 +57,7 @@ class SensorFusion:
     
     @fuse.setter
     def fuse(self, fuse_in):
-        return self._fuse
+        self._fuse = fuse_in
 
     @property
     def dt(self):
@@ -71,6 +71,10 @@ class SensorFusion:
     def num_iter(self):
         return self._num_iter
     
+    @num_iter.setter
+    def num_iter(self, iters):
+        self._num_iter = iters
+
     @property
     def q(self): 
         return self.fuse.quaternion
