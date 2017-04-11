@@ -1,2 +1,2 @@
-from preprocess import *
-from has_gesture import has_gesture
+from .preprocess import *
+from .has_gesture import has_gesture

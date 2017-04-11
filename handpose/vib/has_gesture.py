@@ -14,7 +14,9 @@ def has_gesture(X):
     out : bool
         True when it has gesture else False.
     """
-    thresh = 0.7 # Threshold for gesture detection
+    thresh = 0.7 # Threshold for gesture detection (g)
+    noise_level = 0.2
+    bound_cells = 50 # Number of boundary cells
 
     num_dims = 3
     num_features = len(X)
@@ -29,4 +31,11 @@ def has_gesture(X):
     diff_abs = np.abs(mag - mag_static)
 
     out = True if np.max(diff_abs) > thresh else False
+
+    # Mean values of boundaries should be smaller than noise level
+    if np.mean(diff_abs[:bound_cells]) > noise_level:
+        out = False
+    if np.mean(diff_abs[-bound_cells:]) > noise_level:
+        out = False
+
     return out
