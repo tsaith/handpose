@@ -208,6 +208,10 @@ class MotionTracker:
     def q(self):
         return self.fusion.q
 
+    @q.setter
+    def q(self, q_in):
+        self.fusion.q = q_in
+
     @property
     def accel_th(self):
         return self._accel_th
