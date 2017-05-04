@@ -4,11 +4,10 @@ import pickle
 
 
 # A walk-around to avoid the bug ('module' object has no attribute 'control_flow_ops')\n",
-import keras
-if keras.backend.backend() == 'tensorflow':
-    import tensorflow as tf
-    tf.python.control_flow_ops = tf
-
+#import keras
+#if keras.backend.backend() == 'tensorflow':
+#    import tensorflow as tf
+#    tf.python.control_flow_ops = tf
 
 def get_motion_class(theta, phi):
     """
