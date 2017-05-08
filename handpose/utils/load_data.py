@@ -59,7 +59,7 @@ def find_class_files(class_label, dir_path):
 
     return filenames       
 
-def load_class_data(candidates, dir_path, 
+def load_class_data(candidates, dir_path,
     num_cols=None, equal_weight=True, start_col=0, header='infer', verbose=0):
     """
     Load the training data for classification.
@@ -145,4 +145,28 @@ def load_class_data(candidates, dir_path,
 
     return data, labels
 
+def count_label_instances(labels):
+    """
+    Count the number of label instances.
 
+    Parameters
+    ----------
+    labels: array
+        class labels.
+
+    Returns
+    -------
+    counts: array
+        Count of lable instances.
+    """
+    max_label = max(labels)
+    num_classes = max_label + 1
+    num_instances = len(labels)
+
+    counts = np.zeros(num_classes, dtype=np.int)
+
+    for i in range(num_instances):
+        index = labels[i]
+        counts[index] += 1
+
+    return counts
