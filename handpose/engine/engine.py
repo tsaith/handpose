@@ -1,6 +1,5 @@
 import keras
 import pickle
-from ..preprocessing import preprocess
 
 
 # A walk-around to avoid the bug ('module' object has no attribute 'control_flow_ops')\n",
@@ -89,9 +88,23 @@ class GestureEngine:
         self.model_trained = keras.models.load_model(model_path)
 
         return self.model_trained
-        
 
-    def predict_classes(self, x):
+    def preprocess(self, X):
+        """
+        Preprocess the input features
+
+        Parameters
+        ----------
+        scaler_path: str
+            The scaler path.
+        """
+
+        out = self.scaler.transform(X)
+
+        return out
+
+
+    def predict_classes(self, X):
         """
         Generate class predictions for the input samples.
 
@@ -101,18 +114,9 @@ class GestureEngine:
             Input features.
         """
 
-        X = x.copy()
-        # Preprocess
-        X = preprocess(X, shift_baseline=True, normalize=True)
-        X = self.scaler.transform(X)
+        return self.model_trained.predict_classes(X, batch_size=32, verbose=0)
 
-        # Make predictions 
-        y = self.model_trained.predict_classes(X, batch_size=32, verbose=0)
-
-        return y
-
-
-    def predict(self, x):
+    def predict(self, X):
         """
         Generates output predictions for the input samples.
 
@@ -121,9 +125,7 @@ class GestureEngine:
 	x: array-like
             Input features.
         """
-        y = self.model_trained.predict(x, batch_size=32, verbose=0)
-
-        return y
+        return self.model_trained.predict(X, batch_size=32, verbose=0)
 
     def diagnostic(self):
         """
