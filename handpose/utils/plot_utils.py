@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 
-  
+
 def plot_imu_data(data, xlabel="xlabel", ylabel="ylabel", title="title", legend=["", "", ""]):
     """
     Plot the IMU data.
@@ -36,6 +36,36 @@ def plot_imu_data(data, xlabel="xlabel", ylabel="ylabel", title="title", legend=
 
     return fig, axes 
 
+
+def make_imp_plots(data, num_measure):
+    # Make impedance plots: z0, theta0, dz and dtheta
+
+    z0 = data[0:num_measure]
+    theta0 = data[num_measure:2*num_measure]
+    dz = data[2*num_measure:3*num_measure]
+    dtheta = data[3*num_measure:4*num_measure]
+
+    x = np.arange(num_measure)
+
+    fig, axes = plt.subplots(nrows=2, ncols=2, sharex=True, figsize=(12, 6))
+
+    axes[0, 0].plot(x, z0)
+    axes[0, 0].set_xlabel("electrode index")
+    axes[0, 0].set_ylabel("z0")
+
+    axes[0, 1].plot(x, theta0)
+    axes[0, 1].set_xlabel("electrode index")
+    axes[0, 1].set_ylabel("theta0")
+
+    axes[1, 0].plot(x, dz)
+    axes[1, 0].set_xlabel("electrode index")
+    axes[1, 0].set_ylabel("dz")
+
+    axes[1, 1].plot(x, dtheta)
+    axes[1, 1].set_xlabel("electrode index")
+    axes[1, 1].set_ylabel("dtheta")
+
+    return fig, axes
 
 def plot_imp_x(imp, frame_index, frame_shift, title):
     """
