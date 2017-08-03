@@ -170,3 +170,4 @@ def count_label_instances(labels):
         counts[index] += 1
 
     return counts
+
