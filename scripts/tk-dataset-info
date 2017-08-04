@@ -1,0 +1,80 @@
+#!/usr/bin/python3
+
+"""
+Show the information of datasets
+"""
+
+import os
+import sys
+import glob
+import argparse
+
+def find_ids(path, id_prefix):
+    # Find out the ID of subjects
+    ids = []
+    path_pattern = "{}/*{}*.csv".format(path, id_prefix)
+    for full_path in glob.glob(path_pattern):
+        fname = os.path.basename(full_path)
+        fields = fname.split("_")
+        for field in fields:
+            if id_prefix in field:
+                ids.append(field.replace(id_prefix, ''))
+    ids = list(set(ids))
+    return ids
+
+# Construct the argument parser and parse the arguments
+ap = argparse.ArgumentParser()
+ap.add_argument("-r", "--root", default=None, help="Root path to the datasets")
+args = vars(ap.parse_args())
+
+# Root path
+if args['root'] is None:
+    root_path = "~/projects/handpose/data/vib"
+else:
+    root_path = args['root']
+root_path = os.path.expanduser(root_path)
+
+# ID prefix
+id_prefix = "sis"
+
+# Employment ID of Subjects
+train_ids = []
+test_ids = []
+
+# Directory names of training and testing datasets
+train_dir = "train"
+test_dir = "test"
+
+# Directory paths
+train_path = "{}/{}".format(root_path, train_dir)
+test_path = "{}/{}".format(root_path, test_dir)
+
+print("Start to arrange the datasets...")
+print("training path is {}".format(train_path))
+print("testing path is {}".format(test_path))
+
+# Check the paths
+if not os.path.exists(train_path):
+    print("There is no training directory: {}".format(train_path))
+    print("Run stops.")
+    sys.exit(0)
+
+if not os.path.exists(test_path):
+    print("There is no testing directory: {}".format(test_path))
+    print("Run stops.")
+    sys.exit(0)
+
+# Search the ID of subjects
+train_ids = find_ids(train_path, id_prefix)
+test_ids = find_ids(test_path, id_prefix)
+
+num_train_subjects = len(train_ids)
+num_test_subjects = len(test_ids)
+
+print("Info. of subjects:")
+print("    train no. is {}".format(num_train_subjects))
+print("    test  no. is {}".format(num_test_subjects))
+
+
+
+
