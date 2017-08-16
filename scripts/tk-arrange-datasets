@@ -7,6 +7,9 @@ Initailize a repository on Bitbucket
 import os
 import sys
 import argparse
+import platform
+
+system = platform.system()
 
 # Construct the argument parser and parse the arguments
 ap = argparse.ArgumentParser()
@@ -25,20 +28,26 @@ test_keywords = ['3949', '4159', '4574', '4583', '4802', '4828',
                  '10058', '10067', '10074', '10077', '10079',
                  '10088', '10093']
 
-# Root path
-if args['root'] is None:
-    root_path = "~/projects/handpose/data/vib"
-else:
-    root_path = args['root']
-root_path = os.path.expanduser(root_path)
-
 # Directory names of training and testing datasets
 train_dir = "train"
 test_dir = "test"
 
-# Directory paths
-train_path = "{}/{}".format(root_path, train_dir)
-test_path = "{}/{}".format(root_path, test_dir)
+# Root path
+if (system == 'Linux'):
+    if args['root'] is None:
+        root_path = "~/projects/handpose/data/vib"
+    else:
+        root_path = args['root']
+    root_path = os.path.expanduser(root_path)
+    # Directory paths
+    train_path = "{}/{}".format(root_path, train_dir)
+    test_path = "{}/{}".format(root_path, test_dir)
+elif (system == 'Windows'):
+    root_path = "c:\\data\\vib"
+    root_path = os.path.expanduser(root_path)
+    # Directory paths
+    train_path = "{}\\{}".format(root_path, train_dir)
+    test_path = "{}\\{}".format(root_path, test_dir)
 
 print("Start to arrange the datasets...")
 print("training path is {}".format(train_path))
@@ -57,13 +66,19 @@ if not os.path.exists(test_path):
 
 # Move files under testing directory to training directory
 for kw in train_keywords:
-    cmd = "mv {}/*{}* {}/ 2>/dev/null".format(test_path, kw, train_path)
-    #print(cmd)
+    if (system == 'Linux'):
+        cmd = "mv {}/*{}* {}/ 2>/dev/null".format(test_path, kw, train_path)
+    elif (system == 'Windows'):
+        cmd = "MOVE {}\\*{}* {}".format(root_path, kw, train_path)
+    print(cmd)
     os.system(cmd)
 
 # Move files under training directory to testing directory
 for kw in test_keywords:
-    cmd = "mv -f {}/*{}* {}/ 2>/dev/null".format(train_path, kw, test_path)
+    if (system == 'Linux'):
+        cmd = "mv -f {}/*{}* {}/ 2>/dev/null".format(train_path, kw, test_path)
+    elif (system == 'Windows'):
+        cmd = "MOVE {}\\*{}* {}".format(root_path, kw, test_path)
     #print(cmd)
     os.system(cmd)
 
