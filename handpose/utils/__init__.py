@@ -1,5 +1,6 @@
 from __future__ import absolute_import
 
+from .model import test_model
 from .plot_utils import *
 from .load_data import *
 from .numerical import *
