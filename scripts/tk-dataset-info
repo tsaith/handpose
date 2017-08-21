@@ -8,6 +8,9 @@ import os
 import sys
 import glob
 import argparse
+import platform
+
+system = platform.system()
 
 def find_ids(path, id_prefix):
     # Find out the ID of subjects
@@ -22,17 +25,49 @@ def find_ids(path, id_prefix):
     ids = list(set(ids))
     return ids
 
+gestureList = ['snap', 'pinch', 'dpinch']
+
+def find_gestureInst(path):
+    instance = []
+    for gesture in gestureList:
+        numline = 0
+        path_pattern = "{}/*{}*.csv".format(path, gesture)
+        for full_path in glob.glob(path_pattern):
+            fname = os.path.basename(full_path)
+            fields = fname.split("_")
+            for field in fields:
+                if (cmp(gesture, field) == 0):
+                    fileHandle = open(full_path, 'r')
+                    numline += len(fileHandle.readlines())
+                    fileHandle.close()
+        instance.append(numline)
+    return instance
+
 # Construct the argument parser and parse the arguments
 ap = argparse.ArgumentParser()
 ap.add_argument("-r", "--root", default=None, help="Root path to the datasets")
 args = vars(ap.parse_args())
 
+# Directory names of training and testing datasets
+train_dir = "train"
+test_dir = "test"
+
 # Root path
-if args['root'] is None:
-    root_path = "~/projects/handpose/data/vib"
-else:
-    root_path = args['root']
-root_path = os.path.expanduser(root_path)
+if (system == 'Linux'):
+    if args['root'] is None:
+        root_path = "~/projects/handpose/data/vib"
+    else:
+        root_path = args['root']
+    root_path = os.path.expanduser(root_path)
+    # Directory paths
+    train_path = "{}/{}".format(root_path, train_dir)
+    test_path = "{}/{}".format(root_path, test_dir)
+elif (system == 'Windows'):
+    root_path = "c:\\data\\vib"
+    root_path = os.path.expanduser(root_path)
+    # Directory paths
+    train_path = "{}\\{}".format(root_path, train_dir)
+    test_path = "{}\\{}".format(root_path, test_dir)
 
 # ID prefix
 id_prefix = "sis"
@@ -40,14 +75,9 @@ id_prefix = "sis"
 # Employment ID of Subjects
 train_ids = []
 test_ids = []
-
-# Directory names of training and testing datasets
-train_dir = "train"
-test_dir = "test"
-
-# Directory paths
-train_path = "{}/{}".format(root_path, train_dir)
-test_path = "{}/{}".format(root_path, test_dir)
+# gesture instance of Subjects
+train_inst = []
+test_inst = []
 
 print("Start to arrange the datasets...")
 print("training path is {}".format(train_path))
@@ -67,14 +97,21 @@ if not os.path.exists(test_path):
 # Search the ID of subjects
 train_ids = find_ids(train_path, id_prefix)
 test_ids = find_ids(test_path, id_prefix)
-
 num_train_subjects = len(train_ids)
 num_test_subjects = len(test_ids)
 
+# Search gesture instance of subjects
+train_inst = find_gestureInst(train_path)
+test_inst = find_gestureInst(test_path)
+
 print("Info. of subjects:")
-print("    train no. is {}".format(num_train_subjects))
-print("    test  no. is {}".format(num_test_subjects))
-
-
-
-
+print("    train:")
+print("        no.\t=\t{}".format(num_train_subjects))
+print("        {}\t=\t{}".format(gestureList[0], train_inst[0]))
+print("        {}\t=\t{}".format(gestureList[1], train_inst[1]))
+print("        {}\t=\t{}".format(gestureList[2], train_inst[2]))
+print("    test".format(num_test_subjects))
+print("        no.\t=\t{}".format(num_test_subjects))
+print("        {}\t=\t{}".format(gestureList[0], test_inst[0]))
+print("        {}\t=\t{}".format(gestureList[1], test_inst[1]))
+print("        {}\t=\t{}".format(gestureList[2], test_inst[2]))
