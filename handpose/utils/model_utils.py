@@ -2,7 +2,7 @@ import tensorflow as tf
 import tensorlayer as tl
 
 
-def test_model(sess, network, X_test, Y_test, x_, y_, cost=None, acc=None, batch_size=None):
+def model_test(sess, network, X_test, Y_test, x_, y_, cost=None, acc=None, batch_size=None):
     """
     Test the trained model.
     """
