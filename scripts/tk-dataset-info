@@ -8,9 +8,6 @@ import os
 import sys
 import glob
 import argparse
-import platform
-
-system = platform.system()
 
 def find_ids(path, id_prefix):
     # Find out the ID of subjects
@@ -53,21 +50,15 @@ train_dir = "train"
 test_dir = "test"
 
 # Root path
-if (system == 'Linux'):
-    if args['root'] is None:
-        root_path = "~/projects/handpose/data/vib"
-    else:
-        root_path = args['root']
-    root_path = os.path.expanduser(root_path)
-    # Directory paths
-    train_path = "{}/{}".format(root_path, train_dir)
-    test_path = "{}/{}".format(root_path, test_dir)
-elif (system == 'Windows'):
-    root_path = "c:\\data\\vib"
-    root_path = os.path.expanduser(root_path)
-    # Directory paths
-    train_path = "{}\\{}".format(root_path, train_dir)
-    test_path = "{}\\{}".format(root_path, test_dir)
+if args['root'] is None:
+    root_path = "~/projects/handpose/data/vib"
+else:
+    root_path = args['root']
+root_path = os.path.expanduser(root_path)
+
+# Directory paths
+train_path = "{}/{}".format(root_path, train_dir)
+test_path = "{}/{}".format(root_path, test_dir)
 
 # ID prefix
 id_prefix = "sis"
