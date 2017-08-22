@@ -36,7 +36,7 @@ def find_gestureInst(path):
             fname = os.path.basename(full_path)
             fields = fname.split("_")
             for field in fields:
-                if (cmp(gesture, field) == 0):
+                if (gesture == field):
                     fileHandle = open(full_path, 'r')
                     numline += len(fileHandle.readlines())
                     fileHandle.close()
