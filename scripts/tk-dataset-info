@@ -22,23 +22,22 @@ def find_ids(path, id_prefix):
     ids = list(set(ids))
     return ids
 
-gestureList = ['snap', 'pinch', 'dpinch']
-
 def find_gestureInst(path):
-    instance = []
-    for gesture in gestureList:
-        numline = 0
-        path_pattern = "{}/*{}*.csv".format(path, gesture)
-        for full_path in glob.glob(path_pattern):
-            fname = os.path.basename(full_path)
-            fields = fname.split("_")
-            for field in fields:
-                if (gesture == field):
-                    fileHandle = open(full_path, 'r')
-                    numline += len(fileHandle.readlines())
-                    fileHandle.close()
-        instance.append(numline)
-    return instance
+    instanceList = []
+    gestureList = []
+    path_pattern = "{}/*.csv".format(path)
+    for full_path in glob.glob(path_pattern):
+        fname = os.path.basename(full_path)
+        fields = fname.split("_")
+        if ((fields[0] in gestureList) == 0):
+            gestureList.append(fields[0])
+            instanceList.append(0)
+        gestureIdx = gestureList.index(fields[0])
+        fileHandle = open(full_path, 'r')
+        instanceList[gestureIdx] += len(fileHandle.readlines())
+        fileHandle.close()
+
+    return gestureList, instanceList
 
 # Construct the argument parser and parse the arguments
 ap = argparse.ArgumentParser()
@@ -92,17 +91,15 @@ num_train_subjects = len(train_ids)
 num_test_subjects = len(test_ids)
 
 # Search gesture instance of subjects
-train_inst = find_gestureInst(train_path)
-test_inst = find_gestureInst(test_path)
+gestListTrain, instListTrain = find_gestureInst(train_path)
+gestListTest, instListTest  = find_gestureInst(test_path)
 
 print("Info. of subjects:")
 print("    train:")
 print("        no.\t=\t{}".format(num_train_subjects))
-print("        {}\t=\t{}".format(gestureList[0], train_inst[0]))
-print("        {}\t=\t{}".format(gestureList[1], train_inst[1]))
-print("        {}\t=\t{}".format(gestureList[2], train_inst[2]))
+for i in range(len(gestListTrain)):
+    print("        {}\t=\t{}".format(gestListTrain[i], instListTrain[i]))
 print("    test".format(num_test_subjects))
 print("        no.\t=\t{}".format(num_test_subjects))
-print("        {}\t=\t{}".format(gestureList[0], test_inst[0]))
-print("        {}\t=\t{}".format(gestureList[1], test_inst[1]))
-print("        {}\t=\t{}".format(gestureList[2], test_inst[2]))
+for i in range(len(gestListTest)):
+    print("        {}\t=\t{}".format(gestListTrain[i], instListTrain[i]))
