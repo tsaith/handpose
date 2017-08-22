@@ -17,12 +17,6 @@ ap.add_argument("-r", "--root", default=None, help="Root path to the datasets")
 args = vars(ap.parse_args())
 
 # keywords
-train_keywords = ['1471', '1540', '3103', '4156', '4203',
-                  '4733', '4751', '4878', '4924', '4936',
-                  '4956', '10038', '10044', '10053', '10062',
-                  '10069', '10075', '10078', '10083', '10084',
-                  '10085', '10089', '10090', '10091']
-
 test_keywords = ['3949', '4159', '4574', '4583', '4802',
                  '4828', '4877', '4909', '4946', '4987',
                  '10003', '10007', '10018', '10024', '10039',
@@ -65,15 +59,6 @@ if not os.path.exists(test_path):
     print("Run stops.")
     sys.exit(0)
 
-# Move files under testing directory to training directory
-for kw in train_keywords:
-    if (system == 'Linux'):
-        cmd = "mv {}/*{}* {}/ 2>/dev/null".format(test_path, kw, train_path)
-    elif (system == 'Windows'):
-        cmd = "MOVE {}\\*{}* {}".format(root_path, kw, train_path)
-    #print(cmd)
-    os.system(cmd)
-
 # Move files under training directory to testing directory
 for kw in test_keywords:
     if (system == 'Linux'):
@@ -82,7 +67,6 @@ for kw in test_keywords:
         cmd = "MOVE {}\\*{}* {}".format(root_path, kw, test_path)
     #print(cmd)
     os.system(cmd)
-
 print("done.")
 
 
