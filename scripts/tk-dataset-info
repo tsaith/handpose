@@ -96,10 +96,10 @@ gestListTest, instListTest  = find_gestureInst(test_path)
 
 print("Info. of subjects:")
 print("    train:")
-print("        no.\t=\t{}".format(num_train_subjects))
+print("        subjects=\t{}".format(num_train_subjects))
 for i in range(len(gestListTrain)):
     print("        {}\t=\t{}".format(gestListTrain[i], instListTrain[i]))
 print("    test".format(num_test_subjects))
-print("        no.\t=\t{}".format(num_test_subjects))
+print("        subjects=\t{}".format(num_test_subjects))
 for i in range(len(gestListTest)):
-    print("        {}\t=\t{}".format(gestListTrain[i], instListTrain[i]))
+    print("        {}\t=\t{}".format(gestListTest[i], instListTest[i]))
