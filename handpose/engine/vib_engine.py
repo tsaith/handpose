@@ -25,9 +25,9 @@ class VibEngine:
             pre-processing and post-processing.
 
         """
-        self.config = config
-        self.scaler = None
-        self.model_trained = None
+        self._config = config
+        self._scaler = None
+        self._model_trained = None
 
         # Load the scaler
         self.load_scaler()
@@ -35,25 +35,29 @@ class VibEngine:
         # Load the trained model
         self.load_model()
 
-    def set_config(self, config):
-        """
-        Set the configuration.
-
-        Parameters
-        ----------
-        config: object
-            Configuration object.
-
-        """
-        self.config = config
-
-
     @property
     def config(self):
-        """
-        Return the configuration.
-        """
-        return self.config
+        return self._config
+
+    @config.setter
+    def config(self, val):
+        self._config = val
+
+    @property
+    def scaler(self):
+        return self._scaler
+
+    @scaler.setter
+    def scaler(self, val):
+        self._scaler = val
+
+    @property
+    def model_trained(self):
+        return self._model_trained
+
+    @model_trained.setter
+    def model_trained(self, val):
+        self._model_trained= val
 
     def load_scaler(self, scaler_path=None):
         """

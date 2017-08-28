@@ -30,7 +30,7 @@ def fourier_spectrum(y, dt, spectrum_type='power'):
     """
     
     num_samples = len(y)
-    num_half = num_samples / 2
+    num_half = int(num_samples / 2)
     
     Y = np.fft.fft(y) # FFT
     Y /= num_samples  # Normalized
