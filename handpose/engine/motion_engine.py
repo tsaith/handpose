@@ -62,7 +62,7 @@ def predict_classes_analytic(X):
 
     num_samples, num_features = X.shape
 
-    num_half = num_features / 2
+    num_half = int(num_features / 2)
 
     classes = []
 
@@ -92,27 +92,33 @@ class MotionEngine:
             pre-processing and post-processing.
 
         """
-        self.config = config
-        self.scaler = None
-        self.model_trained = None
+        self._config = config
+        self._scaler = None
+        self._model_trained = None
 
-        # Load the scaler
-        #self.load_scaler()
+    @property
+    def config(self):
+        return self._config
 
-        # Load the trained model
-        #self.load_model()
+    @config.setter
+    def config(self, val):
+        self._config = val
 
-    def set_config(self, config):
-        """
-        Set the configuration.
+    @property
+    def scaler(self):
+        return self._scaler
 
-        Parameters
-        ----------
-        config: object
-            Configuration object.
+    @scaler.setter
+    def scaler(self, val):
+        self._scaler = val
 
-        """
-        self.config = config
+    @property
+    def model_trained(self):
+        return self._model_trained
+
+    @model_trained.setter
+    def model_trained(self, val):
+        self._model_trained= val
 
 
     @property
