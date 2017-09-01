@@ -6,14 +6,16 @@ import tensorlayer as tl
 import tensorflow.contrib.keras.api.keras as keras
 import pickle
 from handpose.vib import to_spectrum
-#from handpose.vib import to_spectrum, build_network
 
 
-# A walk-around to avoid the bug ('module' object has no attribute 'control_flow_ops')\n",
-#import keras
-#if keras.backend.backend() == 'tensorflow':
-#    import tensorflow as tf
-#    tf.python.control_flow_ops = tf
+def normalize(data, to='max'):
+
+    num_samples, num_features = data.shape
+
+    for i in range(num_samples):
+        data[i,:] = data[i,:] / max(data[i,:])
+
+    return data
 
 class VibEngine:
     """
@@ -147,8 +149,12 @@ class VibEngine:
         # Convert to spectrum
         out = to_spectrum(X, keep_dc=False)
 
-        # Scaling
-        out = self.scaler.transform(out)
+        # Normalization
+        out = normalize(out)
+
+        # Add the channel
+        if out.ndim < 3:
+            out = np.expand_dims(out, axis=2)
 
         return out
 

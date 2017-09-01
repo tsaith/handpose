@@ -26,7 +26,7 @@ fs = 700
 num_dims = 3 
 num_features = fs*num_dims
 
-X_test = np.zeros(num_features)
+X_test = np.ones(num_features)
 
 # Detect if there is a gesture
 gesture_existed = has_gesture(X_test)
@@ -34,7 +34,6 @@ gesture_existed = has_gesture(X_test)
 # Preprocess the features
 X_test = np.expand_dims(X_test, axis=0)
 X_test = engine.preprocess(X_test)
-X_test = np.expand_dims(X_test, axis=2)
 
 # Make prediction
 y_pred = engine.predict_classes(X_test)
