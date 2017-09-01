@@ -184,8 +184,8 @@ def to_spectrum(data, keep_dc=True):
 
     num_dims = 3
     num_samples, num_features = data.shape
-    size = num_features / num_dims
-    spec = np.zeros((num_samples, num_dims, size/2))
+    size = int(num_features / num_dims)
+    spec = np.zeros((num_samples, num_dims, int(size/2)))
     out = [[] for i in range(num_samples)]
     dt = 1.0 # Time duration in seconds
 

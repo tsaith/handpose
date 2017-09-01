@@ -1,24 +1,29 @@
 import numpy as np
 from handpose.vib import has_gesture
 from handpose.engine import EngineConfig, VibEngine
+from handpose.utils import set_cuda_visible_devices
+
+# Device configuration
+set_cuda_visible_devices("") # CPU only
 
 # Model path
 dir_path ="../data/vib/models"
+#dir_path ="../../notebooks/vib/models"
 scaler_file = 'scaler.dat'
-model_file = 'mlp_model.hdf'
+model_file = 'trained_model.meta'
 
 scaler_path = "{}/{}".format(dir_path, scaler_file)
 model_path = "{}/{}".format(dir_path, model_file)
 
 # Initialize the gesture engine
 config = EngineConfig()
-config.set_scaler_path(scaler_path)
-config.set_model_path(model_path)
+config.scaler_path = scaler_path
+config.model_path = model_path
 engine = VibEngine(config)
 
 # Testing
-fs = 700
-num_dims = 3
+fs = 700 
+num_dims = 3 
 num_features = fs*num_dims
 
 X_test = np.zeros(num_features)
@@ -27,13 +32,16 @@ X_test = np.zeros(num_features)
 gesture_existed = has_gesture(X_test)
 
 # Preprocess the features
-X_test = X_test[np.newaxis,:]
+X_test = np.expand_dims(X_test, axis=0)
 X_test = engine.preprocess(X_test)
+X_test = np.expand_dims(X_test, axis=2)
 
 # Make prediction
-[proba_pred] = engine.predict_proba(X_test)
+y_pred = engine.predict_classes(X_test)
+proba_pred = engine.predict_proba(X_test)
 
 print("Has a gesture? {}".format(gesture_existed))
-print("Probability information:")
-for c in range(len(proba_pred)):
-    print("    class: {}, proba: {}".format(c, proba_pred[c]))
+
+print("Predictions:")
+for i in range(len(proba_pred)):
+        print("    instance id: {}, class: {}, proba: {}".format(i+1, y_pred[i], proba_pred[i]))

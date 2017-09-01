@@ -20,7 +20,7 @@ def has_gesture(X):
 
     num_dims = 3
     num_features = len(X)
-    size = num_features / num_dims
+    size = int(num_features / num_dims)
 
     ax = X[:size]
     ay = X[size:2*size]
