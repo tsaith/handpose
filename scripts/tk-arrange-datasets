@@ -21,6 +21,7 @@ test_keywords = ['3949', '4159', '4574', '4583', '4802',
                  '10079', '10088', '10082', '10093',]
 
 # Directory names of training and testing datasets
+src_dir = "pool"
 train_dir = "train"
 test_dir = "test"
 
@@ -32,29 +33,43 @@ else:
 root_path = os.path.expanduser(root_path)
 
 # Directory paths
+src_path = "{}/{}".format(root_path, src_dir)
 train_path = "{}/{}".format(root_path, train_dir)
 test_path = "{}/{}".format(root_path, test_dir)
 
 print("Start to arrange the datasets...")
+print("source path is {}".format(src_path))
 print("training path is {}".format(train_path))
 print("testing path is {}".format(test_path))
 
 # Checking the paths
-if not os.path.exists(train_path):
-    print("There is no training directory: {}".format(train_path))
+if not os.path.exists(src_path):
+    print("[ERR]There is no source directory: {}".format(src_path))
     print("Run stops.")
+    sys.exit(0)
+    
+if not os.path.exists(train_path):
+    print("[ERR]There is no training directory: {}".format(train_path))
+    print("Run stops.")
+    #cmd = "mkdir {}/train".format(root_path)
+    #os.system(cmd)
     sys.exit(0)
 
 if not os.path.exists(test_path):
-    print("There is no testing directory: {}".format(test_path))
+    print("[ERR]There is no testing directory: {}".format(test_path))
     print("Run stops.")
+    #cmd = "mkdir {}/test".format(root_path)
+    #os.system(cmd)
     sys.exit(0)
 
-# Move files under training directory to testing directory
+# Move files under source directory to test directory
 for kw in test_keywords:
-    cmd = "mv -f {}/*{}* {}/ 2>/dev/null".format(train_path, kw, test_path)
+    cmd = "mv -f {}/*{}* {}/ 2>/dev/null".format(src_path, kw, test_path)
     #print(cmd)
     os.system(cmd)
+#Move other files to train directory.
+cmd = "mv -f {}/*.csv {}/".format(src_path, train_path)
+os.system(cmd)
 print("done.")
 
 
