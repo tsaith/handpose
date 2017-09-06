@@ -24,7 +24,7 @@ def predict_unit(images, verbose=0):
     Prediction for unit instance.
     """
 
-    timesteps, rows, cols = images.shape
+    timesteps, rows, cols, channels = images.shape
 
     num_detect = timesteps - 1
     status = np.zeros(num_detect, dtype=np.int32)
@@ -47,7 +47,7 @@ def motion_predict(data, verbose=0):
     """
     Motion prediction.
     """
-    num_samples, time_steps, rows, cols = data.shape
+    num_samples, time_steps, rows, cols, channels = data.shape
     labels = np.zeros(num_samples, dtype=np.int32)
 
     for i in range(num_samples):
