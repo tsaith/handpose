@@ -21,7 +21,7 @@ def batch_generator(inputs, batch_size=None, shuffle=False):
         yield inputs[excerpt]
 
 
-def eval_ops(sess, ops, feed_dict=None, batch_size=None):
+def eval_ops(sess, ops, feed_dict=None, batch_size=None, with_residual=False):
     """
     Evaluate the operations.
     """
@@ -48,9 +48,13 @@ def eval_ops(sess, ops, feed_dict=None, batch_size=None):
     for ia in range(0, num_samples, batch_size):
         num_residual = num_samples - ia
         if num_residual < batch_size:
-            iz = ia+num_residual
+            if with_residual:
+                iz = ia+num_residual
+            else:
+                break
         else:
             iz = ia+batch_size
+
         batch_outputs = []
         batch_values = []
         for i in range(num_items):
@@ -65,11 +69,9 @@ def eval_ops(sess, ops, feed_dict=None, batch_size=None):
     num_batches = len(raw_outputs)
     for i in range(num_batches):
         for j in range(num_ops):
-            num_elements = len(raw_outputs[i][0][j])
-            for k in range(num_elements):
-                ops_outputs[j].append(raw_outputs[i][0][j][k])
+            ops_outputs[j].append(raw_outputs[i][0][j])
 
-    outputs = [np.concatenate([ops_outputs[i]]) for i in range(num_ops)]
+    outputs = [np.concatenate(ops_outputs[i]) for i in range(num_ops)]
 
     if num_ops == 1:
         outputs = outputs[0]
