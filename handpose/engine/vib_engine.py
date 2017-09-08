@@ -2,20 +2,10 @@ import numpy as np
 import tensorflow as tf
 import tensorlayer as tl
 
-#import keras
 import tensorflow.contrib.keras.api.keras as keras
 import pickle
-from handpose.vib import to_spectrum
+from handpose.vib import to_spectrum, normalize
 
-
-def normalize(data, to='max'):
-
-    num_samples, num_features = data.shape
-
-    for i in range(num_samples):
-        data[i,:] = data[i,:] / max(data[i,:])
-
-    return data
 
 class VibEngine:
     """
@@ -40,16 +30,16 @@ class VibEngine:
         tf.reset_default_graph()
         self._sess = tf.InteractiveSession()
 
+        # Retrive the ops
+        self._x_holder = None
+        self._proba_op = None
+        self._label_op = None
+
         # Load the trained model
         self.load_model()
 
-        # Retrive the ops
-        self._x_holder = tf.get_collection('x_holder')[0]
-        self._proba_op = tf.get_collection('proba_op_t')[0]
-        self._label_op = tf.get_collection('label_op_t')[0]
-
-        # Initialization
-        self.sess.run(tf.global_variables_initializer())
+        # Initializer will initialize the variables imported
+        #self.sess.run(tf.global_variables_initializer())
 
     @property
     def config(self):
@@ -102,6 +92,10 @@ class VibEngine:
         saver = tf.train.Saver()
         saver.restore(self.sess, model_path)
 
+        # Retrive the ops
+        self._x_holder = tf.get_collection('x_holder')[0]
+        self._proba_op = tf.get_collection('proba_op_t')[0]
+        self._label_op = tf.get_collection('label_op_t')[0]
 
         return None
 
@@ -136,11 +130,10 @@ class VibEngine:
         X: array-like
             Input features.
         """
-
         return self.sess.run(self._label_op, feed_dict={self._x_holder: X})
 
 
-    def predict_proba(self, X, batch_size=256, verbose=0):
+    def predict_proba(self, X, batch_size=None, verbose=0):
         """
         Return the predicted probabilities..
 
@@ -151,7 +144,7 @@ class VibEngine:
         """
         return self.sess.run(self._proba_op, feed_dict={self._x_holder: X})
 
-    def predict(self, X, batch_size=256, verbose=0):
+    def predict(self, X, batch_size=None, verbose=0):
         """
         Generates output predictions for the input samples.
 
@@ -169,39 +162,7 @@ class VibEngine:
         """
         pass
 
-    def init_network():
-
-        batch_size = 128
-        keep_prob = 0.8 # Keeping probability for dropout
-        filters = 64
-        kernel_size = 3
-        pool_size = 2
-        strides = 1
-        num_fc = 128
-
-        # Define the parameter dictionary
-        hyper_params = {}
-        hyper_params.update(num_classes = num_classes)
-        hyper_params.update(keep_prob = keep_prob)
-        hyper_params.update(filters = filters)
-        hyper_params.update(kernel_size = kernel_size)
-        hyper_params.update(strides = strides)
-        hyper_params.update(pool_size = pool_size)
-        hyper_params.update(num_fc = num_fc)
-
-
-        # Build the network
-        x_holder = tf.placeholder(tf.float32,
-                                  [batch_size, 1050, 1],
-                                  name="x_holder")
-
-        network= build_network(x_holder, is_train=False,
-                                    layer_reuse=True, var_reuse=True,
-                                    hyper_params = hyper_params)
-
-        return network
-
-
+# ---------------------------------------------------------------------
 
 class VibEngineKeras:
     """

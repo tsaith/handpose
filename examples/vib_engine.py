@@ -8,22 +8,23 @@ set_cuda_visible_devices("") # CPU only
 
 # Model path
 dir_path ="../data/vib/models"
-#dir_path ="../../notebooks/vib/models"
-scaler_file = 'scaler.dat'
-model_file = 'trained_model.meta'
 
-scaler_path = "{}/{}".format(dir_path, scaler_file)
+model_file = 'model.ckpt-4'
+graph_file = model_file + ".meta"
+
 model_path = "{}/{}".format(dir_path, model_file)
+graph_path = "{}/{}".format(dir_path, graph_file)
 
 # Initialize the gesture engine
 config = EngineConfig()
-config.scaler_path = scaler_path
 config.model_path = model_path
+config.graph_path = graph_path
 engine = VibEngine(config)
 
+
 # Testing
-fs = 700 
-num_dims = 3 
+fs = 700
+num_dims = 3
 num_features = fs*num_dims
 
 X_test = np.ones(num_features)

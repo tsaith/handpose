@@ -203,3 +203,12 @@ def to_spectrum(data, keep_dc=True):
 
     return np.array(out)
 
+def normalize(data, to='max'):
+
+    num_samples, num_features = data.shape
+
+    for i in range(num_samples):
+        data[i,:] = data[i,:] / max(data[i,:])
+
+    return data
+
