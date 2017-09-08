@@ -35,27 +35,21 @@ class VibEngine:
         """
         self._config = config
         self._scaler = None
-        self._sess = None
-        self._network= None
         self._batch_size = None
-
-        self._x_holder = None
-        self._proba_op = None
-        self._label_op = None
 
         tf.reset_default_graph()
         self._sess = tf.InteractiveSession()
 
-        num_features = 1050
-
-        # Load the scaler
-        self.load_scaler()
-
         # Load the trained model
         self.load_model()
 
+        # Retrive the ops
+        self._x_holder = tf.get_collection('x_holder')[0]
+        self._proba_op = tf.get_collection('proba_op_t')[0]
+        self._label_op = tf.get_collection('label_op_t')[0]
+
         # Initialization
-        self._sess.run(tf.global_variables_initializer())
+        self.sess.run(tf.global_variables_initializer())
 
     @property
     def config(self):
@@ -82,38 +76,12 @@ class VibEngine:
         self._sess = val
 
     @property
-    def network(self):
-        return self._network
-
-    @network.setter
-    def network(self, val):
-        self._network= val
-
-    @property
     def model_trained(self):
         return self._model_trained
 
     @model_trained.setter
     def model_trained(self, val):
         self._model_trained= val
-
-    def load_scaler(self, scaler_path=None):
-        """
-        Load the scaler file.
-
-        Parameters
-        ----------
-        scaler_path: str
-            The scaler path.
-        """
-
-        if scaler_path == None:
-            scaler_path = self.config.scaler_path
-
-        self.scaler = pickle.load(open(scaler_path, "rb"), encoding='bytes')
-
-        return self.scaler
-
 
     def load_model(self):
         """
@@ -124,15 +92,16 @@ class VibEngine:
         model_path: str
             The model path.
         """
+        graph_path = self.config.graph_path
         model_path = self.config.model_path
 
         # Import the meta graph
-        tf.train.import_meta_graph(model_path, clear_devices=True)
+        tf.train.import_meta_graph(graph_path, clear_devices=True)
 
-        # Retrive the ops
-        self._x_holder = tf.get_collection('x_holder')[0]
-        self._proba_op = tf.get_collection('proba_op_t')[0]
-        self._label_op = tf.get_collection('label_op_t')[0]
+        # Import weights
+        saver = tf.train.Saver()
+        saver.restore(self.sess, model_path)
+
 
         return None
 

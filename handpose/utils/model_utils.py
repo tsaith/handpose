@@ -17,3 +17,5 @@ def model_test(sess, network, X_test, Y_test, x_, y_, cost=None, acc=None, batch
     test_acc /= batches
 
     return test_loss, test_acc
+
+
