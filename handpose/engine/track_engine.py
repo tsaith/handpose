@@ -1,5 +1,5 @@
 import numpy as np
-import keras
+#import keras
 import pickle
 
 
@@ -70,9 +70,9 @@ def predict_classes_analytic(X):
     return classes
 
 
-class MotionEngine:
+class TrackEngine:
     """
-    Motion engine.
+    Track engine.
     """
 
     def __init__(self, config):
