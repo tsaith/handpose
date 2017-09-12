@@ -1,6 +1,6 @@
 import numpy as np
 
-def is_motional(image, image_prev, area_ratio=0.9, pixel_ratio=0.1, max_value=255, verbose=0):
+def is_motional(image, image_prev, area_ratio=0.1, pixel_ratio=0.01, max_value=255, verbose=0):
     """
     Detect if the object is motional from two images.
     """
