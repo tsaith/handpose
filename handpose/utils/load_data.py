@@ -190,7 +190,11 @@ def load_class_videos(candidates, dir_path, shift=1,
             arr = csv2numpy(file_path, start_col=start_col, header=header)
             #arr = arr[:, start_col:] # Remove the timestamp
             length = len(arr)
-            samples = int(length / shift)
+            if timesteps / shift > 0:
+                samples = int((length - timesteps) / shift)
+            else:
+                samples = int(length / shift)
+            
             out = np.zeros((samples, timesteps, rows, cols), dtype=np.int32)
             for i in range(samples):
                 for it in range(timesteps):
