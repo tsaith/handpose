@@ -1,7 +1,7 @@
 import numpy as np
 from ..sensor_fusion import SensorFusion
 from .quaternion import Quaternion
-
+from .motion_classifier import motion_predict
 
 class MotionTracker:
     """
@@ -28,13 +28,13 @@ class MotionTracker:
         self._dt = dt
         self._beta = beta
         self._num_iter = num_iter
-        
+
         self._damping = 0.05 # Damping factor
 
         num_dim = 3 # Number of dimensions
 
         # Initialize Fusion model
-        self._fusion = SensorFusion(self._dt, self._beta, 
+        self._fusion = SensorFusion(self._dt, self._beta,
                                   num_iter=self._num_iter)
 
         # Translational information
@@ -53,7 +53,7 @@ class MotionTracker:
         self._accel = None
         self._mag   = None
 
-    def update(self, gyro, accel, mag=None):
+    def update(self, gyro, accel, mag=None, video=None):
         """
         Update the status of tracker.
 
@@ -66,6 +66,7 @@ class MotionTracker:
         mag: array
             Measured magnetic fields (muT)
         """
+        num_dim = 3
 
         # Update readings from IMU
         self.gyro = gyro
@@ -78,8 +79,18 @@ class MotionTracker:
         else:
             self.fusion.update_ahrs(gyro, accel, mag)
 
+        # Predict the motion status, 0: static, 1: motional
+        self.video = video
+        if self.video is None:
+            motion_status = 1
+        else:
+            X = np.expand_dims(video, axis=0)
+            motion_status = motion_predict(X)[0]
+
         # Estimate the dynamic acceleration
         self.accel_dyn = estimate_dynamic_accel(accel, self.q)
+        if motion_status == 0:
+            self.accel_dyn = np.zeros(num_dim)
 
         # Filter the noises
         self.filter_noises(self.accel_dyn, self.accel_th)
@@ -89,11 +100,14 @@ class MotionTracker:
         self.dv = self.accel_dyn * self.dt
         self.vel +=  self.dv
         self.vel *= (1.0 - self.damping) # velocity is damping
+        if motion_status == 0:
+            self.vel = np.zeros(num_dim)
+
         self.dx = self.vel * self.dt
 
         # Update angular velocity and displacement
         self.dtheta = self.w * self.dt
-        for i in range(3): # Filter small noises
+        for i in range(num_dim): # Filter small noises
             if np.abs(self.dtheta[i]) < 5e-5:
                  self.dtheta[i] = 0.0
         self.theta +=  self.dtheta
@@ -257,6 +271,14 @@ class MotionTracker:
         self._mag = mag_in
 
     @property
+    def video(self):
+        return self._video
+
+    @video.setter
+    def video(self, value):
+        self._video = value
+
+    @property
     def accel_dyn(self):
         return self._accel_dyn
 
@@ -331,29 +353,29 @@ class MotionTracker:
 def estimate_dynamic_accel(accel, q_e2s):
     """
     Estimate the dynamic acceleration.
-    
+
     Paramters
     ---------
     accel: array
         Acceleration in sensor axes.
     q_e2s: Quaternion object
         Rotation quaternion, earth axes to sensor axes.
-        
+
     Reurns
     ------
     accel_dyn: array
         Dynamic acceleration in sensor axes.
-    
+
     """
-    q_s2e = q_e2s.inv_unit() # Sensor axes to Earth axes 
-    # Gravity contribution in the Earth axes, 
+    q_s2e = q_e2s.inv_unit() # Sensor axes to Earth axes
+    # Gravity contribution in the Earth axes,
     # please note that the accelerometer feels 1g in z direction
-    # when the sensor is static 
+    # when the sensor is static
     g_e = Quaternion(0, 0, 0, 1)
     g_s = q_s2e*g_e*q_s2e.inv_unit() # Gravity in the sensor axes
-    
+
     accel_dyn = accel - g_s.vector
 
-    return accel_dyn 
+    return accel_dyn
 
 
