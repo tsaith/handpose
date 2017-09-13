@@ -14,7 +14,7 @@ def has_gesture(X):
     out : bool
         True when it has gesture else False.
     """
-    thresh = 0.7 # Threshold for gesture detection (g)
+    thresh = 0.2 # Threshold for gesture detection (g)
     noise_level = 0.2
     bound_cells = 50 # Number of boundary cells
 
