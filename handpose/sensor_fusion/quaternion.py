@@ -91,6 +91,34 @@ class Quaternion:
         z = self._q[3] / imaginary_factor
         return rad, x, y, z
 
+
+    def rotate_vector(self, v):
+        """
+        Return the vector rotated.
+        """
+        norm = np.linalg.norm(v)
+        v_unit = v / norm # Unit vector
+
+        # Crete a quaterion from the unit vector
+        p = Quaternion.from_vector(v_unit)
+
+        # Make rotation
+        q = Quaternion(self.q)
+        p_rot = q*p*q.inv()
+        v_rot = p_rot.to_vector() * norm
+
+        return v_rot
+
+    def to_vector(self):
+
+        rad = np.arccos(self.q[0]) * 2
+        imaginary_factor = np.sin(rad / 2)
+        x = self._q[1] / imaginary_factor
+        y = self._q[2] / imaginary_factor
+        z = self._q[3] / imaginary_factor
+
+        return  np.array((x, y, z), dtype=np.float64)
+
     @staticmethod
     def from_angle_axis(rad, x, y, z):
         s = np.sin(rad / 2)

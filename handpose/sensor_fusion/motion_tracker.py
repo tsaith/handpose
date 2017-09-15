@@ -29,7 +29,7 @@ class MotionTracker:
         self._beta = beta
         self._num_iter = num_iter
 
-        self._damping = 0.05 # Damping factor
+        self._damping = 0.0 # Damping factor
 
         num_dim = 3 # Number of dimensions
 
@@ -38,10 +38,12 @@ class MotionTracker:
                                   num_iter=self._num_iter)
 
         # Translational information
-        self._accel_dyn = np.zeros(num_dim) # Dynamic acceleration
+        self._accel_dyn = np.zeros(num_dim) # Dynamic acceleration in sensor axes
+        self._accel_dyn_e = np.zeros(num_dim) # Dynamic acceleration in earth axes
         self._vel = np.zeros(num_dim)
         self._dv = np.zeros(num_dim)
         self._dx = np.zeros(num_dim)
+        self._x = np.zeros(num_dim)
 
         # Angular information
         self._theta = np.zeros(num_dim)  # Relative angles
@@ -68,7 +70,7 @@ class MotionTracker:
         """
         num_dim = 3
 
-        # Update readings from IMU
+        # Update readings from IMU in sensor axes
         self.gyro = gyro
         self.accel = accel
         self.mag = mag
@@ -87,29 +89,31 @@ class MotionTracker:
             X = np.expand_dims(video, axis=0)
             motion_status = motion_predict(X)[0]
 
-        # Estimate the dynamic acceleration
+        # Estimate the dynamic acceleration in Earth axes
         self.accel_dyn = estimate_dynamic_accel(accel, self.q)
+        #self.accel_dyn = estimate_dynamic_accel_s(accel, self.q)
         if motion_status == 0:
             self.accel_dyn = np.zeros(num_dim)
 
         # Filter the noises
-        self.filter_noises(self.accel_dyn, self.accel_th)
-        self.filter_noises(self.vel, self.vel_th)
+        #self.filter_noises(self.accel_dyn, self.accel_th)
+        #self.filter_noises(self.vel, self.vel_th)
 
-        # Update velocity and displacement
+        # Update velocity and displacement in Earth axes
         self.dv = self.accel_dyn * self.dt
         self.vel +=  self.dv
-        self.vel *= (1.0 - self.damping) # velocity is damping
+        #self.vel *= (1.0 - self.damping) # velocity is damping
         if motion_status == 0:
             self.vel = np.zeros(num_dim)
 
         self.dx = self.vel * self.dt
+        self.x += self.dx
 
         # Update angular velocity and displacement
         self.dtheta = self.w * self.dt
-        for i in range(num_dim): # Filter small noises
-            if np.abs(self.dtheta[i]) < 5e-5:
-                 self.dtheta[i] = 0.0
+        #for i in range(num_dim): # Filter small noises
+        #    if np.abs(self.dtheta[i]) < 5e-5:
+        #         self.dtheta[i] = 0.0
         self.theta +=  self.dtheta
 
         # Estimate the absolute angles respective to Earth axes
@@ -185,17 +189,17 @@ class MotionTracker:
         # z-vector representation of earth axes respective to sensor axes 
         qx_s = Quaternion(0, 1, 0, 0) # x vector in sensor axes
         qx_e = q_e2s*qx_s*q_e2s_inv
-        x_se = qx_e.q[1:]
+        x_s2e = qx_e.q[1:]
 
         qy_s = Quaternion(0, 0, 1, 0) # y vector in sensor axes
         qy_e = q_e2s*qy_s*q_e2s_inv
-        y_se = qy_e.q[1:]
+        y_s2e = qy_e.q[1:]
 
         qz_s = Quaternion(0, 0, 0, 1) # y vector in sensor axes
         qz_e = q_e2s*qz_s*q_e2s_inv
-        z_se = qz_e.q[1:]
+        z_s2e = qz_e.q[1:]
 
-        return x_se, y_se, z_se
+        return x_s2e, y_s2e, z_s2e
 
     def init_motion_data(self):
         """
@@ -209,6 +213,15 @@ class MotionTracker:
 
         # Angular information
         self.theta = np.zeros(num_dim)
+
+    def reset_position(x=None):
+        """
+        Reset the position.
+        """
+        if x == None:
+            self.x = np.zeros([0, 0, 0], dtype=np.float64)
+        else:
+            self.x = x
 
     @property
     def fusion(self):
@@ -287,6 +300,14 @@ class MotionTracker:
         self._accel_dyn = accel
 
     @property
+    def accel_dyn_e(self):
+        return self._accel_dyn_e
+
+    @accel_dyn_e.setter
+    def accel_dyn_e(self, accel):
+        self._accel_dyn_e = accel
+
+    @property
     def vel(self):
         return self._vel
 
@@ -299,16 +320,24 @@ class MotionTracker:
         return self._dv
 
     @dv.setter
-    def dv(self, dv_in):
-        self._dv = dv_in
+    def dv(self, value):
+        self._dv = value
 
     @property
     def dx(self):
         return self._dx
 
     @dx.setter
-    def dx(self, dx_in):
-        self._dx = dx_in
+    def dx(self, value):
+        self._dx = val
+
+    @property
+    def x(self):
+        return self._x
+
+    @x.setter
+    def x(self, value):
+        self._x = value
 
     @property
     def w(self):
@@ -350,16 +379,45 @@ class MotionTracker:
     def damping(self, value):
         self._damping = value
 
-def estimate_dynamic_accel(accel, q_e2s):
+def estimate_dynamic_accel(accel_s, q_e2s):
     """
-    Estimate the dynamic acceleration.
+    Estimate the dynamic acceleration in Earth axes.
+
+    Paramters
+    ---------
+    accel_s: array
+        Acceleration in sensor axes.
+    q_e2s: Quaternion object
+        Rotation quaternion, earth axes respective to sensor axes.
+
+    Reurns
+    ------
+    accel_dyn: array
+        Dynamic acceleration in Earth axes.
+
+    """
+    accel_e = q_e2s.rotate_vector(accel_s)
+
+    # Gravity contribution in the Earth axes,
+    # please note that the accelerometer feels 1g in z direction
+    # when the sensor is static
+    g_e = Quaternion(0, 0, 0, 1)
+
+    accel_dyn = accel_e - g_e.vector
+
+    return accel_dyn
+
+
+def estimate_dynamic_accel_s(accel, q_e2s):
+    """
+    Estimate the dynamic acceleration in sensor axes.
 
     Paramters
     ---------
     accel: array
         Acceleration in sensor axes.
     q_e2s: Quaternion object
-        Rotation quaternion, earth axes to sensor axes.
+        Rotation quaternion, earth axes respective to sensor axes.
 
     Reurns
     ------
