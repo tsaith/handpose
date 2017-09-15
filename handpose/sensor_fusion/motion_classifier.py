@@ -1,6 +1,6 @@
 import numpy as np
 
-def is_motional(image, image_prev, area_ratio=0.1, pixel_ratio=0.01, max_value=255, verbose=0):
+def is_motional(image, image_prev, area_ratio=0.2, pixel_ratio=0.01, max_value=255, verbose=0):
     """
     Detect if the object is motional from two images.
     """
@@ -35,7 +35,7 @@ def predict_unit(images, verbose=0):
         status[i] = is_motional(image, image_prev)
 
     num_motional = np.sum(status)
-    num_thresh = 0.1*num_detect
+    num_thresh = 0.2*num_detect
     result = 1 if num_motional > num_thresh else 0
 
     if verbose > 0:
