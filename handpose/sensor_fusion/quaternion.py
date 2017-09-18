@@ -96,16 +96,13 @@ class Quaternion:
         """
         Return the vector rotated.
         """
-        norm = np.linalg.norm(v)
-        v_unit = v / norm # Unit vector
-
-        # Crete a quaterion from the unit vector
-        p = Quaternion.from_vector(v_unit)
+        # Crete a quaterion from vector
+        p = Quaternion.from_vector(v)
 
         # Make rotation
         q = Quaternion(self.q)
         p_rot = q*p*q.inv()
-        v_rot = p_rot.to_vector() * norm
+        v_rot = p_rot.to_vector()
 
         return v_rot
 
