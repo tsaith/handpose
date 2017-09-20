@@ -72,20 +72,20 @@ class SensorFusion:
         return self._num_iter
 
     @property
-    def q(self):
+    def quat(self):
         return self.fuse.quaternion
 
-    @q.setter
-    def q(self, q_in):
-        self.fuse.quaternion = q_in
+    @quat.setter
+    def quat(self, value):
+        self.fuse.quaternion = value
 
 def init_madgwick(dt, beta, num_iter=100):
 
     sub_dt = dt / num_iter
     q0 = Quaternion([1, 0, 0, 0])
-    fuse = MadgwickAHRS(sampleperiod=sub_dt, 
+    fuse = MadgwickAHRS(sampleperiod=sub_dt,
                         quaternion=q0, beta=beta)
 
-    return fuse    
+    return fuse
 
 

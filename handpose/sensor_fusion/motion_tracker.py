@@ -22,6 +22,7 @@ class MotionTracker:
             Number of iterations used to update sensor fusion.
         """
 
+        self._quat_saved = None
         self._accel_th = accel_th
         self._vel_th = vel_th
         self._w_th = w_th
@@ -40,6 +41,7 @@ class MotionTracker:
         # Translational information
         self._accel_dyn = np.zeros(num_dim) # Dynamic acceleration in sensor axes
         self._accel_dyn_e = np.zeros(num_dim) # Dynamic acceleration in earth axes
+        self._accel_dyn_s = np.zeros(num_dim) # Dynamic acceleration in sensor axes
         self._vel = np.zeros(num_dim)
         self._dv = np.zeros(num_dim)
         self._dx = np.zeros(num_dim)
@@ -55,7 +57,8 @@ class MotionTracker:
         self._accel = None
         self._mag   = None
 
-    def update(self, gyro, accel, mag=None, video=None):
+
+    def update(self, gyro=None, accel=None, mag=None, video=None):
         """
         Update the status of tracker.
 
@@ -75,11 +78,16 @@ class MotionTracker:
         self.accel = accel
         self.mag = mag
 
-        # Update the fusion
-        if mag is None: # With 6-axis IMU
-            self.fusion.update_imu(gyro, accel)
+        if abs(np.linalg.norm(accel) - 1.0) < 1e-3 or self._quat_saved == None:
+            # Update the fusion
+            if mag is None: # 6-DOF IMU
+                self.fusion.update_imu(gyro, accel)
+            else: # 9-DOF IMU
+                self.fusion.update_ahrs(gyro, accel, mag)
+            quat = self.quat
+            self._quat_saved = quat
         else:
-            self.fusion.update_ahrs(gyro, accel, mag)
+            quat = self._quat_saved
 
         # Predict the motion status, 0: static, 1: motional
         self.video = video
@@ -90,8 +98,7 @@ class MotionTracker:
             motion_status = motion_predict(X)[0]
 
         # Estimate the dynamic acceleration in Earth axes
-        self.accel_dyn = estimate_dynamic_accel(accel, self.q)
-        #self.accel_dyn = estimate_dynamic_accel_s(accel, self.q)
+        self.accel_dyn = get_dynamic_accel(accel, quat)
         if motion_status == 0:
             self.accel_dyn = np.zeros(num_dim)
 
@@ -134,9 +141,9 @@ class MotionTracker:
         """
 
         # x vector of sensor axes respective to Earth axes
-        q_e2s = self.q
+        q_e2s = self.quat
         qx_s = Quaternion(0, 1, 0, 0) # x vector in sensor axes
-        qx_e = q_e2s*qx_s*q_e2s.inv_unit()
+        qx_e = q_e2s*qx_s*q_e2s.inv()
         x_se = qx_e.q[1:]
 
         # Project x_se onto the x-y plane in Earth axes
@@ -166,9 +173,9 @@ class MotionTracker:
         num_dim = 3
 
         # z-vector representation of earth axes respective to sensor axes
-        q_s2e = self.q.inv_unit()
+        q_s2e = self.quat.inv()
         qz_e = Quaternion(0, 0, 0, 1) # z vector in earth axes
-        qz_s = q_s2e*qz_e*q_s2e.inv_unit()
+        qz_s = q_s2e*qz_e*q_s2e.inv()
         z_es = qz_s.q[1:]
 
         # Absolute angles respective to Earth axes
@@ -183,8 +190,8 @@ class MotionTracker:
         The representations of unit vectors of sensor axes respective to Earth axes.
         """
         # Rotation quaternion of sensor to Earth axes
-        q_e2s = self.q
-        q_e2s_inv = q_e2s.inv_unit()
+        q_e2s = self.quat
+        q_e2s_inv = q_e2s.inv()
 
         # z-vector representation of earth axes respective to sensor axes 
         qx_s = Quaternion(0, 1, 0, 0) # x vector in sensor axes
@@ -214,6 +221,12 @@ class MotionTracker:
         # Angular information
         self.theta = np.zeros(num_dim)
 
+    def get_position():
+        return self.x
+
+    def get_velocity():
+        return self.vel
+
     def reset_position(x=None):
         """
         Reset the position.
@@ -232,12 +245,14 @@ class MotionTracker:
         self.fusion = fusion_in
 
     @property
-    def q(self):
-        return self.fusion.q
+    def quat(self):
+        # Inverse the q to fit the coordinates used by Madgwick
+        return self.fusion.quat.inv()
+        #return self.fusion.quat
 
-    @q.setter
-    def q(self, q_in):
-        self.fusion.q = q_in
+    @quat.setter
+    def quat(self, val):
+        self.fusion.quat = val
 
     @property
     def accel_th(self):
@@ -329,7 +344,7 @@ class MotionTracker:
 
     @dx.setter
     def dx(self, value):
-        self._dx = val
+        self._dx = value
 
     @property
     def x(self):
@@ -379,7 +394,7 @@ class MotionTracker:
     def damping(self, value):
         self._damping = value
 
-def estimate_dynamic_accel(accel_s, q_e2s):
+def get_dynamic_accel(accel_s, q_e2s):
     """
     Estimate the dynamic acceleration in Earth axes.
 
@@ -396,19 +411,18 @@ def estimate_dynamic_accel(accel_s, q_e2s):
         Dynamic acceleration in Earth axes.
 
     """
-    accel_e = q_e2s.rotate_vector(accel_s)
+    accel_e = q_e2s.rotate_axes(accel_s)
 
     # Gravity contribution in the Earth axes,
-    # please note that the accelerometer feels 1g in z direction
-    # when the sensor is static
-    g_e = Quaternion(0, 0, 0, 1)
+    # note that the -z direction points down to the Earth
+    g_e = np.array([0, 0, 1], dtype=np.float64)
 
-    accel_dyn = accel_e - g_e.vector
+    accel_dyn = accel_e - g_e
 
     return accel_dyn
 
 
-def estimate_dynamic_accel_s(accel, q_e2s):
+def get_dynamic_accel_s(accel_s, q_e2s):
     """
     Estimate the dynamic acceleration in sensor axes.
 
@@ -425,15 +439,12 @@ def estimate_dynamic_accel_s(accel, q_e2s):
         Dynamic acceleration in sensor axes.
 
     """
-    q_s2e = q_e2s.inv_unit() # Sensor axes to Earth axes
+    q_s2e = q_e2s.inv()
     # Gravity contribution in the Earth axes,
-    # please note that the accelerometer feels 1g in z direction
-    # when the sensor is static
-    g_e = Quaternion(0, 0, 0, 1)
-    g_s = q_s2e*g_e*q_s2e.inv_unit() # Gravity in the sensor axes
+    # note that the -z direction points down to the Earth
+    g_e = np.array([0, 0, 1], dtype=np.float64)
+    g_s = q_s2e.rotate_axes(g_e)
 
-    accel_dyn = accel - g_s.vector
+    accel_dyn = accel_s - g_s
 
     return accel_dyn
-
-

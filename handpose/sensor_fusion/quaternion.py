@@ -62,12 +62,6 @@ class Quaternion:
         """
         return np.linalg.norm(self.q)
 
-    def inv_unit(self):
-        """
-        Returns the inverse of an unit quaternion.
-        """
-        return self.conj()
-
     def inv(self):
         """
         Returns the inverse of an arbitrary quaternion.
@@ -91,10 +85,24 @@ class Quaternion:
         z = self._q[3] / imaginary_factor
         return rad, x, y, z
 
+    def rotate_axes(self, v):
+        """
+        Return the vector when axes are rotated.
+        """
+        # Crete a quaterion from vector
+        p = Quaternion.from_vector(v)
+
+        # Make rotation
+        q = Quaternion(self.q)
+        p_rot = q.inv()*p*q
+        v_rot = p_rot.to_vector()
+
+        return v_rot
+
 
     def rotate_vector(self, v):
         """
-        Return the vector rotated.
+        Return the vector rotated while axes are fixed.
         """
         # Crete a quaterion from vector
         p = Quaternion.from_vector(v)
@@ -118,8 +126,8 @@ class Quaternion:
 
     @staticmethod
     def from_angle_axis(rad, x, y, z):
-        s = np.sin(rad / 2)
-        return Quaternion(np.cos(rad / 2), x*s, y*s, z*s)
+        s = np.sin(0.5*rad)
+        return Quaternion(np.cos(0.5*rad), x*s, y*s, z*s)
 
     @staticmethod
     def from_vector(v):
