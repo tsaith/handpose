@@ -141,12 +141,12 @@ class MotionTracker:
         """
 
         # x vector of sensor axes respective to Earth axes
-        q_e2s = self.quat
-        qx_s = Quaternion(0, 1, 0, 0) # x vector in sensor axes
-        qx_e = q_e2s*qx_s*q_e2s.inv()
-        x_se = qx_e.q[1:]
+        q_es = self.quat
 
-        # Project x_se onto the x-y plane in Earth axes
+        x_s = np.array([1, 0, 0], dtype=np.float64)
+        x_se = q_es.rotate_axes(x_s)
+
+        # Project x_e onto the x-y plane in Earth axes
         x_proj = np.array([x_se[0], x_se[1], 0.0])
         norm_proj = np.linalg.norm(x_proj)
 
@@ -172,41 +172,37 @@ class MotionTracker:
         """
         num_dim = 3
 
+        q_se = self.quat.inv()
+
         # z-vector representation of earth axes respective to sensor axes
-        q_s2e = self.quat.inv()
-        qz_e = Quaternion(0, 0, 0, 1) # z vector in earth axes
-        qz_s = q_s2e*qz_e*q_s2e.inv()
-        z_es = qz_s.q[1:]
+        z_e = np.array([0, 0, 1], dtype=np.float64)
+        z_es = q_se.rotate_axes(z_e)
 
         # Absolute angles respective to Earth axes
         x_vec = np.array([1, 0, 0])
         y_vec = np.array([0, 1, 0])
         self.theta_e[0] = 0.5*np.pi - np.arccos(np.dot(x_vec, z_es))
         self.theta_e[1] = 0.5*np.pi - np.arccos(np.dot(y_vec, z_es))
-        self.theta_e[2] = 0.0 # This has not been estimated yet.
 
     def unit_vectors_s2e(self):
         """
         The representations of unit vectors of sensor axes respective to Earth axes.
         """
         # Rotation quaternion of sensor to Earth axes
-        q_e2s = self.quat
-        q_e2s_inv = q_e2s.inv()
+        q_es = self.quat
+        q_se = q_es.inv()
 
-        # z-vector representation of earth axes respective to sensor axes 
-        qx_s = Quaternion(0, 1, 0, 0) # x vector in sensor axes
-        qx_e = q_e2s*qx_s*q_e2s_inv
-        x_s2e = qx_e.q[1:]
+        # z-vector representation of earth axes respective to sensor axes
+        x_e = np.array([1, 0, 0], dtype=np.float64)
+        x_es = q_se.rotate_axes(x_e)
 
-        qy_s = Quaternion(0, 0, 1, 0) # y vector in sensor axes
-        qy_e = q_e2s*qy_s*q_e2s_inv
-        y_s2e = qy_e.q[1:]
+        y_e = np.array([0, 1, 0], dtype=np.float64)
+        y_es = q_se.rotate_axes(y_e)
 
-        qz_s = Quaternion(0, 0, 0, 1) # y vector in sensor axes
-        qz_e = q_e2s*qz_s*q_e2s_inv
-        z_s2e = qz_e.q[1:]
+        z_e = np.array([0, 0, 1], dtype=np.float64)
+        z_es = q_se.rotate_axes(z_e)
 
-        return x_s2e, y_s2e, z_s2e
+        return x_es, y_es, z_es
 
     def init_motion_data(self):
         """
@@ -412,6 +408,7 @@ def get_dynamic_accel(accel_s, q_e2s):
 
     """
     accel_e = q_e2s.rotate_axes(accel_s)
+    #accel_e = q_e2s.rotate_vector(accel_s)
 
     # Gravity contribution in the Earth axes,
     # note that the -z direction points down to the Earth
@@ -443,7 +440,9 @@ def get_dynamic_accel_s(accel_s, q_e2s):
     # Gravity contribution in the Earth axes,
     # note that the -z direction points down to the Earth
     g_e = np.array([0, 0, 1], dtype=np.float64)
+
     g_s = q_s2e.rotate_axes(g_e)
+    #g_s = q_s2e.rotate_vector(g_e)
 
     accel_dyn = accel_s - g_s
 
