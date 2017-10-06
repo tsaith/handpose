@@ -1,6 +1,6 @@
 import numpy as np
 from ..sensor_fusion import SensorFusion
-from .quaternion import Quaternion
+from .fast_quaternion import Quaternion
 from .motion_classifier import motion_predict
 
 class MotionTracker:
@@ -78,7 +78,7 @@ class MotionTracker:
         self.accel = accel
         self.mag = mag
 
-        if abs(np.linalg.norm(accel) - 1.0) < 1e-3 or self._quat_saved == None:
+        if abs(np.linalg.norm(accel) - 1.0) < 1e-2 or self._quat_saved == None:
             # Update the fusion
             if mag is None: # 6-DOF IMU
                 self.fusion.update_imu(gyro, accel)

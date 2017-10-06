@@ -1,6 +1,5 @@
 import numpy as np
-from .madgwickahrs import MadgwickAHRS 
-from .quaternion import Quaternion
+from .fast_quaternion import Quaternion
 
 class IMUSimulator:
     """

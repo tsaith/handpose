@@ -74,15 +74,20 @@ class Quaternion:
         If the quaternion is the identity quaternion (1, 0, 0, 0), a rotation along the x axis with angle 0 is returned.
         :return: rad, x, y, z
         """
-        if self[0] == 1 and self[1] == 0 and self[2] == 0 and self[3] == 0:
+        if self.q[0] == 1 and self.q[1] == 0 and self.q[2] == 0 and self.q[3] == 0:
             return 0, 1, 0, 0
-        rad = np.arccos(self[0]) * 2
-        imaginary_factor = np.sin(rad / 2)
-        if abs(imaginary_factor) < 1e-8:
+
+        q0 = self.q[0]
+        rad = 2.0*np.arccos(q0)
+
+        sin_part = np.sqrt(1.0-q0*q0)
+        if abs(sin_part) < 1e-8:
             return 0, 1, 0, 0
-        x = self._q[1] / imaginary_factor
-        y = self._q[2] / imaginary_factor
-        z = self._q[3] / imaginary_factor
+
+        x = self._q[1] / sin_part
+        y = self._q[2] / sin_part
+        z = self._q[3] / sin_part
+
         return rad, x, y, z
 
     def rotate_axes(self, v):

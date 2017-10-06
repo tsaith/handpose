@@ -1,6 +1,6 @@
 import numpy as np
-from .madgwickahrs import MadgwickAHRS
-from .quaternion import Quaternion
+from .python_quaternion import Quaternion
+from .madgwick import FastMadgwick, MadgwickAHRS
 
 class SensorFusion:
     """
@@ -82,7 +82,7 @@ class SensorFusion:
 def init_madgwick(dt, beta, num_iter=100):
 
     sub_dt = dt / num_iter
-    q0 = Quaternion([1, 0, 0, 0])
+    q0 = Quaternion(1, 0, 0, 0)
     fuse = MadgwickAHRS(sampleperiod=sub_dt,
                         quaternion=q0, beta=beta)
 

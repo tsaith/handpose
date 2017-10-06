@@ -4,6 +4,7 @@
 ### Packages required
 
 * [Numpy](http://www.numpy.org/)
+* [numpy-quaternion](https://github.com/moble/quaternion)
 * [SciPy](http://www.scipy.org/)
 * [Ipython](http://ipython.org/)
 * [scikit-learn](http://scikit-learn.org/stable/)
