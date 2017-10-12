@@ -28,28 +28,22 @@
 #define sampleFreqDef   512.0f          // sample frequency in Hz
 #define betaDef         0.1f            // 2 * proportional gain
 
-
 //============================================================================================
 // Functions
 
 //-------------------------------------------------------------------------------------------
 // AHRS algorithm update
-Madgwick::Madgwick(float samplePeriod, float beta, float q0, float q1, float q2, float q3) {
+//Madgwick::Madgwick(float samplePeriod, float beta, float q0, float q1, float q2, float q3) {
+Madgwick::Madgwick(float samplePeriod, float beta) {
 	this->invSampleFreq = samplePeriod;
 	this->beta = beta;
-	this->q0 = q0;
-	this->q1 = q1;
-	this->q2 = q2;
-	this->q3 = q3;
+        quat = {q0, q1, q2, q3};
 	anglesComputed = 0;
 }
 
 Madgwick::Madgwick() {
 	beta = betaDef;
-	q0 = 1.0f;
-	q1 = 0.0f;
-	q2 = 0.0f;
-	q3 = 0.0f;
+        quat = {q0, q1, q2, q3};
 	invSampleFreq = 1.0f / sampleFreqDef;
 	anglesComputed = 0;
 }
@@ -67,10 +61,12 @@ void Madgwick::update(float gx, float gy, float gz, float ax, float ay, float az
 		return;
 	}
 
+	/* 
 	// Convert gyroscope degrees/sec to radians/sec
 	gx *= 0.0174533f;
 	gy *= 0.0174533f;
 	gz *= 0.0174533f;
+	*/ 
 
 	// Rate of change of quaternion from gyroscope
 	qDot1 = 0.5f * (-q1 * gx - q2 * gy - q3 * gz);

@@ -1,5 +1,4 @@
 import numpy as np
-from .python_quaternion import Quaternion
 from .madgwick import FastMadgwick, MadgwickAHRS
 
 class SensorFusion:
@@ -21,7 +20,7 @@ class SensorFusion:
             Number of iterations.
         """
 
-        self._fuse = init_madgwick(dt, beta, num_iter=100)
+        self._fuse = init_madgwick(dt, beta, num_iter=num_iter)
         self._dt = dt
         self._beta = beta
         self._num_iter = num_iter
@@ -30,11 +29,10 @@ class SensorFusion:
         """
         Update of fusion with 6-axis IMU.
         """
-
         qs = []
         for i in range(self.num_iter):
             self.fuse.update_imu(gyro, accel)
-            qs.append(self.fuse.quaternion)
+            qs.append(self.fuse.quat)
 
         return qs
 
@@ -42,22 +40,20 @@ class SensorFusion:
         """
         Update of fusion with 9-axis motion sensor.
         """
-
         qs = []
         for i in range(self.num_iter):
             self.fuse.update_ahrs(gyro, accel, mag)
-            qs.append(self.fuse.quaternion)
+            qs.append(self.fuse.quat)
 
         return qs
-
 
     @property
     def fuse(self):
         return self._fuse
 
     @fuse.setter
-    def fuse(self, fuse_in):
-        self._fuse = fuse_in
+    def fuse(self, value):
+        self._fuse = value
 
     @property
     def dt(self):
@@ -73,18 +69,13 @@ class SensorFusion:
 
     @property
     def quat(self):
-        return self.fuse.quaternion
-
-    @quat.setter
-    def quat(self, value):
-        self.fuse.quaternion = value
+        return self.fuse.quat
 
 def init_madgwick(dt, beta, num_iter=100):
 
     sub_dt = dt / num_iter
-    q0 = Quaternion(1, 0, 0, 0)
-    fuse = MadgwickAHRS(sampleperiod=sub_dt,
-                        quaternion=q0, beta=beta)
+    #fuse = FastMadgwick(sub_dt, beta)
+    fuse = MadgwickAHRS(sub_dt, beta)
 
     return fuse
 

@@ -2,16 +2,20 @@ import cython
 import numpy as np
 cimport numpy as np
 from libcpp.vector cimport vector
-cimport wrap
+cimport fast_madgwick
 
+from ..python_quaternion import Quaternion
+#from ..fast_quaternion import Quaternion
+
+# Define type
 ctypedef np.float64_t DTYPE_t
 
 cdef class FastMadgwick:
     cdef Madgwick* target
 
-    def __cinit__(self, float sample_period, float beta, np.ndarray[DTYPE_t, ndim=1] q):
+    def __cinit__(self, float sample_period, float beta):
 
-        self.target = new Madgwick(sample_period, beta, q[0], q[1], q[2], q[3])
+        self.target = new Madgwick(sample_period, beta)
 
     def __dealloc__(self):
         del self.target
@@ -40,3 +44,19 @@ cdef class FastMadgwick:
 
     def get_yaw(self):
         return self.target.getYawRadians()
+
+    def get_quat_array(self):
+
+        cdef vector[float] cpp_array = self.target.get_quat_array()
+        cdef int ndim = 4
+        cdef int i
+        array = np.zeros(ndim, dtype=np.float64)
+        for i in range(ndim):
+            array[i] = cpp_array[i]
+
+        return array
+
+    @property
+    def quat(self):
+        return Quaternion.from_array(self.get_quat_array())
+

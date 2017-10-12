@@ -135,6 +135,10 @@ class Quaternion:
         return Quaternion(np.cos(0.5*rad), x*s, y*s, z*s)
 
     @staticmethod
+    def from_array(a):
+        return Quaternion(a[0], a[1], a[2], a[3])
+
+    @staticmethod
     def from_vector(v):
         return Quaternion(0, v[0], v[1], v[2])
 

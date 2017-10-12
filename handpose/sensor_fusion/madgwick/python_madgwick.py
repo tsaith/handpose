@@ -52,24 +52,22 @@ def ahrs_step(q, accelerometer, magnetometer, b):
 
 
 class MadgwickAHRS:
-    samplePeriod = 1/256
-    quaternion = Quaternion(1, 0, 0, 0)
-    beta = 1
 
-    def __init__(self, sampleperiod=None, quaternion=None, beta=None):
+    def __init__(self, sample_period=None, beta=None):
         """
         Initialize the class with the given parameters.
-        :param sampleperiod: The sample period
+        :param sample_period: The sample period
         :param quaternion: Initial quaternion
         :param beta: Algorithm gain beta
         :return:
         """
-        if sampleperiod is not None:
-            self.samplePeriod = sampleperiod
-        if quaternion is not None:
-            self.quaternion = quaternion
+        self.quaternion = Quaternion(1, 0, 0, 0)
+
+        if sample_period is not None:
+            self.samplePeriod = sample_period
         if beta is not None:
             self.beta = beta
+
     def update_ahrs(self, gyroscope, accelerometer, magnetometer):
         """
         Perform one update step with data from a AHRS sensor array
@@ -165,3 +163,6 @@ class MadgwickAHRS:
         q += qdot * self.samplePeriod
         self.quaternion = Quaternion(q / norm(q))  # normalise quaternion
 
+    @property
+    def quat(self):
+        return self.quaternion
