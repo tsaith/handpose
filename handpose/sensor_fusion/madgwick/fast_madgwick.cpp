@@ -787,8 +787,8 @@ static const char *__pyx_filename;
 
 
 static const char *__pyx_f[] = {
-  "fast_madgwick.pyx",
   "stringsource",
+  "fast_madgwick.pyx",
   "__init__.pxd",
   "type.pxd",
 };
@@ -1487,6 +1487,9 @@ static void __Pyx_CppExn2PyErr() {
 /* CIntToPy.proto */
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value);
 
+/* CIntToPy.proto */
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value);
+
 /* RealImag.proto */
 #if CYTHON_CCOMPLEX
   #ifdef __cplusplus
@@ -1591,9 +1594,6 @@ static CYTHON_INLINE PyObject* __Pyx_PyInt_From_enum__NPY_TYPES(enum NPY_TYPES v
 /* CIntFromPy.proto */
 static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *);
 
-/* CIntToPy.proto */
-static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value);
-
 /* CIntFromPy.proto */
 static CYTHON_INLINE long __Pyx_PyInt_As_long(PyObject *);
 
@@ -1671,9 +1671,9 @@ static __Pyx_TypeInfo __Pyx_TypeInfo_nn___pyx_t_8handpose_13sensor_fusion_8madgw
 int __pyx_module_is_main_handpose__sensor_fusion__madgwick__fast_madgwick = 0;
 
 /* Implementation of 'handpose.sensor_fusion.madgwick.fast_madgwick' */
-static PyObject *__pyx_builtin_range;
 static PyObject *__pyx_builtin_TypeError;
 static PyObject *__pyx_builtin_ValueError;
+static PyObject *__pyx_builtin_range;
 static PyObject *__pyx_builtin_RuntimeError;
 static PyObject *__pyx_builtin_ImportError;
 static const char __pyx_k_np[] = "np";
@@ -1703,8 +1703,8 @@ static const char __pyx_k_RuntimeError[] = "RuntimeError";
 static const char __pyx_k_reduce_cython[] = "__reduce_cython__";
 static const char __pyx_k_sample_period[] = "sample_period";
 static const char __pyx_k_get_quat_array[] = "get_quat_array";
+static const char __pyx_k_fast_quaternion[] = "fast_quaternion";
 static const char __pyx_k_setstate_cython[] = "__setstate_cython__";
-static const char __pyx_k_python_quaternion[] = "python_quaternion";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
 static const char __pyx_k_ndarray_is_not_C_contiguous[] = "ndarray is not C contiguous";
 static const char __pyx_k_numpy_core_multiarray_failed_to[] = "numpy.core.multiarray failed to import";
@@ -1727,6 +1727,7 @@ static PyObject *__pyx_n_s_accel;
 static PyObject *__pyx_n_s_beta;
 static PyObject *__pyx_n_s_cline_in_traceback;
 static PyObject *__pyx_n_s_dtype;
+static PyObject *__pyx_n_s_fast_quaternion;
 static PyObject *__pyx_n_s_float64;
 static PyObject *__pyx_n_s_from_array;
 static PyObject *__pyx_n_s_get_quat_array;
@@ -1743,7 +1744,6 @@ static PyObject *__pyx_n_s_np;
 static PyObject *__pyx_n_s_numpy;
 static PyObject *__pyx_kp_s_numpy_core_multiarray_failed_to;
 static PyObject *__pyx_kp_s_numpy_core_umath_failed_to_impor;
-static PyObject *__pyx_n_s_python_quaternion;
 static PyObject *__pyx_n_s_range;
 static PyObject *__pyx_n_s_reduce;
 static PyObject *__pyx_n_s_reduce_cython;
@@ -1763,8 +1763,9 @@ static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12
 static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12FastMadgwick_12get_yaw(struct __pyx_obj_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_FastMadgwick *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12FastMadgwick_14get_quat_array(struct __pyx_obj_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_FastMadgwick *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12FastMadgwick_4quat___get__(struct __pyx_obj_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_FastMadgwick *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12FastMadgwick_16__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_FastMadgwick *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12FastMadgwick_18__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_FastMadgwick *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
+static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12FastMadgwick_16get_counter(struct __pyx_obj_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_FastMadgwick *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12FastMadgwick_18__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_FastMadgwick *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12FastMadgwick_20__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_FastMadgwick *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
 static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info, int __pyx_v_flags); /* proto */
 static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info); /* proto */
 static PyObject *__pyx_tp_new_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_FastMadgwick(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
@@ -1819,11 +1820,11 @@ static int __pyx_pw_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12FastMa
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_beta)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 2, 2, 1); __PYX_ERR(0, 16, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 2, 2, 1); __PYX_ERR(1, 16, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__cinit__") < 0)) __PYX_ERR(0, 16, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__cinit__") < 0)) __PYX_ERR(1, 16, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -1831,12 +1832,12 @@ static int __pyx_pw_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12FastMa
       values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
       values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
     }
-    __pyx_v_sample_period = __pyx_PyFloat_AsFloat(values[0]); if (unlikely((__pyx_v_sample_period == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 16, __pyx_L3_error)
-    __pyx_v_beta = __pyx_PyFloat_AsFloat(values[1]); if (unlikely((__pyx_v_beta == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 16, __pyx_L3_error)
+    __pyx_v_sample_period = __pyx_PyFloat_AsFloat(values[0]); if (unlikely((__pyx_v_sample_period == (float)-1) && PyErr_Occurred())) __PYX_ERR(1, 16, __pyx_L3_error)
+    __pyx_v_beta = __pyx_PyFloat_AsFloat(values[1]); if (unlikely((__pyx_v_beta == (float)-1) && PyErr_Occurred())) __PYX_ERR(1, 16, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 16, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 16, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("handpose.sensor_fusion.madgwick.fast_madgwick.FastMadgwick.__cinit__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -1866,7 +1867,7 @@ static int __pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12FastMa
     __pyx_t_1 = new Madgwick(__pyx_v_sample_period, __pyx_v_beta);
   } catch(...) {
     __Pyx_CppExn2PyErr();
-    __PYX_ERR(0, 18, __pyx_L1_error)
+    __PYX_ERR(1, 18, __pyx_L1_error)
   }
   __pyx_v_self->target = __pyx_t_1;
 
@@ -1975,17 +1976,17 @@ static PyObject *__pyx_pw_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_accel)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("update_ahrs", 1, 3, 3, 1); __PYX_ERR(0, 23, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("update_ahrs", 1, 3, 3, 1); __PYX_ERR(1, 23, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_mag)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("update_ahrs", 1, 3, 3, 2); __PYX_ERR(0, 23, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("update_ahrs", 1, 3, 3, 2); __PYX_ERR(1, 23, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "update_ahrs") < 0)) __PYX_ERR(0, 23, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "update_ahrs") < 0)) __PYX_ERR(1, 23, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 3) {
       goto __pyx_L5_argtuple_error;
@@ -2000,15 +2001,15 @@ static PyObject *__pyx_pw_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("update_ahrs", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 23, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("update_ahrs", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 23, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("handpose.sensor_fusion.madgwick.fast_madgwick.FastMadgwick.update_ahrs", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_gyro), __pyx_ptype_5numpy_ndarray, 1, "gyro", 0))) __PYX_ERR(0, 24, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_accel), __pyx_ptype_5numpy_ndarray, 1, "accel", 0))) __PYX_ERR(0, 25, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_mag), __pyx_ptype_5numpy_ndarray, 1, "mag", 0))) __PYX_ERR(0, 26, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_gyro), __pyx_ptype_5numpy_ndarray, 1, "gyro", 0))) __PYX_ERR(1, 24, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_accel), __pyx_ptype_5numpy_ndarray, 1, "accel", 0))) __PYX_ERR(1, 25, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_mag), __pyx_ptype_5numpy_ndarray, 1, "mag", 0))) __PYX_ERR(1, 26, __pyx_L1_error)
   __pyx_r = __pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12FastMadgwick_4update_ahrs(((struct __pyx_obj_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_FastMadgwick *)__pyx_v_self), __pyx_v_gyro, __pyx_v_accel, __pyx_v_mag);
 
   /* function exit code */
@@ -2054,17 +2055,17 @@ static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12
   __pyx_pybuffernd_mag.rcbuffer = &__pyx_pybuffer_mag;
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_gyro.rcbuffer->pybuffer, (PyObject*)__pyx_v_gyro, &__Pyx_TypeInfo_nn___pyx_t_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 23, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_gyro.rcbuffer->pybuffer, (PyObject*)__pyx_v_gyro, &__Pyx_TypeInfo_nn___pyx_t_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(1, 23, __pyx_L1_error)
   }
   __pyx_pybuffernd_gyro.diminfo[0].strides = __pyx_pybuffernd_gyro.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_gyro.diminfo[0].shape = __pyx_pybuffernd_gyro.rcbuffer->pybuffer.shape[0];
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_accel.rcbuffer->pybuffer, (PyObject*)__pyx_v_accel, &__Pyx_TypeInfo_nn___pyx_t_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 23, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_accel.rcbuffer->pybuffer, (PyObject*)__pyx_v_accel, &__Pyx_TypeInfo_nn___pyx_t_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(1, 23, __pyx_L1_error)
   }
   __pyx_pybuffernd_accel.diminfo[0].strides = __pyx_pybuffernd_accel.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_accel.diminfo[0].shape = __pyx_pybuffernd_accel.rcbuffer->pybuffer.shape[0];
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_mag.rcbuffer->pybuffer, (PyObject*)__pyx_v_mag, &__Pyx_TypeInfo_nn___pyx_t_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 23, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_mag.rcbuffer->pybuffer, (PyObject*)__pyx_v_mag, &__Pyx_TypeInfo_nn___pyx_t_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(1, 23, __pyx_L1_error)
   }
   __pyx_pybuffernd_mag.diminfo[0].strides = __pyx_pybuffernd_mag.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_mag.diminfo[0].shape = __pyx_pybuffernd_mag.rcbuffer->pybuffer.shape[0];
 
@@ -2083,7 +2084,7 @@ static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12
   } else if (unlikely(__pyx_t_1 >= __pyx_pybuffernd_gyro.diminfo[0].shape)) __pyx_t_2 = 0;
   if (unlikely(__pyx_t_2 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_2);
-    __PYX_ERR(0, 28, __pyx_L1_error)
+    __PYX_ERR(1, 28, __pyx_L1_error)
   }
   __pyx_t_3 = 1;
   __pyx_t_2 = -1;
@@ -2093,7 +2094,7 @@ static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12
   } else if (unlikely(__pyx_t_3 >= __pyx_pybuffernd_gyro.diminfo[0].shape)) __pyx_t_2 = 0;
   if (unlikely(__pyx_t_2 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_2);
-    __PYX_ERR(0, 28, __pyx_L1_error)
+    __PYX_ERR(1, 28, __pyx_L1_error)
   }
   __pyx_t_4 = 2;
   __pyx_t_2 = -1;
@@ -2103,7 +2104,7 @@ static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12
   } else if (unlikely(__pyx_t_4 >= __pyx_pybuffernd_gyro.diminfo[0].shape)) __pyx_t_2 = 0;
   if (unlikely(__pyx_t_2 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_2);
-    __PYX_ERR(0, 28, __pyx_L1_error)
+    __PYX_ERR(1, 28, __pyx_L1_error)
   }
 
   /* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":29
@@ -2121,7 +2122,7 @@ static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12
   } else if (unlikely(__pyx_t_5 >= __pyx_pybuffernd_accel.diminfo[0].shape)) __pyx_t_2 = 0;
   if (unlikely(__pyx_t_2 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_2);
-    __PYX_ERR(0, 29, __pyx_L1_error)
+    __PYX_ERR(1, 29, __pyx_L1_error)
   }
   __pyx_t_6 = 1;
   __pyx_t_2 = -1;
@@ -2131,7 +2132,7 @@ static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12
   } else if (unlikely(__pyx_t_6 >= __pyx_pybuffernd_accel.diminfo[0].shape)) __pyx_t_2 = 0;
   if (unlikely(__pyx_t_2 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_2);
-    __PYX_ERR(0, 29, __pyx_L1_error)
+    __PYX_ERR(1, 29, __pyx_L1_error)
   }
   __pyx_t_7 = 2;
   __pyx_t_2 = -1;
@@ -2141,7 +2142,7 @@ static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12
   } else if (unlikely(__pyx_t_7 >= __pyx_pybuffernd_accel.diminfo[0].shape)) __pyx_t_2 = 0;
   if (unlikely(__pyx_t_2 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_2);
-    __PYX_ERR(0, 29, __pyx_L1_error)
+    __PYX_ERR(1, 29, __pyx_L1_error)
   }
 
   /* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":30
@@ -2159,7 +2160,7 @@ static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12
   } else if (unlikely(__pyx_t_8 >= __pyx_pybuffernd_mag.diminfo[0].shape)) __pyx_t_2 = 0;
   if (unlikely(__pyx_t_2 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_2);
-    __PYX_ERR(0, 30, __pyx_L1_error)
+    __PYX_ERR(1, 30, __pyx_L1_error)
   }
   __pyx_t_9 = 1;
   __pyx_t_2 = -1;
@@ -2169,7 +2170,7 @@ static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12
   } else if (unlikely(__pyx_t_9 >= __pyx_pybuffernd_mag.diminfo[0].shape)) __pyx_t_2 = 0;
   if (unlikely(__pyx_t_2 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_2);
-    __PYX_ERR(0, 30, __pyx_L1_error)
+    __PYX_ERR(1, 30, __pyx_L1_error)
   }
   __pyx_t_10 = 2;
   __pyx_t_2 = -1;
@@ -2179,7 +2180,7 @@ static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12
   } else if (unlikely(__pyx_t_10 >= __pyx_pybuffernd_mag.diminfo[0].shape)) __pyx_t_2 = 0;
   if (unlikely(__pyx_t_2 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_2);
-    __PYX_ERR(0, 30, __pyx_L1_error)
+    __PYX_ERR(1, 30, __pyx_L1_error)
   }
 
   /* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":28
@@ -2263,11 +2264,11 @@ static PyObject *__pyx_pw_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_accel)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("update_imu", 1, 2, 2, 1); __PYX_ERR(0, 32, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("update_imu", 1, 2, 2, 1); __PYX_ERR(1, 32, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "update_imu") < 0)) __PYX_ERR(0, 32, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "update_imu") < 0)) __PYX_ERR(1, 32, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -2280,14 +2281,14 @@ static PyObject *__pyx_pw_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("update_imu", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 32, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("update_imu", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 32, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("handpose.sensor_fusion.madgwick.fast_madgwick.FastMadgwick.update_imu", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_gyro), __pyx_ptype_5numpy_ndarray, 1, "gyro", 0))) __PYX_ERR(0, 33, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_accel), __pyx_ptype_5numpy_ndarray, 1, "accel", 0))) __PYX_ERR(0, 34, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_gyro), __pyx_ptype_5numpy_ndarray, 1, "gyro", 0))) __PYX_ERR(1, 33, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_accel), __pyx_ptype_5numpy_ndarray, 1, "accel", 0))) __PYX_ERR(1, 34, __pyx_L1_error)
   __pyx_r = __pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12FastMadgwick_6update_imu(((struct __pyx_obj_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_FastMadgwick *)__pyx_v_self), __pyx_v_gyro, __pyx_v_accel);
 
   /* function exit code */
@@ -2324,12 +2325,12 @@ static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12
   __pyx_pybuffernd_accel.rcbuffer = &__pyx_pybuffer_accel;
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_gyro.rcbuffer->pybuffer, (PyObject*)__pyx_v_gyro, &__Pyx_TypeInfo_nn___pyx_t_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 32, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_gyro.rcbuffer->pybuffer, (PyObject*)__pyx_v_gyro, &__Pyx_TypeInfo_nn___pyx_t_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(1, 32, __pyx_L1_error)
   }
   __pyx_pybuffernd_gyro.diminfo[0].strides = __pyx_pybuffernd_gyro.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_gyro.diminfo[0].shape = __pyx_pybuffernd_gyro.rcbuffer->pybuffer.shape[0];
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_accel.rcbuffer->pybuffer, (PyObject*)__pyx_v_accel, &__Pyx_TypeInfo_nn___pyx_t_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 32, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_accel.rcbuffer->pybuffer, (PyObject*)__pyx_v_accel, &__Pyx_TypeInfo_nn___pyx_t_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(1, 32, __pyx_L1_error)
   }
   __pyx_pybuffernd_accel.diminfo[0].strides = __pyx_pybuffernd_accel.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_accel.diminfo[0].shape = __pyx_pybuffernd_accel.rcbuffer->pybuffer.shape[0];
 
@@ -2348,7 +2349,7 @@ static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12
   } else if (unlikely(__pyx_t_1 >= __pyx_pybuffernd_gyro.diminfo[0].shape)) __pyx_t_2 = 0;
   if (unlikely(__pyx_t_2 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_2);
-    __PYX_ERR(0, 36, __pyx_L1_error)
+    __PYX_ERR(1, 36, __pyx_L1_error)
   }
   __pyx_t_3 = 1;
   __pyx_t_2 = -1;
@@ -2358,7 +2359,7 @@ static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12
   } else if (unlikely(__pyx_t_3 >= __pyx_pybuffernd_gyro.diminfo[0].shape)) __pyx_t_2 = 0;
   if (unlikely(__pyx_t_2 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_2);
-    __PYX_ERR(0, 36, __pyx_L1_error)
+    __PYX_ERR(1, 36, __pyx_L1_error)
   }
   __pyx_t_4 = 2;
   __pyx_t_2 = -1;
@@ -2368,7 +2369,7 @@ static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12
   } else if (unlikely(__pyx_t_4 >= __pyx_pybuffernd_gyro.diminfo[0].shape)) __pyx_t_2 = 0;
   if (unlikely(__pyx_t_2 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_2);
-    __PYX_ERR(0, 36, __pyx_L1_error)
+    __PYX_ERR(1, 36, __pyx_L1_error)
   }
 
   /* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":37
@@ -2386,7 +2387,7 @@ static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12
   } else if (unlikely(__pyx_t_5 >= __pyx_pybuffernd_accel.diminfo[0].shape)) __pyx_t_2 = 0;
   if (unlikely(__pyx_t_2 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_2);
-    __PYX_ERR(0, 37, __pyx_L1_error)
+    __PYX_ERR(1, 37, __pyx_L1_error)
   }
   __pyx_t_6 = 1;
   __pyx_t_2 = -1;
@@ -2396,7 +2397,7 @@ static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12
   } else if (unlikely(__pyx_t_6 >= __pyx_pybuffernd_accel.diminfo[0].shape)) __pyx_t_2 = 0;
   if (unlikely(__pyx_t_2 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_2);
-    __PYX_ERR(0, 37, __pyx_L1_error)
+    __PYX_ERR(1, 37, __pyx_L1_error)
   }
   __pyx_t_7 = 2;
   __pyx_t_2 = -1;
@@ -2406,7 +2407,7 @@ static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12
   } else if (unlikely(__pyx_t_7 >= __pyx_pybuffernd_accel.diminfo[0].shape)) __pyx_t_2 = 0;
   if (unlikely(__pyx_t_2 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_2);
-    __PYX_ERR(0, 37, __pyx_L1_error)
+    __PYX_ERR(1, 37, __pyx_L1_error)
   }
 
   /* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":36
@@ -2484,7 +2485,7 @@ static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12
  *     def get_pitch(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyFloat_FromDouble(__pyx_v_self->target->getRollRadians()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 40, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble(__pyx_v_self->target->getRollRadians()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 40, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -2544,7 +2545,7 @@ static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12
  *     def get_yaw(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyFloat_FromDouble(__pyx_v_self->target->getPitchRadians()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 43, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble(__pyx_v_self->target->getPitchRadians()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 43, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -2604,7 +2605,7 @@ static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12
  *     def get_quat_array(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyFloat_FromDouble(__pyx_v_self->target->getYawRadians()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 46, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble(__pyx_v_self->target->getYawRadians()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 46, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -2633,12 +2634,13 @@ static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12
  *         return self.target.getYawRadians()
  * 
  *     def get_quat_array(self):             # <<<<<<<<<<<<<<
- * 
+ *         '''
  *         cdef vector[float] cpp_array = self.target.get_quat_array()
  */
 
 /* Python wrapper */
 static PyObject *__pyx_pw_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12FastMadgwick_15get_quat_array(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static char __pyx_doc_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12FastMadgwick_14get_quat_array[] = "\n        cdef vector[float] cpp_array = self.target.get_quat_array()\n        cdef int ndim = 4\n        cdef int i\n        array = np.zeros(ndim, dtype=np.float64)\n        for i in range(ndim):\n            array[i] = cpp_array[i]\n\n        ";
 static PyObject *__pyx_pw_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12FastMadgwick_15get_quat_array(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
@@ -2651,9 +2653,7 @@ static PyObject *__pyx_pw_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12
 }
 
 static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12FastMadgwick_14get_quat_array(struct __pyx_obj_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_FastMadgwick *__pyx_v_self) {
-  std::vector<float>  __pyx_v_cpp_array;
   int __pyx_v_ndim;
-  int __pyx_v_i;
   PyObject *__pyx_v_array = NULL;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
@@ -2662,57 +2662,46 @@ static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12
   PyObject *__pyx_t_3 = NULL;
   PyObject *__pyx_t_4 = NULL;
   PyObject *__pyx_t_5 = NULL;
-  int __pyx_t_6;
-  int __pyx_t_7;
   __Pyx_RefNannySetupContext("get_quat_array", 0);
 
-  /* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":50
- *     def get_quat_array(self):
+  /* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":58
  * 
- *         cdef vector[float] cpp_array = self.target.get_quat_array()             # <<<<<<<<<<<<<<
- *         cdef int ndim = 4
- *         cdef int i
- */
-  __pyx_v_cpp_array = __pyx_v_self->target->get_quat_array();
-
-  /* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":51
- * 
- *         cdef vector[float] cpp_array = self.target.get_quat_array()
+ *         '''
  *         cdef int ndim = 4             # <<<<<<<<<<<<<<
- *         cdef int i
  *         array = np.zeros(ndim, dtype=np.float64)
+ * 
  */
   __pyx_v_ndim = 4;
 
-  /* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":53
+  /* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":59
+ *         '''
  *         cdef int ndim = 4
- *         cdef int i
  *         array = np.zeros(ndim, dtype=np.float64)             # <<<<<<<<<<<<<<
- *         for i in range(ndim):
- *             array[i] = cpp_array[i]
+ * 
+ *         array[0] = self.target.get_q0()
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 53, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 59, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_zeros); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 53, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_zeros); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 59, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_ndim); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 53, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_ndim); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 59, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 53, __pyx_L1_error)
+  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 59, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_GIVEREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_1);
   __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 53, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 59, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 53, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 59, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_float64); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 53, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_float64); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 59, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, __pyx_t_5) < 0) __PYX_ERR(0, 53, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, __pyx_t_5) < 0) __PYX_ERR(1, 59, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_3, __pyx_t_1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 53, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_3, __pyx_t_1); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 59, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -2720,32 +2709,56 @@ static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12
   __pyx_v_array = __pyx_t_5;
   __pyx_t_5 = 0;
 
-  /* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":54
- *         cdef int i
+  /* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":61
  *         array = np.zeros(ndim, dtype=np.float64)
- *         for i in range(ndim):             # <<<<<<<<<<<<<<
- *             array[i] = cpp_array[i]
+ * 
+ *         array[0] = self.target.get_q0()             # <<<<<<<<<<<<<<
+ *         array[1] = self.target.get_q1()
+ *         array[2] = self.target.get_q2()
+ */
+  __pyx_t_5 = PyFloat_FromDouble(__pyx_v_self->target->get_q0()); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 61, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  if (unlikely(__Pyx_SetItemInt(__pyx_v_array, 0, __pyx_t_5, long, 1, __Pyx_PyInt_From_long, 0, 0, 1) < 0)) __PYX_ERR(1, 61, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+
+  /* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":62
+ * 
+ *         array[0] = self.target.get_q0()
+ *         array[1] = self.target.get_q1()             # <<<<<<<<<<<<<<
+ *         array[2] = self.target.get_q2()
+ *         array[3] = self.target.get_q3()
+ */
+  __pyx_t_5 = PyFloat_FromDouble(__pyx_v_self->target->get_q1()); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 62, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  if (unlikely(__Pyx_SetItemInt(__pyx_v_array, 1, __pyx_t_5, long, 1, __Pyx_PyInt_From_long, 0, 0, 1) < 0)) __PYX_ERR(1, 62, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+
+  /* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":63
+ *         array[0] = self.target.get_q0()
+ *         array[1] = self.target.get_q1()
+ *         array[2] = self.target.get_q2()             # <<<<<<<<<<<<<<
+ *         array[3] = self.target.get_q3()
  * 
  */
-  __pyx_t_6 = __pyx_v_ndim;
-  for (__pyx_t_7 = 0; __pyx_t_7 < __pyx_t_6; __pyx_t_7+=1) {
-    __pyx_v_i = __pyx_t_7;
+  __pyx_t_5 = PyFloat_FromDouble(__pyx_v_self->target->get_q2()); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 63, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  if (unlikely(__Pyx_SetItemInt(__pyx_v_array, 2, __pyx_t_5, long, 1, __Pyx_PyInt_From_long, 0, 0, 1) < 0)) __PYX_ERR(1, 63, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-    /* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":55
- *         array = np.zeros(ndim, dtype=np.float64)
- *         for i in range(ndim):
- *             array[i] = cpp_array[i]             # <<<<<<<<<<<<<<
+  /* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":64
+ *         array[1] = self.target.get_q1()
+ *         array[2] = self.target.get_q2()
+ *         array[3] = self.target.get_q3()             # <<<<<<<<<<<<<<
  * 
  *         return array
  */
-    __pyx_t_5 = PyFloat_FromDouble((__pyx_v_cpp_array[__pyx_v_i])); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 55, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
-    if (unlikely(__Pyx_SetItemInt(__pyx_v_array, __pyx_v_i, __pyx_t_5, int, 1, __Pyx_PyInt_From_int, 0, 1, 1) < 0)) __PYX_ERR(0, 55, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  }
+  __pyx_t_5 = PyFloat_FromDouble(__pyx_v_self->target->get_q3()); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 64, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  if (unlikely(__Pyx_SetItemInt(__pyx_v_array, 3, __pyx_t_5, long, 1, __Pyx_PyInt_From_long, 0, 0, 1) < 0)) __PYX_ERR(1, 64, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-  /* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":57
- *             array[i] = cpp_array[i]
+  /* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":66
+ *         array[3] = self.target.get_q3()
  * 
  *         return array             # <<<<<<<<<<<<<<
  * 
@@ -2760,7 +2773,7 @@ static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12
  *         return self.target.getYawRadians()
  * 
  *     def get_quat_array(self):             # <<<<<<<<<<<<<<
- * 
+ *         '''
  *         cdef vector[float] cpp_array = self.target.get_quat_array()
  */
 
@@ -2780,7 +2793,7 @@ static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12
   return __pyx_r;
 }
 
-/* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":60
+/* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":69
  * 
  *     @property
  *     def quat(self):             # <<<<<<<<<<<<<<
@@ -2811,19 +2824,20 @@ static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12
   PyObject *__pyx_t_5 = NULL;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":61
+  /* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":70
  *     @property
  *     def quat(self):
  *         return Quaternion.from_array(self.get_quat_array())             # <<<<<<<<<<<<<<
  * 
+ *     def get_counter(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_Quaternion); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 61, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_Quaternion); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 70, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_from_array); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 61, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_from_array); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 70, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_quat_array); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 61, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_quat_array); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 70, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __pyx_t_5 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_4))) {
@@ -2836,10 +2850,10 @@ static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12
     }
   }
   if (__pyx_t_5) {
-    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 61, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 70, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   } else {
-    __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 61, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 70, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
@@ -2854,14 +2868,14 @@ static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12
     }
   }
   if (!__pyx_t_4) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 61, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 70, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_GOTREF(__pyx_t_1);
   } else {
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_3)) {
       PyObject *__pyx_temp[2] = {__pyx_t_4, __pyx_t_2};
-      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 61, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 70, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -2870,20 +2884,20 @@ static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
       PyObject *__pyx_temp[2] = {__pyx_t_4, __pyx_t_2};
-      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 61, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 70, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     } else
     #endif
     {
-      __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 61, __pyx_L1_error)
+      __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 70, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_4); __pyx_t_4 = NULL;
       __Pyx_GIVEREF(__pyx_t_2);
       PyTuple_SET_ITEM(__pyx_t_5, 0+1, __pyx_t_2);
       __pyx_t_2 = 0;
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 61, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 70, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     }
@@ -2893,7 +2907,7 @@ static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":60
+  /* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":69
  * 
  *     @property
  *     def quat(self):             # <<<<<<<<<<<<<<
@@ -2916,6 +2930,62 @@ static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12
   return __pyx_r;
 }
 
+/* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":72
+ *         return Quaternion.from_array(self.get_quat_array())
+ * 
+ *     def get_counter(self):             # <<<<<<<<<<<<<<
+ *         return self.target.get_counter()
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12FastMadgwick_17get_counter(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12FastMadgwick_17get_counter(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("get_counter (wrapper)", 0);
+  __pyx_r = __pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12FastMadgwick_16get_counter(((struct __pyx_obj_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_FastMadgwick *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12FastMadgwick_16get_counter(struct __pyx_obj_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_FastMadgwick *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  __Pyx_RefNannySetupContext("get_counter", 0);
+
+  /* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":73
+ * 
+ *     def get_counter(self):
+ *         return self.target.get_counter()             # <<<<<<<<<<<<<<
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->target->get_counter()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 73, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":72
+ *         return Quaternion.from_array(self.get_quat_array())
+ * 
+ *     def get_counter(self):             # <<<<<<<<<<<<<<
+ *         return self.target.get_counter()
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("handpose.sensor_fusion.madgwick.fast_madgwick.FastMadgwick.get_counter", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
 /* "(tree fragment)":1
  * def __reduce_cython__(self):             # <<<<<<<<<<<<<<
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
@@ -2923,19 +2993,19 @@ static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12FastMadgwick_17__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12FastMadgwick_17__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12FastMadgwick_19__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12FastMadgwick_19__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__reduce_cython__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12FastMadgwick_16__reduce_cython__(((struct __pyx_obj_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_FastMadgwick *)__pyx_v_self));
+  __pyx_r = __pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12FastMadgwick_18__reduce_cython__(((struct __pyx_obj_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_FastMadgwick *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12FastMadgwick_16__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_FastMadgwick *__pyx_v_self) {
+static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12FastMadgwick_18__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_FastMadgwick *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -2947,11 +3017,11 @@ static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 2, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 2, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_Raise(__pyx_t_1, 0, 0, 0);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __PYX_ERR(1, 2, __pyx_L1_error)
+  __PYX_ERR(0, 2, __pyx_L1_error)
 
   /* "(tree fragment)":1
  * def __reduce_cython__(self):             # <<<<<<<<<<<<<<
@@ -2977,19 +3047,19 @@ static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12FastMadgwick_19__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state); /*proto*/
-static PyObject *__pyx_pw_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12FastMadgwick_19__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pw_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12FastMadgwick_21__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state); /*proto*/
+static PyObject *__pyx_pw_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12FastMadgwick_21__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__setstate_cython__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12FastMadgwick_18__setstate_cython__(((struct __pyx_obj_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_FastMadgwick *)__pyx_v_self), ((PyObject *)__pyx_v___pyx_state));
+  __pyx_r = __pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12FastMadgwick_20__setstate_cython__(((struct __pyx_obj_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_FastMadgwick *)__pyx_v_self), ((PyObject *)__pyx_v___pyx_state));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12FastMadgwick_18__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_FastMadgwick *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12FastMadgwick_20__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_FastMadgwick *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -3000,11 +3070,11 @@ static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")             # <<<<<<<<<<<<<<
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__2, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 4, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__2, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 4, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_Raise(__pyx_t_1, 0, 0, 0);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __PYX_ERR(1, 4, __pyx_L1_error)
+  __PYX_ERR(0, 4, __pyx_L1_error)
 
   /* "(tree fragment)":3
  * def __reduce_cython__(self):
@@ -5647,9 +5717,10 @@ static PyMethodDef __pyx_methods_8handpose_13sensor_fusion_8madgwick_13fast_madg
   {"get_roll", (PyCFunction)__pyx_pw_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12FastMadgwick_9get_roll, METH_NOARGS, 0},
   {"get_pitch", (PyCFunction)__pyx_pw_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12FastMadgwick_11get_pitch, METH_NOARGS, 0},
   {"get_yaw", (PyCFunction)__pyx_pw_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12FastMadgwick_13get_yaw, METH_NOARGS, 0},
-  {"get_quat_array", (PyCFunction)__pyx_pw_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12FastMadgwick_15get_quat_array, METH_NOARGS, 0},
-  {"__reduce_cython__", (PyCFunction)__pyx_pw_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12FastMadgwick_17__reduce_cython__, METH_NOARGS, 0},
-  {"__setstate_cython__", (PyCFunction)__pyx_pw_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12FastMadgwick_19__setstate_cython__, METH_O, 0},
+  {"get_quat_array", (PyCFunction)__pyx_pw_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12FastMadgwick_15get_quat_array, METH_NOARGS, __pyx_doc_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12FastMadgwick_14get_quat_array},
+  {"get_counter", (PyCFunction)__pyx_pw_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12FastMadgwick_17get_counter, METH_NOARGS, 0},
+  {"__reduce_cython__", (PyCFunction)__pyx_pw_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12FastMadgwick_19__reduce_cython__, METH_NOARGS, 0},
+  {"__setstate_cython__", (PyCFunction)__pyx_pw_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12FastMadgwick_21__setstate_cython__, METH_O, 0},
   {0, 0, 0, 0}
 };
 
@@ -5765,6 +5836,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_beta, __pyx_k_beta, sizeof(__pyx_k_beta), 0, 0, 1, 1},
   {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
   {&__pyx_n_s_dtype, __pyx_k_dtype, sizeof(__pyx_k_dtype), 0, 0, 1, 1},
+  {&__pyx_n_s_fast_quaternion, __pyx_k_fast_quaternion, sizeof(__pyx_k_fast_quaternion), 0, 0, 1, 1},
   {&__pyx_n_s_float64, __pyx_k_float64, sizeof(__pyx_k_float64), 0, 0, 1, 1},
   {&__pyx_n_s_from_array, __pyx_k_from_array, sizeof(__pyx_k_from_array), 0, 0, 1, 1},
   {&__pyx_n_s_get_quat_array, __pyx_k_get_quat_array, sizeof(__pyx_k_get_quat_array), 0, 0, 1, 1},
@@ -5781,7 +5853,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_numpy, __pyx_k_numpy, sizeof(__pyx_k_numpy), 0, 0, 1, 1},
   {&__pyx_kp_s_numpy_core_multiarray_failed_to, __pyx_k_numpy_core_multiarray_failed_to, sizeof(__pyx_k_numpy_core_multiarray_failed_to), 0, 0, 1, 0},
   {&__pyx_kp_s_numpy_core_umath_failed_to_impor, __pyx_k_numpy_core_umath_failed_to_impor, sizeof(__pyx_k_numpy_core_umath_failed_to_impor), 0, 0, 1, 0},
-  {&__pyx_n_s_python_quaternion, __pyx_k_python_quaternion, sizeof(__pyx_k_python_quaternion), 0, 0, 1, 1},
   {&__pyx_n_s_range, __pyx_k_range, sizeof(__pyx_k_range), 0, 0, 1, 1},
   {&__pyx_n_s_reduce, __pyx_k_reduce, sizeof(__pyx_k_reduce), 0, 0, 1, 1},
   {&__pyx_n_s_reduce_cython, __pyx_k_reduce_cython, sizeof(__pyx_k_reduce_cython), 0, 0, 1, 1},
@@ -5795,9 +5866,9 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, 0, 0, 0, 0, 0, 0}
 };
 static int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 54, __pyx_L1_error)
-  __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(1, 2, __pyx_L1_error)
+  __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(0, 2, __pyx_L1_error)
   __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(2, 235, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(2, 248, __pyx_L1_error)
   __pyx_builtin_RuntimeError = __Pyx_GetBuiltinName(__pyx_n_s_RuntimeError); if (!__pyx_builtin_RuntimeError) __PYX_ERR(2, 823, __pyx_L1_error)
   __pyx_builtin_ImportError = __Pyx_GetBuiltinName(__pyx_n_s_ImportError); if (!__pyx_builtin_ImportError) __PYX_ERR(2, 1013, __pyx_L1_error)
   return 0;
@@ -5815,7 +5886,7 @@ static int __Pyx_InitCachedConstants(void) {
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
  */
-  __pyx_tuple_ = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple_)) __PYX_ERR(1, 2, __pyx_L1_error)
+  __pyx_tuple_ = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 2, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple_);
   __Pyx_GIVEREF(__pyx_tuple_);
 
@@ -5824,7 +5895,7 @@ static int __Pyx_InitCachedConstants(void) {
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")             # <<<<<<<<<<<<<<
  */
-  __pyx_tuple__2 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(1, 4, __pyx_L1_error)
+  __pyx_tuple__2 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(0, 4, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__2);
   __Pyx_GIVEREF(__pyx_tuple__2);
 
@@ -5932,7 +6003,7 @@ static int __Pyx_InitCachedConstants(void) {
 }
 
 static int __Pyx_InitGlobals(void) {
-  if (__Pyx_InitStrings(__pyx_string_tab) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitStrings(__pyx_string_tab) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
   return 0;
   __pyx_L1_error:;
   return -1;
@@ -6003,27 +6074,27 @@ static int __pyx_pymod_exec_fast_madgwick(PyObject *__pyx_pyinit_module)
   }
   #endif
   __Pyx_RefNannySetupContext("PyMODINIT_FUNC PyInit_fast_madgwick(void)", 0);
-  if (__Pyx_check_binary_version() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  __pyx_empty_tuple = PyTuple_New(0); if (unlikely(!__pyx_empty_tuple)) __PYX_ERR(0, 1, __pyx_L1_error)
-  __pyx_empty_bytes = PyBytes_FromStringAndSize("", 0); if (unlikely(!__pyx_empty_bytes)) __PYX_ERR(0, 1, __pyx_L1_error)
-  __pyx_empty_unicode = PyUnicode_FromStringAndSize("", 0); if (unlikely(!__pyx_empty_unicode)) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_check_binary_version() < 0) __PYX_ERR(1, 1, __pyx_L1_error)
+  __pyx_empty_tuple = PyTuple_New(0); if (unlikely(!__pyx_empty_tuple)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __pyx_empty_bytes = PyBytes_FromStringAndSize("", 0); if (unlikely(!__pyx_empty_bytes)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __pyx_empty_unicode = PyUnicode_FromStringAndSize("", 0); if (unlikely(!__pyx_empty_unicode)) __PYX_ERR(1, 1, __pyx_L1_error)
   #ifdef __Pyx_CyFunction_USED
-  if (__pyx_CyFunction_init() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__pyx_CyFunction_init() < 0) __PYX_ERR(1, 1, __pyx_L1_error)
   #endif
   #ifdef __Pyx_FusedFunction_USED
-  if (__pyx_FusedFunction_init() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__pyx_FusedFunction_init() < 0) __PYX_ERR(1, 1, __pyx_L1_error)
   #endif
   #ifdef __Pyx_Coroutine_USED
-  if (__pyx_Coroutine_init() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__pyx_Coroutine_init() < 0) __PYX_ERR(1, 1, __pyx_L1_error)
   #endif
   #ifdef __Pyx_Generator_USED
-  if (__pyx_Generator_init() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__pyx_Generator_init() < 0) __PYX_ERR(1, 1, __pyx_L1_error)
   #endif
   #ifdef __Pyx_AsyncGen_USED
-  if (__pyx_AsyncGen_init() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__pyx_AsyncGen_init() < 0) __PYX_ERR(1, 1, __pyx_L1_error)
   #endif
   #ifdef __Pyx_StopAsyncIteration_USED
-  if (__pyx_StopAsyncIteration_init() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__pyx_StopAsyncIteration_init() < 0) __PYX_ERR(1, 1, __pyx_L1_error)
   #endif
   /*--- Library function declarations ---*/
   /*--- Threads initialization code ---*/
@@ -6042,44 +6113,44 @@ static int __pyx_pymod_exec_fast_madgwick(PyObject *__pyx_pyinit_module)
   #else
   __pyx_m = PyModule_Create(&__pyx_moduledef);
   #endif
-  if (unlikely(!__pyx_m)) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (unlikely(!__pyx_m)) __PYX_ERR(1, 1, __pyx_L1_error)
   #endif
-  __pyx_d = PyModule_GetDict(__pyx_m); if (unlikely(!__pyx_d)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __pyx_d = PyModule_GetDict(__pyx_m); if (unlikely(!__pyx_d)) __PYX_ERR(1, 1, __pyx_L1_error)
   Py_INCREF(__pyx_d);
-  __pyx_b = PyImport_AddModule(__Pyx_BUILTIN_MODULE_NAME); if (unlikely(!__pyx_b)) __PYX_ERR(0, 1, __pyx_L1_error)
-  __pyx_cython_runtime = PyImport_AddModule((char *) "cython_runtime"); if (unlikely(!__pyx_cython_runtime)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __pyx_b = PyImport_AddModule(__Pyx_BUILTIN_MODULE_NAME); if (unlikely(!__pyx_b)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __pyx_cython_runtime = PyImport_AddModule((char *) "cython_runtime"); if (unlikely(!__pyx_cython_runtime)) __PYX_ERR(1, 1, __pyx_L1_error)
   #if CYTHON_COMPILING_IN_PYPY
   Py_INCREF(__pyx_b);
   #endif
-  if (PyObject_SetAttrString(__pyx_m, "__builtins__", __pyx_b) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (PyObject_SetAttrString(__pyx_m, "__builtins__", __pyx_b) < 0) __PYX_ERR(1, 1, __pyx_L1_error);
   /*--- Initialize various global constants etc. ---*/
-  if (__Pyx_InitGlobals() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_InitGlobals() < 0) __PYX_ERR(1, 1, __pyx_L1_error)
   #if PY_MAJOR_VERSION < 3 && (__PYX_DEFAULT_STRING_ENCODING_IS_ASCII || __PYX_DEFAULT_STRING_ENCODING_IS_DEFAULT)
-  if (__Pyx_init_sys_getdefaultencoding_params() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_init_sys_getdefaultencoding_params() < 0) __PYX_ERR(1, 1, __pyx_L1_error)
   #endif
   if (__pyx_module_is_main_handpose__sensor_fusion__madgwick__fast_madgwick) {
-    if (PyObject_SetAttrString(__pyx_m, "__name__", __pyx_n_s_main) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+    if (PyObject_SetAttrString(__pyx_m, "__name__", __pyx_n_s_main) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
   }
   #if PY_MAJOR_VERSION >= 3
   {
-    PyObject *modules = PyImport_GetModuleDict(); if (unlikely(!modules)) __PYX_ERR(0, 1, __pyx_L1_error)
+    PyObject *modules = PyImport_GetModuleDict(); if (unlikely(!modules)) __PYX_ERR(1, 1, __pyx_L1_error)
     if (!PyDict_GetItemString(modules, "handpose.sensor_fusion.madgwick.fast_madgwick")) {
-      if (unlikely(PyDict_SetItemString(modules, "handpose.sensor_fusion.madgwick.fast_madgwick", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
+      if (unlikely(PyDict_SetItemString(modules, "handpose.sensor_fusion.madgwick.fast_madgwick", __pyx_m) < 0)) __PYX_ERR(1, 1, __pyx_L1_error)
     }
   }
   #endif
   /*--- Builtin init code ---*/
-  if (__Pyx_InitCachedBuiltins() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_InitCachedBuiltins() < 0) __PYX_ERR(1, 1, __pyx_L1_error)
   /*--- Constants init code ---*/
-  if (__Pyx_InitCachedConstants() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_InitCachedConstants() < 0) __PYX_ERR(1, 1, __pyx_L1_error)
   /*--- Global init code ---*/
   /*--- Variable export code ---*/
   /*--- Function export code ---*/
   /*--- Type init code ---*/
-  if (PyType_Ready(&__pyx_type_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_FastMadgwick) < 0) __PYX_ERR(0, 13, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_FastMadgwick) < 0) __PYX_ERR(1, 13, __pyx_L1_error)
   __pyx_type_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_FastMadgwick.tp_print = 0;
-  if (PyObject_SetAttrString(__pyx_m, "FastMadgwick", (PyObject *)&__pyx_type_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_FastMadgwick) < 0) __PYX_ERR(0, 13, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_FastMadgwick) < 0) __PYX_ERR(0, 13, __pyx_L1_error)
+  if (PyObject_SetAttrString(__pyx_m, "FastMadgwick", (PyObject *)&__pyx_type_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_FastMadgwick) < 0) __PYX_ERR(1, 13, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_FastMadgwick) < 0) __PYX_ERR(1, 13, __pyx_L1_error)
   __pyx_ptype_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_FastMadgwick = &__pyx_type_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_FastMadgwick;
   /*--- Type import code ---*/
   __pyx_ptype_7cpython_4type_type = __Pyx_ImportType(__Pyx_BUILTIN_MODULE_NAME, "type", 
@@ -6098,7 +6169,7 @@ static int __pyx_pymod_exec_fast_madgwick(PyObject *__pyx_pyinit_module)
   /*--- Function import code ---*/
   /*--- Execution code ---*/
   #if defined(__Pyx_Generator_USED) || defined(__Pyx_Coroutine_USED)
-  if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_patch_abc() < 0) __PYX_ERR(1, 1, __pyx_L1_error)
   #endif
 
   /* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":2
@@ -6107,29 +6178,29 @@ static int __pyx_pymod_exec_fast_madgwick(PyObject *__pyx_pyinit_module)
  * cimport numpy as np
  * from libcpp.vector cimport vector
  */
-  __pyx_t_1 = __Pyx_Import(__pyx_n_s_numpy, 0, -1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 2, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_Import(__pyx_n_s_numpy, 0, -1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 2, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_np, __pyx_t_1) < 0) __PYX_ERR(0, 2, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_np, __pyx_t_1) < 0) __PYX_ERR(1, 2, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":7
- * cimport fast_madgwick
+  /* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":8
  * 
- * from ..python_quaternion import Quaternion             # <<<<<<<<<<<<<<
- * #from ..fast_quaternion import Quaternion
+ * #from ..python_quaternion import Quaternion
+ * from ..fast_quaternion import Quaternion             # <<<<<<<<<<<<<<
  * 
+ * # Define type
  */
-  __pyx_t_1 = PyList_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 7, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 8, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_n_s_Quaternion);
   __Pyx_GIVEREF(__pyx_n_s_Quaternion);
   PyList_SET_ITEM(__pyx_t_1, 0, __pyx_n_s_Quaternion);
-  __pyx_t_2 = __Pyx_Import(__pyx_n_s_python_quaternion, __pyx_t_1, 2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 7, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_Import(__pyx_n_s_fast_quaternion, __pyx_t_1, 2); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 8, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_Quaternion); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 7, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_Quaternion); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 8, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_Quaternion, __pyx_t_1) < 0) __PYX_ERR(0, 7, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_Quaternion, __pyx_t_1) < 0) __PYX_ERR(1, 8, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
@@ -6138,9 +6209,9 @@ static int __pyx_pymod_exec_fast_madgwick(PyObject *__pyx_pyinit_module)
  * import numpy as np
  * cimport numpy as np
  */
-  __pyx_t_2 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_test, __pyx_t_2) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_test, __pyx_t_2) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /* "../../../../../anaconda2/envs/py3/lib/python3.6/site-packages/Cython/Includes/numpy/__init__.pxd":1021
@@ -7977,27 +8048,36 @@ static void __Pyx_ReleaseBuffer(Py_buffer *view) {
     }
 }
 
-/* CIntFromPyVerify */
-          #define __PYX_VERIFY_RETURN_INT(target_type, func_type, func_value)\
-    __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, 0)
-#define __PYX_VERIFY_RETURN_INT_EXC(target_type, func_type, func_value)\
-    __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, 1)
-#define __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, exc)\
-    {\
-        func_type value = func_value;\
-        if (sizeof(target_type) < sizeof(func_type)) {\
-            if (unlikely(value != (func_type) (target_type) value)) {\
-                func_type zero = 0;\
-                if (exc && unlikely(value == (func_type)-1 && PyErr_Occurred()))\
-                    return (target_type) -1;\
-                if (is_unsigned && unlikely(value < zero))\
-                    goto raise_neg_overflow;\
-                else\
-                    goto raise_overflow;\
-            }\
-        }\
-        return (target_type) value;\
+/* CIntToPy */
+          static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {
+    const long neg_one = (long) -1, const_zero = (long) 0;
+    const int is_unsigned = neg_one > const_zero;
+    if (is_unsigned) {
+        if (sizeof(long) < sizeof(long)) {
+            return PyInt_FromLong((long) value);
+        } else if (sizeof(long) <= sizeof(unsigned long)) {
+            return PyLong_FromUnsignedLong((unsigned long) value);
+#ifdef HAVE_LONG_LONG
+        } else if (sizeof(long) <= sizeof(unsigned PY_LONG_LONG)) {
+            return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
+#endif
+        }
+    } else {
+        if (sizeof(long) <= sizeof(long)) {
+            return PyInt_FromLong((long) value);
+#ifdef HAVE_LONG_LONG
+        } else if (sizeof(long) <= sizeof(PY_LONG_LONG)) {
+            return PyLong_FromLongLong((PY_LONG_LONG) value);
+#endif
+        }
     }
+    {
+        int one = 1; int little = (int)*(unsigned char *)&one;
+        unsigned char *bytes = (unsigned char *)&value;
+        return _PyLong_FromByteArray(bytes, sizeof(long),
+                                     little, !is_unsigned);
+    }
+}
 
 /* Declarations */
           #if CYTHON_CCOMPLEX
@@ -8309,6 +8389,28 @@ static void __Pyx_ReleaseBuffer(Py_buffer *view) {
     #endif
 #endif
 
+/* CIntFromPyVerify */
+          #define __PYX_VERIFY_RETURN_INT(target_type, func_type, func_value)\
+    __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, 0)
+#define __PYX_VERIFY_RETURN_INT_EXC(target_type, func_type, func_value)\
+    __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, 1)
+#define __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, exc)\
+    {\
+        func_type value = func_value;\
+        if (sizeof(target_type) < sizeof(func_type)) {\
+            if (unlikely(value != (func_type) (target_type) value)) {\
+                func_type zero = 0;\
+                if (exc && unlikely(value == (func_type)-1 && PyErr_Occurred()))\
+                    return (target_type) -1;\
+                if (is_unsigned && unlikely(value < zero))\
+                    goto raise_neg_overflow;\
+                else\
+                    goto raise_overflow;\
+            }\
+        }\
+        return (target_type) value;\
+    }
+
 /* CIntToPy */
           static CYTHON_INLINE PyObject* __Pyx_PyInt_From_enum__NPY_TYPES(enum NPY_TYPES value) {
     const enum NPY_TYPES neg_one = (enum NPY_TYPES) -1, const_zero = (enum NPY_TYPES) 0;
@@ -8527,37 +8629,6 @@ raise_neg_overflow:
     PyErr_SetString(PyExc_OverflowError,
         "can't convert negative value to int");
     return (int) -1;
-}
-
-/* CIntToPy */
-          static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {
-    const long neg_one = (long) -1, const_zero = (long) 0;
-    const int is_unsigned = neg_one > const_zero;
-    if (is_unsigned) {
-        if (sizeof(long) < sizeof(long)) {
-            return PyInt_FromLong((long) value);
-        } else if (sizeof(long) <= sizeof(unsigned long)) {
-            return PyLong_FromUnsignedLong((unsigned long) value);
-#ifdef HAVE_LONG_LONG
-        } else if (sizeof(long) <= sizeof(unsigned PY_LONG_LONG)) {
-            return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
-#endif
-        }
-    } else {
-        if (sizeof(long) <= sizeof(long)) {
-            return PyInt_FromLong((long) value);
-#ifdef HAVE_LONG_LONG
-        } else if (sizeof(long) <= sizeof(PY_LONG_LONG)) {
-            return PyLong_FromLongLong((PY_LONG_LONG) value);
-#endif
-        }
-    }
-    {
-        int one = 1; int little = (int)*(unsigned char *)&one;
-        unsigned char *bytes = (unsigned char *)&value;
-        return _PyLong_FromByteArray(bytes, sizeof(long),
-                                     little, !is_unsigned);
-    }
 }
 
 /* CIntFromPy */

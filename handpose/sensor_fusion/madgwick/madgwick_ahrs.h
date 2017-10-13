@@ -32,6 +32,7 @@ private:
     float q2 = 0.0f;
     float q3 = 0.0f;	// quaternion of sensor frame relative to auxiliary frame
 	vector<float> quat = {1.0f, 0.0f, 0.0f, 0.0f};
+	int counter = 0;
     float invSampleFreq;
     float roll;
     float pitch;
@@ -84,6 +85,8 @@ public:
 	    quat[3] = q3;
 	    return quat;
 	}
+
+    int get_counter() { return counter; }
 };
 #endif
 

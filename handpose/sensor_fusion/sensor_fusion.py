@@ -6,7 +6,7 @@ class SensorFusion:
     Sensor fusion.
     """
 
-    def __init__(self, dt=0.1, beta=0.041, num_iter=100):
+    def __init__(self, dt=0.1, beta=0.041, num_iter=1):
         """
         Constructor of SensorFusion.
 
@@ -20,7 +20,10 @@ class SensorFusion:
             Number of iterations.
         """
 
-        self._fuse = init_madgwick(dt, beta, num_iter=num_iter)
+        sub_dt = dt / num_iter
+        #self._fuse = FastMadgwick(dt, beta)
+        self._fuse = MadgwickAHRS(sub_dt, beta)
+
         self._dt = dt
         self._beta = beta
         self._num_iter = num_iter
@@ -70,13 +73,5 @@ class SensorFusion:
     @property
     def quat(self):
         return self.fuse.quat
-
-def init_madgwick(dt, beta, num_iter=100):
-
-    sub_dt = dt / num_iter
-    #fuse = FastMadgwick(sub_dt, beta)
-    fuse = MadgwickAHRS(sub_dt, beta)
-
-    return fuse
 
 

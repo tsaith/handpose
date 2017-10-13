@@ -217,3 +217,39 @@ class Quaternion:
     def __array__(self):
         return self._q
 
+    @property
+    def roll(self):
+        # Roll angle in radians
+
+        q0 = self.q[0]
+        q1 = self.q[1]
+        q2 = self.q[2]
+        q3 = self.q[3]
+        roll = np.arctan2(q0*q1 + q2*q3, 0.5 - q1*q1 - q2*q2)
+
+        return roll
+
+    @property
+    def pitch(self):
+        # Pitch angle in radians
+
+        q0 = self.q[0]
+        q1 = self.q[1]
+        q2 = self.q[2]
+        q3 = self.q[3]
+        pitch = np.arcsin(-2.0 * (q1*q3 - q0*q2))
+
+        return pitch
+
+    @property
+    def yaw(self):
+        # Yaw angle in radians
+
+        q0 = self.q[0]
+        q1 = self.q[1]
+        q2 = self.q[2]
+        q3 = self.q[3]
+        yaw = np.arctan2(q1*q2 + q0*q3, 0.5 - q2*q2 - q3*q3)
+
+        return yaw
+

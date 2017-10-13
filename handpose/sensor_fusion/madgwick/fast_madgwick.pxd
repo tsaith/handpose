@@ -21,4 +21,5 @@ cdef extern from "madgwick_ahrs.h":
         float get_q2()
         float get_q3()
         vector[float] get_quat_array()
+        int get_counter()
 

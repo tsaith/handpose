@@ -17,7 +17,6 @@ class Quaternion(quaternion.quaternion):
         """
         super().__init__(w, x, y, z)
 
-
     def to_angle_axis(self):
         """
         Returns the quaternion's rotation represented by an Euler angle and axis.
@@ -71,4 +70,40 @@ class Quaternion(quaternion.quaternion):
     @property
     def vector(self):
         return  self.vec
+
+    @property
+    def roll(self):
+        # Roll angle in radians
+
+        q0 = self.w
+        q1 = self.x
+        q2 = self.y
+        q3 = self.z
+        roll = np.arctan2(q0*q1 + q2*q3, 0.5 - q1*q1 - q2*q2)
+
+        return roll
+
+    @property
+    def pitch(self):
+        # Pitch angle in radians
+
+        q0 = self.w
+        q1 = self.x
+        q2 = self.y
+        q3 = self.z
+        pitch = np.arcsin(-2.0 * (q1*q3 - q0*q2))
+
+        return pitch
+
+    @property
+    def yaw(self):
+        # Yaw angle in radians
+
+        q0 = self.w
+        q1 = self.x
+        q2 = self.y
+        q3 = self.z
+        yaw = np.arctan2(q1*q2 + q0*q3, 0.5 - q2*q2 - q3*q3)
+
+        return yaw
 
