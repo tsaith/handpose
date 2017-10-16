@@ -1703,8 +1703,8 @@ static const char __pyx_k_RuntimeError[] = "RuntimeError";
 static const char __pyx_k_reduce_cython[] = "__reduce_cython__";
 static const char __pyx_k_sample_period[] = "sample_period";
 static const char __pyx_k_get_quat_array[] = "get_quat_array";
-static const char __pyx_k_fast_quaternion[] = "fast_quaternion";
 static const char __pyx_k_setstate_cython[] = "__setstate_cython__";
+static const char __pyx_k_python_quaternion[] = "python_quaternion";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
 static const char __pyx_k_ndarray_is_not_C_contiguous[] = "ndarray is not C contiguous";
 static const char __pyx_k_numpy_core_multiarray_failed_to[] = "numpy.core.multiarray failed to import";
@@ -1727,7 +1727,6 @@ static PyObject *__pyx_n_s_accel;
 static PyObject *__pyx_n_s_beta;
 static PyObject *__pyx_n_s_cline_in_traceback;
 static PyObject *__pyx_n_s_dtype;
-static PyObject *__pyx_n_s_fast_quaternion;
 static PyObject *__pyx_n_s_float64;
 static PyObject *__pyx_n_s_from_array;
 static PyObject *__pyx_n_s_get_quat_array;
@@ -1744,6 +1743,7 @@ static PyObject *__pyx_n_s_np;
 static PyObject *__pyx_n_s_numpy;
 static PyObject *__pyx_kp_s_numpy_core_multiarray_failed_to;
 static PyObject *__pyx_kp_s_numpy_core_umath_failed_to_impor;
+static PyObject *__pyx_n_s_python_quaternion;
 static PyObject *__pyx_n_s_range;
 static PyObject *__pyx_n_s_reduce;
 static PyObject *__pyx_n_s_reduce_cython;
@@ -2797,8 +2797,8 @@ static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12
  * 
  *     @property
  *     def quat(self):             # <<<<<<<<<<<<<<
- *         return Quaternion.from_array(self.get_quat_array())
- * 
+ *         q = Quaternion.from_array(self.get_quat_array())
+ *         return q
  */
 
 /* Python wrapper */
@@ -2815,6 +2815,7 @@ static PyObject *__pyx_pw_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12
 }
 
 static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12FastMadgwick_4quat___get__(struct __pyx_obj_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_FastMadgwick *__pyx_v_self) {
+  PyObject *__pyx_v_q = NULL;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -2827,11 +2828,10 @@ static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12
   /* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":70
  *     @property
  *     def quat(self):
- *         return Quaternion.from_array(self.get_quat_array())             # <<<<<<<<<<<<<<
- * 
- *     def get_counter(self):
+ *         q = Quaternion.from_array(self.get_quat_array())             # <<<<<<<<<<<<<<
+ *         return q
+ *         #return q.inv()
  */
-  __Pyx_XDECREF(__pyx_r);
   __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_Quaternion); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 70, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_from_array); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 70, __pyx_L1_error)
@@ -2903,16 +2903,27 @@ static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12
     }
   }
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_r = __pyx_t_1;
+  __pyx_v_q = __pyx_t_1;
   __pyx_t_1 = 0;
+
+  /* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":71
+ *     def quat(self):
+ *         q = Quaternion.from_array(self.get_quat_array())
+ *         return q             # <<<<<<<<<<<<<<
+ *         #return q.inv()
+ * 
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __Pyx_INCREF(__pyx_v_q);
+  __pyx_r = __pyx_v_q;
   goto __pyx_L0;
 
   /* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":69
  * 
  *     @property
  *     def quat(self):             # <<<<<<<<<<<<<<
- *         return Quaternion.from_array(self.get_quat_array())
- * 
+ *         q = Quaternion.from_array(self.get_quat_array())
+ *         return q
  */
 
   /* function exit code */
@@ -2925,13 +2936,14 @@ static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12
   __Pyx_AddTraceback("handpose.sensor_fusion.madgwick.fast_madgwick.FastMadgwick.quat.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
+  __Pyx_XDECREF(__pyx_v_q);
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":72
- *         return Quaternion.from_array(self.get_quat_array())
+/* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":74
+ *         #return q.inv()
  * 
  *     def get_counter(self):             # <<<<<<<<<<<<<<
  *         return self.target.get_counter()
@@ -2956,20 +2968,20 @@ static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("get_counter", 0);
 
-  /* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":73
+  /* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":75
  * 
  *     def get_counter(self):
  *         return self.target.get_counter()             # <<<<<<<<<<<<<<
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->target->get_counter()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 73, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->target->get_counter()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 75, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":72
- *         return Quaternion.from_array(self.get_quat_array())
+  /* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":74
+ *         #return q.inv()
  * 
  *     def get_counter(self):             # <<<<<<<<<<<<<<
  *         return self.target.get_counter()
@@ -5836,7 +5848,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_beta, __pyx_k_beta, sizeof(__pyx_k_beta), 0, 0, 1, 1},
   {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
   {&__pyx_n_s_dtype, __pyx_k_dtype, sizeof(__pyx_k_dtype), 0, 0, 1, 1},
-  {&__pyx_n_s_fast_quaternion, __pyx_k_fast_quaternion, sizeof(__pyx_k_fast_quaternion), 0, 0, 1, 1},
   {&__pyx_n_s_float64, __pyx_k_float64, sizeof(__pyx_k_float64), 0, 0, 1, 1},
   {&__pyx_n_s_from_array, __pyx_k_from_array, sizeof(__pyx_k_from_array), 0, 0, 1, 1},
   {&__pyx_n_s_get_quat_array, __pyx_k_get_quat_array, sizeof(__pyx_k_get_quat_array), 0, 0, 1, 1},
@@ -5853,6 +5864,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_numpy, __pyx_k_numpy, sizeof(__pyx_k_numpy), 0, 0, 1, 1},
   {&__pyx_kp_s_numpy_core_multiarray_failed_to, __pyx_k_numpy_core_multiarray_failed_to, sizeof(__pyx_k_numpy_core_multiarray_failed_to), 0, 0, 1, 0},
   {&__pyx_kp_s_numpy_core_umath_failed_to_impor, __pyx_k_numpy_core_umath_failed_to_impor, sizeof(__pyx_k_numpy_core_umath_failed_to_impor), 0, 0, 1, 0},
+  {&__pyx_n_s_python_quaternion, __pyx_k_python_quaternion, sizeof(__pyx_k_python_quaternion), 0, 0, 1, 1},
   {&__pyx_n_s_range, __pyx_k_range, sizeof(__pyx_k_range), 0, 0, 1, 1},
   {&__pyx_n_s_reduce, __pyx_k_reduce, sizeof(__pyx_k_reduce), 0, 0, 1, 1},
   {&__pyx_n_s_reduce_cython, __pyx_k_reduce_cython, sizeof(__pyx_k_reduce_cython), 0, 0, 1, 1},
@@ -6183,24 +6195,24 @@ static int __pyx_pymod_exec_fast_madgwick(PyObject *__pyx_pyinit_module)
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_np, __pyx_t_1) < 0) __PYX_ERR(1, 2, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":8
+  /* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":7
+ * cimport fast_madgwick
  * 
- * #from ..python_quaternion import Quaternion
- * from ..fast_quaternion import Quaternion             # <<<<<<<<<<<<<<
+ * from ..python_quaternion import Quaternion             # <<<<<<<<<<<<<<
+ * #from ..fast_quaternion import Quaternion
  * 
- * # Define type
  */
-  __pyx_t_1 = PyList_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 8, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 7, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_n_s_Quaternion);
   __Pyx_GIVEREF(__pyx_n_s_Quaternion);
   PyList_SET_ITEM(__pyx_t_1, 0, __pyx_n_s_Quaternion);
-  __pyx_t_2 = __Pyx_Import(__pyx_n_s_fast_quaternion, __pyx_t_1, 2); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 8, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_Import(__pyx_n_s_python_quaternion, __pyx_t_1, 2); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 7, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_Quaternion); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 8, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_Quaternion); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 7, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_Quaternion, __pyx_t_1) < 0) __PYX_ERR(1, 8, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_Quaternion, __pyx_t_1) < 0) __PYX_ERR(1, 7, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 

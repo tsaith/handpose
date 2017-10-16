@@ -22,7 +22,6 @@ class MotionTracker:
             Number of iterations used to update sensor fusion.
         """
 
-        self._quat_saved = None
         self._accel_th = accel_th
         self._vel_th = vel_th
         self._w_th = w_th
@@ -35,8 +34,8 @@ class MotionTracker:
         num_dim = 3 # Number of dimensions
 
         # Initialize Fusion model
-        self._fusion = SensorFusion(self._dt, self._beta,
-                                  num_iter=self._num_iter)
+        self._fusion = SensorFusion(self._dt, self._beta, num_iter=self._num_iter)
+        self._quat_saved = self.quat
 
         # Translational information
         self._accel_dyn = np.zeros(num_dim) # Dynamic acceleration in sensor axes
@@ -86,7 +85,7 @@ class MotionTracker:
         quat = self.quat
 
         # Save the quatrnion for tracking
-        if abs(np.linalg.norm(accel) - 1.0) < 5e-2: # 5% error tolerance
+        if abs(np.linalg.norm(accel) - 1.0) < 1e-2: # 5% error tolerance
             self._quat_saved = quat
 
         # Predict the motion status, 0: static, 1: motional
@@ -243,9 +242,9 @@ class MotionTracker:
 
     @property
     def quat(self):
+        return self.fusion.quat
         # Inverse the q to fit the coordinates used by Madgwick
-        return self.fusion.quat.inv()
-        #return self.fusion.quat
+        #return self.fusion.quat.inv()
 
     @quat.setter
     def quat(self, val):

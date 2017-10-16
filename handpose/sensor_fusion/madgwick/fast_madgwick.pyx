@@ -4,8 +4,8 @@ cimport numpy as np
 from libcpp.vector cimport vector
 cimport fast_madgwick
 
-#from ..python_quaternion import Quaternion
-from ..fast_quaternion import Quaternion
+from ..python_quaternion import Quaternion
+#from ..fast_quaternion import Quaternion
 
 # Define type
 ctypedef np.float64_t DTYPE_t
@@ -67,7 +67,9 @@ cdef class FastMadgwick:
 
     @property
     def quat(self):
-        return Quaternion.from_array(self.get_quat_array())
+        q = Quaternion.from_array(self.get_quat_array())
+        return q # q_se ?
+        #return q.inv()
 
     def get_counter(self):
         return self.target.get_counter()
