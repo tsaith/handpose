@@ -25,3 +25,14 @@ or
 ```sh
 pip install numpy numpy-quaternion
 ```
+
+## Compilation
+
+We need to compile the cython modules before executing the codes.
+
+```sh
+cd handpose/handpose/sensor_fusion/madgwick
+python setup.py build_ext --inplace
+```
+
+
