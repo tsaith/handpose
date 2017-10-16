@@ -1,7 +1,7 @@
 # Handpose library
 
 
-### Packages required
+## Packages required
 
 * [Numpy](http://www.numpy.org/)
 * [numpy-quaternion](https://github.com/moble/quaternion)
@@ -14,3 +14,14 @@
 * [matplotlib](http://matplotlib.org/)
 * [Boken](http://bokeh.pydata.org)
 
+## Installation
+
+* [numpy-quaternion](https://github.com/moble/quaternion)
+  
+```sh
+conda install -c moble quaternion
+```
+or
+```sh
+pip install numpy numpy-quaternion
+```

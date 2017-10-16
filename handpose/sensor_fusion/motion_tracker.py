@@ -78,16 +78,16 @@ class MotionTracker:
         self.accel = accel
         self.mag = mag
 
-        if abs(np.linalg.norm(accel) - 1.0) < 1e-2 or self._quat_saved == None:
-            # Update the fusion
-            if mag is None: # 6-DOF IMU
-                self.fusion.update_imu(gyro, accel)
-            else: # 9-DOF IMU
-                self.fusion.update_ahrs(gyro, accel, mag)
-            quat = self.quat
+        # Update the fusion
+        if mag is None: # 6-DOF IMU
+            self.fusion.update_imu(gyro, accel)
+        else: # 9-DOF IMU
+            self.fusion.update_ahrs(gyro, accel, mag)
+        quat = self.quat
+
+        # Save the quatrnion for tracking
+        if abs(np.linalg.norm(accel) - 1.0) < 5e-2: # 5% error tolerance
             self._quat_saved = quat
-        else:
-            quat = self._quat_saved
 
         # Predict the motion status, 0: static, 1: motional
         self.video = video
@@ -98,7 +98,8 @@ class MotionTracker:
             motion_status = motion_predict(X)[0]
 
         # Estimate the dynamic acceleration in Earth axes
-        self.accel_dyn = get_dynamic_accel(accel, quat)
+        # The quaternion stored is used to estimate the dynamic acceleration
+        self.accel_dyn = get_dynamic_accel(accel, self._quat_saved)
         if motion_status == 0:
             self.accel_dyn = np.zeros(num_dim)
 
@@ -127,7 +128,7 @@ class MotionTracker:
         self.estimate_absolute_angles()
 
     def filter_noises(self, arr, threshold):
-        """ 
+        """
         Filter the noises.
         """
         num_dim = 3
