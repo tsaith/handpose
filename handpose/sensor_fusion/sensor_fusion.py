@@ -6,7 +6,7 @@ class SensorFusion:
     Sensor fusion.
     """
 
-    def __init__(self, dt=0.1, beta=0.041, num_iter=1):
+    def __init__(self, dt=0.1, beta=0.041, num_iter=1, fast_version=False):
         """
         Constructor of SensorFusion.
 
@@ -21,8 +21,12 @@ class SensorFusion:
         """
 
         sub_dt = dt / num_iter
-        self._fuse = FastMadgwick(dt, beta)
-        #self._fuse = MadgwickAHRS(sub_dt, beta)
+
+        if fast_version:
+            self._fuse = FastMadgwick(dt, beta)
+        else:
+            self._fuse = MadgwickAHRS(dt, beta)
+            ##self._fuse = MadgwickAHRS(sub_dt, beta)
 
         self._dt = dt
         self._beta = beta
