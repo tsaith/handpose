@@ -21,8 +21,8 @@ class SensorFusion:
         """
 
         sub_dt = dt / num_iter
-        #self._fuse = FastMadgwick(dt, beta)
-        self._fuse = MadgwickAHRS(sub_dt, beta)
+        self._fuse = FastMadgwick(dt, beta)
+        #self._fuse = MadgwickAHRS(sub_dt, beta)
 
         self._dt = dt
         self._beta = beta
