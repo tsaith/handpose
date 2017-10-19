@@ -8,7 +8,8 @@ class MotionTracker:
     Motion tracker based on sensor fustion.
     """
 
-    def __init__(self, accel_th=0e-3, vel_th=0e-3, w_th=0e-3, dt=0.1, beta=0.041, num_iter=100):
+    def __init__(self, accel_th=0e-3, vel_th=0e-3, w_th=0e-3, dt=0.1, beta=0.041, num_iter=100,
+                 fast_version=False):
         """
         accel_th: float
             Threshold of the dynamic acceleration.
@@ -20,6 +21,8 @@ class MotionTracker:
             Parameter used in Madgwick's algorithm.
         num_iter: int
             Number of iterations used to update sensor fusion.
+        fast_version: bool
+        Use fast Madgwick to estimate orientation. True: C++, False: python
         """
 
         self._accel_th = accel_th
@@ -34,7 +37,8 @@ class MotionTracker:
         num_dim = 3 # Number of dimensions
 
         # Initialize Fusion model
-        self._fusion = SensorFusion(self._dt, self._beta, num_iter=self._num_iter)
+        self._fusion = SensorFusion(self._dt, self._beta, num_iter=self._num_iter,
+                                    fast_version=fast_version)
         self._quat_saved = self.quat
 
         # Translational information
@@ -85,7 +89,7 @@ class MotionTracker:
         quat = self.quat
 
         # Save the quatrnion for tracking
-        if abs(np.linalg.norm(accel) - 1.0) < 1e-2: # 5% error tolerance
+        if abs(np.linalg.norm(accel) - 1.0) < 3e-2: # 3% error tolerance
             self._quat_saved = quat
 
         # Predict the motion status, 0: static, 1: motional
@@ -390,7 +394,7 @@ class MotionTracker:
     def damping(self, value):
         self._damping = value
 
-def get_dynamic_accel(accel_s, q_e2s):
+def get_dynamic_accel(accel_s, q_es):
     """
     Estimate the dynamic acceleration in Earth axes.
 
@@ -398,7 +402,7 @@ def get_dynamic_accel(accel_s, q_e2s):
     ---------
     accel_s: array
         Acceleration in sensor axes.
-    q_e2s: Quaternion object
+    q_es: Quaternion object
         Rotation quaternion, earth axes respective to sensor axes.
 
     Reurns
@@ -407,7 +411,7 @@ def get_dynamic_accel(accel_s, q_e2s):
         Dynamic acceleration in Earth axes.
 
     """
-    accel_e = q_e2s.rotate_axes(accel_s)
+    accel_e = q_es.rotate_axes(accel_s)
     #accel_e = q_e2s.rotate_vector(accel_s)
 
     # Gravity contribution in the Earth axes,

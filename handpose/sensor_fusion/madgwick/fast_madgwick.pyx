@@ -68,8 +68,8 @@ cdef class FastMadgwick:
     @property
     def quat(self):
         q = Quaternion.from_array(self.get_quat_array())
-        return q # q_se ?
-        #return q.inv()
+        #return q # q_se ?
+        return q.inv()
 
     def get_counter(self):
         return self.target.get_counter()
