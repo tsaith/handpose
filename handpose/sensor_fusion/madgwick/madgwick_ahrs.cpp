@@ -226,18 +226,26 @@ void Madgwick::updateIMU(float gx, float gy, float gz, float ax, float ay, float
 //-------------------------------------------------------------------------------------------
 // Fast inverse square-root
 // See: http://en.wikipedia.org/wiki/Fast_inverse_square_root
-
+// This implement can't work on PC.
+/*
 float Madgwick::invSqrt(float x) {
 	float halfx = 0.5f * x;
 	float y = x;
 	long i = *(long*)&y;
 	i = 0x5f3759df - (i>>1);
 	y = *(float*)&i;
-	y = y * (1.5f - (halfx * y * y));
-	y = y * (1.5f - (halfx * y * y));
+	y = y * (1.5f - (halfx * y * y)); // 1st iteration
+	y = y * (1.5f - (halfx * y * y)); // 2nd iteration, this can be removed
 	return y;
 }
+*/
 
+///*
+float Madgwick::invSqrt(float x) {
+	return 1.0/sqrt(x);
+}
+//*/
+//
 //-------------------------------------------------------------------------------------------
 
 void Madgwick::computeAngles()
