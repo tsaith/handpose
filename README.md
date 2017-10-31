@@ -1,5 +1,6 @@
 # Handpose library
 
+Python 3.6 is expected.
 
 ## Packages required
 
@@ -13,6 +14,8 @@
 * [PyWavelets](https://pywavelets.readthedocs.io)
 * [matplotlib](http://matplotlib.org/)
 * [Boken](http://bokeh.pydata.org)
+* [OpenCV](https://opencv.org/)
+
 
 ## Installation
 
@@ -24,6 +27,11 @@ conda install -c moble quaternion
 or
 ```sh
 pip install numpy numpy-quaternion
+```
+
+* [OpenCV](https://opencv.org/)
+```sh
+conda install opencv=3.2.0
 ```
 
 ## Compilation
