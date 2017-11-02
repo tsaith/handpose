@@ -1,6 +1,6 @@
 import numpy as np
 from ..sensor_fusion import SensorFusion
-from .fast_quaternion import Quaternion
+#from .fast_quaternion import Quaternion
 from .motion_classifier import motion_predict
 
 class MotionTracker:

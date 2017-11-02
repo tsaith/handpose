@@ -129,6 +129,9 @@ class Quaternion:
 
         return  np.array((x, y, z), dtype=np.float64)
 
+    def to_array(self):
+        return self._q
+
     @staticmethod
     def from_angle_axis(rad, x, y, z):
         s = np.sin(0.5*rad)
