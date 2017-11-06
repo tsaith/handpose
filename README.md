@@ -42,5 +42,7 @@ We need to compile the cython modules before executing the codes.
 cd handpose/handpose/sensor_fusion/madgwick
 python setup.py build_ext --inplace
 ```
+The lib path is as "~/anaconda2/envs/py3/lib" and
+the include path is as "~/anaconda2/envs/py3/include/opencv2".
 
 

@@ -1,31 +1,46 @@
 import numpy as np
 from ..sensor_fusion import SensorFusion
+#from .fast_quaternion import Quaternion
 from .motion_classifier import motion_predict
 
-class MotionTracker:
+
+class MotionTrackerOld:
     """
     Motion tracker based on sensor fustion.
     """
 
-    def __init__(self, accel_th=0e-3, vel_th=0e-3, w_th=0e-3, dt=0.01):
+    def __init__(self, accel_th=0e-3, vel_th=0e-3, w_th=0e-3, dt=0.1, beta=0.041, num_iter=100,
+                 fast_version=False):
         """
         accel_th: float
             Threshold of the dynamic acceleration.
         vel_th: float
             Threshold of velocity
         dt: float
-            Time duration in seconds.
+            Sampling time duration in seconds.
+        beta: float
+            Parameter used in Madgwick's algorithm.
+        num_iter: int
+            Number of iterations used to update sensor fusion.
+        fast_version: bool
+        Use fast Madgwick to estimate orientation. True: C++, False: python
         """
 
         self._accel_th = accel_th
         self._vel_th = vel_th
         self._w_th = w_th
         self._dt = dt
+        self._beta = beta
+        self._num_iter = num_iter
+
         self._damping = 0.0 # Damping factor
+
         num_dim = 3 # Number of dimensions
 
-        # Quaternion saved
-        self._quat = None
+        # Initialize Fusion model
+        self._fusion = SensorFusion(self._dt, self._beta, num_iter=self._num_iter,
+                                    fast_version=fast_version)
+        self._quat_saved = self.quat
 
         # Translational information
         self._accel_dyn = np.zeros(num_dim) # Dynamic acceleration in sensor axes
@@ -46,7 +61,8 @@ class MotionTracker:
         self._accel = None
         self._mag   = None
 
-    def update(self, gyro=None, accel=None, mag=None, video=None, quat=None):
+
+    def update(self, gyro=None, accel=None, mag=None, video=None):
         """
         Update the status of tracker.
 
@@ -58,8 +74,6 @@ class MotionTracker:
             Measured acceleration (m/s^2)
         mag: array
             Measured magnetic fields (muT)
-        quat: Quaternion
-            Rotation quaternion.
         """
         num_dim = 3
 
@@ -68,9 +82,16 @@ class MotionTracker:
         self.accel = accel
         self.mag = mag
 
+        # Update the fusion
+        if mag is None: # 6-DOF IMU
+            self.fusion.update_imu(gyro, accel)
+        else: # 9-DOF IMU
+            self.fusion.update_ahrs(gyro, accel, mag)
+        quat = self.quat
+
         # Save the quatrnion for tracking
-        if abs(np.linalg.norm(accel) - 1.0) < 3e-2 or self.quat == None:
-            self.quat = quat
+        if abs(np.linalg.norm(accel) - 1.0) < 3e-2: # 3% error tolerance
+            self._quat_saved = quat
 
         # Predict the motion status, 0: static, 1: motional
         self.video = video
@@ -82,7 +103,7 @@ class MotionTracker:
 
         # Estimate the dynamic acceleration in Earth axes
         # The quaternion stored is used to estimate the dynamic acceleration
-        self.accel_dyn = get_dynamic_accel(accel, self.quat)
+        self.accel_dyn = get_dynamic_accel(accel, self._quat_saved)
         if motion_status == 0:
             self.accel_dyn = np.zeros(num_dim)
 
@@ -217,12 +238,22 @@ class MotionTracker:
             self.x = x
 
     @property
+    def fusion(self):
+        return self._fusion
+
+    @fusion.setter
+    def fusion(self, fusion_in):
+        self.fusion = fusion_in
+
+    @property
     def quat(self):
-        return self._quat
+        return self.fusion.quat
+        # Inverse the q to fit the coordinates used by Madgwick
+        #return self.fusion.quat.inv()
 
     @quat.setter
     def quat(self, val):
-        self._quat = val
+        self.fusion.quat = val
 
     @property
     def accel_th(self):
@@ -363,7 +394,6 @@ class MotionTracker:
     @damping.setter
     def damping(self, value):
         self._damping = value
-
 
 # -------- Auxiliary functions --------
 

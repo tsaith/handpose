@@ -1,23 +1,25 @@
 import numpy as np
 from handpose.sensor_fusion import *
 
-# Fusion parameters
-dt = 1e-1 # Sample period in seconds
-num_iter = 30
-beta = 4.1 # The suggested beta is 0.041 in Madgwick's paper
+# Sensor fusion
+dt = 1e-2 # Sample period in seconds
+num_iter = 1000
+beta = 0.041 # The suggested beta is 0.041 in Madgwick's paper
+fast_version = False
 
 # Earth magnetic strength and dip angle
 earth_mag=36.0
 
 earth_dip_deg=30.0
-earth_dip = earth_dip_deg*np.pi/180.0
+earth_dip = earth_dip_deg*np.pi/180
 
 # Sensor orientation
-angle_deg = 10e0
-angle = angle_deg*np.pi/180.0
+angle_deg = 3.0
+angle = angle_deg*np.pi/180
 
-# Rotaion quaternion
-q_e2s = Quaternion.from_angle_axis(angle, 0, 1, 0)
+# Rotaion quaternion, sensor axes respective to user axes
+q_se = Quaternion.from_angle_axis(angle, 0, 1, 0)
+angle_axis_in = q_se.to_angle_axis()
 
 num_dim = 3
 
@@ -27,59 +29,73 @@ gyro_e[0] = 0.0
 gyro_e[1] = 0.0 #angle/dt
 gyro_e[2] = 0.0
 
-# Dynamic acceleration in Earth axes
-accel_dyn_e = np.zeros(num_dim)
-accel_dyn_e[0] = 0.00 # Dynamic acceleration in earth axes
-accel_dyn_e[1] = 0.00
-accel_dyn_e[2] = 0.00
+# Analytic dynamic acceleration in Earth axes
+accel_dyn_e_in = np.zeros(num_dim)
+accel_dyn_e_in[0] = 0.00 # Dynamic acceleration in earth axes
+accel_dyn_e_in[1] = 0.00
+accel_dyn_e_in[2] = 0.00
 
 # IMU simulator
-imu_simulator = IMUSimulator(gyro_e, accel_dyn_e, q_e2s, earth_mag=earth_mag, earth_dip=earth_dip)
-gyro, accel, mag = imu_simulator.get_imu_data()
+imu_simulator = IMUSimulator(gyro_e, accel_dyn_e_in, q_se, earth_mag=earth_mag, earth_dip=earth_dip)
+gyro_in, accel_in, mag_in = imu_simulator.get_imu_data()
 
-# Estimate the initial angles
-tracker = MotionTracker(dt=dt, beta=beta, num_iter=200)
-tracker.update(gyro, accel, mag)
-init_q = tracker.q
+# Prepare the video
+timesteps = 5
+rows = 48
+cols = 48
+channels = 1
+shape = (timesteps, rows, cols, channels)
+video = np.zeros(shape, dtype=np.int32)
+video = None
 
-# Estimate angles with fewer iterations
-tracker = MotionTracker(accel_th=1e-4, vel_th=1e-5, dt=dt, beta=beta, num_iter=num_iter)
-tracker.q = init_q
-tracker.update(gyro, accel, mag)
+# Eestimate the quaternion
+sf = SensorFusion(dt, beta, num_iter=num_iter, fast_version=fast_version)
+sf.update_ahrs(gyro_in, accel_in, mag_in)
+quat = sf.quat
 
+# Motion tracker
+tracker = MotionTracker()
+tracker.update(gyro_in, accel_in, mag_in, quat=quat, video=video)
 
-angle_axis = tracker.q.to_angle_axis()
-simu_angle_deg = angle_axis[0] * 180/np.pi
+q_es_simu = tracker.quat
+q_se_simu = q_es_simu.inv()
 
+angle_axis_simu = q_es_simu.to_angle_axis()
+angle_deg_simu = angle_axis_simu[0]/np.pi*180
 
-x_s2e, y_s2e, z_s2e = tracker.unit_vectors_s2e()
-
-print("analytic angle = {} degree or {} radian".format(angle_deg, angle))
-print("simu angle = {} (degree)".format(simu_angle_deg))
-print("angle-axis = {}".format(angle_axis))
-print("----")
-print("earth_dip = {} degree or {} radian".format(earth_dip_deg, earth_dip))
-print("gyro = {}".format(gyro))
-print("accel = {}".format(accel))
-print("mag = {}".format(mag))
-print("----")
-print("accel_dyn_e = {}, ".format(accel_dyn_e))
 
 print("----")
-
-print("Spherical angles = {} (degree)".format(tracker.estimate_spherical_angles() * 180.0/np.pi))
-print("x_s2e = {}".format(x_s2e))
-print("y_s2e = {}".format(y_s2e))
-print("z_s2e = {}".format(z_s2e))
-
-print("w = {}".format(tracker.w))
-print("dtheta = {}".format(tracker.dtheta))
-
+print("accel_dyn_e_in = {}, ".format(accel_dyn_e_in))
+print("----")
+print("gyro_in = {}".format(gyro_in))
+print("accel_in = {}".format(accel_in))
+print("mag_in = {}".format(mag_in))
+print("----")
 print("dynamic accel = {}".format(tracker.accel_dyn))
-print("v = {}".format(tracker.vel))
-print("dv = {}".format(tracker.dv))
-print("dx = {}".format(tracker.dx))
+print("----")
+
+
+# Analytic dynamic acceleration in Earth axes
+accel_dyn_e_in[0] = 0.1 # Dynamic acceleration in earth axes
+accel_dyn_e_in[1] = 0.1
+accel_dyn_e_in[2] = 0.1
+
+# IMU simulator
+imu_simulator = IMUSimulator(gyro_e, accel_dyn_e_in, q_se, earth_mag=earth_mag, earth_dip=earth_dip)
+gyro_in, accel_in, mag_in = imu_simulator.get_imu_data()
+
+# Estimate the quaternion
+sf.update_ahrs(gyro_in, accel_in, mag_in)
+quat = sf.quat
+
+tracker.update(gyro_in, accel_in, mag_in, quat=quat, video=video)
 
 print("----")
-print("dt = {} (sec), beta = {}, ".format(dt, beta))
-print("damping = {}, ".format(tracker.damping))
+print("accel_dyn_e_in = {}, ".format(accel_dyn_e_in))
+print("----")
+print("gyro_in = {}".format(gyro_in))
+print("accel_in = {}".format(accel_in))
+print("mag_in = {}".format(mag_in))
+print("----")
+print("dynamic accel = {}".format(tracker.accel_dyn))
+
