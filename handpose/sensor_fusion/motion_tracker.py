@@ -69,7 +69,7 @@ class MotionTracker:
         self.mag = mag
 
         # Save the quatrnion for tracking
-        if abs(np.linalg.norm(accel) - 1.0) < 3e-2 or self.quat == None:
+        if abs(np.linalg.norm(accel) - 1.0) < 3e-2 or self.quat is None:
             self.quat = quat
 
         # Predict the motion status, 0: static, 1: motional
