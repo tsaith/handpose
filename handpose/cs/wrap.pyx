@@ -6,6 +6,8 @@ from libcpp.vector cimport vector
 cimport wrap
 
 cdef class CyCompressiveTracker:
+    cdef CompressiveTracker *this_ptr
+
     def __cinit__(self, frame, object_box):
         self.this_ptr = new CompressiveTracker()
 
@@ -39,6 +41,8 @@ cdef class CyCompressiveTracker:
 
 
 cdef class Rect:
+    cdef CvRect *this_ptr
+
     def __cinit__(self, int x, int y, int width, int height):
         self.this_ptr = new CvRect()
         self.this_ptr.x = x

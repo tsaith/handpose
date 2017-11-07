@@ -4,8 +4,8 @@ cimport numpy as np
 from libcpp.vector cimport vector
 cimport fast_madgwick
 
-from ..python_quaternion import Quaternion
-#from ..fast_quaternion import Quaternion
+#from ..python_quaternion import Quaternion
+from ..fast_quaternion import Quaternion
 
 # Define type
 ctypedef np.float64_t DTYPE_t

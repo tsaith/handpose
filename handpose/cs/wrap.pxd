@@ -17,10 +17,3 @@ cdef extern from "opencv2/core/core.hpp" namespace "cv":
         int width
         int height
 
-
-cdef class CyCompressiveTracker:
-    cdef CompressiveTracker *this_ptr
-
-cdef class Rect:
-    cdef CvRect *this_ptr
-

@@ -38,14 +38,20 @@ class Quaternion(quaternion.quaternion):
 
         return rad, x, y, z
 
+
     def rotate_vector(self, v):
         return quaternion.rotate_vectors(self, v)
 
     def rotate_axes(self, v):
-        return quaternion.rotate_vectors(self.inv(), v)
+        return quaternion.rotate_vectors(self.inverse(), v)
 
     def inv(self):
-        return self.inverse()
+        q_inv = self.inverse()
+        w = q_inv.w
+        x = q_inv.x
+        y = q_inv.y
+        z = q_inv.z
+        return Quaternion(w, x, y, z)
 
     def to_array(self):
         return quaternion.as_float_array(self)
