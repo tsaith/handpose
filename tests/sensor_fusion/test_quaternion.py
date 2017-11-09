@@ -34,5 +34,24 @@ def test_rotate_axes():
 
     assert_allclose(vec_rot, vec_ori)
 
+def test_roll_pitch_yaw():
+    # Test the Tait-Bryan angles estimated from quaternion
+
+    angle_gt = 30.0/180*np.pi
+    # Roll
+    quat = Quaternion.from_angle_axis(angle_gt, 1, 0, 0)
+    roll = quat.roll
+    assert_allclose(roll, angle_gt)
+
+    # Pitch
+    quat = Quaternion.from_angle_axis(angle_gt, 0, 1, 0)
+    pitch = quat.pitch
+    assert_allclose(pitch, angle_gt)
+
+    # Yaw
+    quat = Quaternion.from_angle_axis(angle_gt, 0, 0, 1)
+    yaw = quat.yaw
+    assert_allclose(yaw, angle_gt)
+
 if __name__ == '__main__':
     pytest.main([__file__])
