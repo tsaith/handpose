@@ -31,7 +31,7 @@ pip install numpy numpy-quaternion
 
 * [OpenCV](https://opencv.org/)
 ```sh
-conda install opencv=3.2.0
+conda install opencv=3.3.0
 ```
 
 ## Compilation
