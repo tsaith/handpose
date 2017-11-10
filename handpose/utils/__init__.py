@@ -1,7 +1,9 @@
 from __future__ import absolute_import
 
-from .plot_utils import *
 from .load_data import *
+from .plot_utils import *
+from .video_utils import *
+from .sort_utils import *
 from .numerical import *
 from .sampling import *
 from .io import *

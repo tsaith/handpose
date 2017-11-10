@@ -2,26 +2,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 
-def show_video(video):
-    """
-    Show the video.
-    """
-    timesteps, rows, cols, channels = video.shape
-
-    fig, axes = plt.subplots(nrows=1, ncols=timesteps, figsize=(12, 6))
-
-    for ts in range(timesteps):
-
-        if channels == 1:
-            image = video[ts, :, :, 0]
-            axes[ts].imshow(image, interpolation='nearest', cmap=plt.cm.gray)
-        else:
-            print("Unsupported!")
-            exit(0)
-
-    return fig, axes
-
-
 def plot_imu_data(data, xlabel="xlabel", ylabel="ylabel", title="title", legend=["", "", ""]):
     """
     Plot the IMU data.
