@@ -46,30 +46,24 @@ cdef class FastMadgwick:
         return self.target.getYawRadians()
 
     def get_quat_array(self):
-        '''
+
         cdef vector[float] cpp_array = self.target.get_quat_array()
-        cdef int ndim = 4
-        cdef int i
-        array = np.zeros(ndim, dtype=np.float64)
-        for i in range(ndim):
-            array[i] = cpp_array[i]
-
-        '''
-        cdef int ndim = 4
-        array = np.zeros(ndim, dtype=np.float64)
-
-        array[0] = self.target.get_q0()
-        array[1] = self.target.get_q1()
-        array[2] = self.target.get_q2()
-        array[3] = self.target.get_q3()
+        # Inverse the inversed quaternion
+        # which should be normalized
+        array = np.zeros(4, dtype=np.float64)
+        array[0] = cpp_array[0]
+        array[1] = -cpp_array[1]
+        array[2] = -cpp_array[2]
+        array[3] = -cpp_array[3]
 
         return array
+
 
     @property
     def quat(self):
         q = Quaternion.from_array(self.get_quat_array())
-        #return q # q_se ?
-        return q.inv()
+        #q = q.inv()
+        return q # q_es
 
     def get_counter(self):
         return self.target.get_counter()

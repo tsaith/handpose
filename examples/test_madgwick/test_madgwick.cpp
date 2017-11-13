@@ -14,6 +14,8 @@ int main(void) {
 
     Madgwick madgwick(samplePeriod, beta);
 
+    madgwick.update()
+
     cout << "Start" << endl;
      
     return 0;
