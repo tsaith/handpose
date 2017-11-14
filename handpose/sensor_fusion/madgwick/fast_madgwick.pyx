@@ -4,11 +4,10 @@ cimport numpy as np
 from libcpp.vector cimport vector
 cimport fast_madgwick
 
-#from ..python_quaternion import Quaternion
 from ..fast_quaternion import Quaternion
 
 # Define type
-ctypedef np.float64_t DTYPE_t
+ctypedef np.float64_t FLOAT64_t
 
 cdef class FastMadgwick:
     cdef Madgwick* target
@@ -20,18 +19,13 @@ cdef class FastMadgwick:
     def __dealloc__(self):
         del self.target
 
-    def update_ahrs(self,
-        np.ndarray[DTYPE_t, ndim=1] gyro,
-        np.ndarray[DTYPE_t, ndim=1] accel,
-        np.ndarray[DTYPE_t, ndim=1] mag):
+    def update_ahrs(self, FLOAT64_t [:] gyro, FLOAT64_t [:] accel, FLOAT64_t [:] mag):
 
         self.target.update(gyro[0], gyro[1], gyro[2],
                            accel[0], accel[1], accel[2],
                            mag[0], mag[1], mag[2])
 
-    def update_imu(self,
-        np.ndarray[DTYPE_t, ndim=1] gyro,
-        np.ndarray[DTYPE_t, ndim=1] accel):
+    def update_imu(self, FLOAT64_t [:] gyro, FLOAT64_t [:] accel):
 
         self.target.updateIMU(gyro[0], gyro[1], gyro[2],
                               accel[0], accel[1], accel[2])
