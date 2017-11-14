@@ -2,49 +2,25 @@ import numpy as np
 import matplotlib.pyplot as plt
 import cv2
 
-def play_video(video, win_name="testing"):
+
+def color2gray(color, color_seq="BGR", has_channel=True):
     """
-    Play the video
-    """
-
-    # Open the video
-    cap = cv2.VideoCapture(video)
-    if not cap.isOpened():
-        print("Could not open the video, {}".format(video))
-
-    # Play the video
-    while True:
-        ok, frame = cap.read()
-
-        # Check if we have reached the end of the video
-        if not ok: break
-
-        # Show the frame
-        cv2.imshow(win_name, frame)
-
-        # Exit if ESC pressed
-        key = cv2.waitKey(1) & 0xff
-        if key == 27: break
-
-    # Release the resource
-    cap.release()
-    cv2.destroyWindow(win_name)
-
-
-def play_frames(frames, win_name="testing"):
-    """
-    Play the frames
+    Convert color image as gray one.
     """
 
-    for frame in frames:
-        cv2.imshow(win_name, frame)
-        # Exit if ESC pressed
-        key = cv2.waitKey(1) & 0xff
-        if key == 27: break
+    if color_seq == "BGR":
+        convert_type = cv2.COLOR_BGR2GRAY
+    else:
+        convert_type = cv2.COLOR_RGB2GRAY
 
-    # Destroy the playing window
-    cv2.destroyWindow(win_name)
+    #rows, cols, channels = color.shape
+    #gray = np.zeros((rows, cols, 1), dtype=np.uint8)
+    gray = cv2.cvtColor(color, convert_type)
+    #gray[:, :, 0] = int(np.mean(color, keepdims=True))
+    if has_channel:
+        gray = np.expand_dims(gray, axis=2)
 
+    return gray
 
 def show_frames(frames_in, color_seq='RGB', figsize=(16, 16)):
     """

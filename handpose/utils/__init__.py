@@ -1,8 +1,11 @@
 from __future__ import absolute_import
 
 from .load_data import *
+
+from .image_utils import *
 from .plot_utils import *
 from .video_utils import *
+
 from .sort_utils import *
 from .numerical import *
 from .sampling import *
