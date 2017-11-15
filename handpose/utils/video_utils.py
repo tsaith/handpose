@@ -2,6 +2,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import cv2
 
+from .load_data import csv2numpy
+
 def play_video(video, win_name="testing"):
     """
     Play the video
@@ -122,3 +124,71 @@ def video2frames(video):
     cap.release()
 
     return frames
+
+
+def frames2video(frames, video_path='output.mp4', codec=None):
+    """
+    Convert frames into video.
+
+    Parameters
+    ----------
+    frames: List
+        List of frames.
+    video_path: string
+        Video path.
+    codec: string
+        Codec; Available candidates: 'MJPG'.
+    """
+
+    num_frames = len(frames)
+    win_name = 'video'
+
+    # Frame information
+    height, width, channels = frames[0].shape
+
+    # Define the codec and create VideoWriter object
+    if codec is None: codec = 'MJPG'
+    fourcc = cv2.VideoWriter_fourcc(*codec)
+    out = cv2.VideoWriter(video_path, fourcc, 20.0, (width, height))
+
+    print("Start to output {}".format(video_path))
+    print("There are {} frames in total.".format(num_frames))
+
+    for frame in frames:
+
+        out.write(frame) # Write out frame to video
+        cv2.imshow(win_name,frame)
+
+        # Exit if ESC pressed
+        key = cv2.waitKey(1) & 0xff
+        if key == 27: break
+
+
+    # Release everything if job is finished
+    out.release()
+    cv2.destroyWindow(win_name)
+
+
+def load_video_csv(file_path, rows, cols, channels=1, start_col=0, header='infer'):
+    """
+    Load video file with csv format.
+
+    Returns
+    -------
+    out: array
+        Array of video, out[timesteps, rows, cols, channels]
+    """
+
+    arr_read = csv2numpy(file_path, start_col=start_col, header=header)
+    timesteps = len(arr_read)
+    out = np.zeros((timesteps, rows, cols, channels), dtype=np.int32)
+
+    # Prepare the output array
+    for ts in range(timesteps):
+        for row in range(rows):
+            for col in range(cols):
+                for ch in range(channels):
+                     out[ts, row, col, ch] = arr_read[ts, row*cols*ch + col*ch + ch]
+
+    return out
+
