@@ -1,13 +1,6 @@
 import keras
 import pickle
 
-
-# A walk-around to avoid the bug ('module' object has no attribute 'control_flow_ops')\n",
-#import keras
-#if keras.backend.backend() == 'tensorflow':
-#    import tensorflow as tf
-#    tf.python.control_flow_ops = tf
-
 class GestureEngine:
     """
     Gesture engine class.
@@ -17,17 +10,17 @@ class GestureEngine:
     def __init__(self, config):
         """
         Constructor of recognition engine.
-    
+
         Parameters
         ----------
         config : object
-            Configuration containing the information of system, 
+            Configuration containing the information of system,
             pre-processing and post-processing.
 
         """
         self.config = config
-        self.scaler = None 
-        self.model_trained = None 
+        self.scaler = None
+        self.model_trained = None
 
         # Load the scaler
         self.load_scaler()
