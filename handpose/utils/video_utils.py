@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import cv2
+import time
 
 from .load_data import csv2numpy
 
@@ -33,13 +34,19 @@ def play_video(video, win_name="testing"):
     cv2.destroyWindow(win_name)
 
 
-def play_frames(frames, win_name="testing"):
+def play_frames(frames, win_name="testing", sleep_time=None):
     """
     Play the frames
     """
 
     for frame in frames:
         cv2.imshow(win_name, frame)
+
+        # Sleep
+        if sleep_time is None:
+            t = 0.0
+        time.sleep(sleep_time)
+
         # Exit if ESC pressed
         key = cv2.waitKey(1) & 0xff
         if key == 27: break
@@ -48,14 +55,22 @@ def play_frames(frames, win_name="testing"):
     cv2.destroyWindow(win_name)
 
 
-def show_frames(frames_in, color_seq='RGB', figsize=(16, 16)):
+def show_frames(frames_in, color_seq='BGR', figsize=(5, 5)):
     """
     Show the video.
+
+    figsize: tuple
+        Size of a single frame.
     """
     num_frames = len(frames_in)
 
     frame0 = frames_in[0]
-    rows, cols, channels = frame0.shape
+    height, width, channels = frame0.shape
+
+    # Plot settings
+    width_plot = figsize[0]
+    height_plot = figsize[1]*num_frames
+    figsize_plot = (width_plot, height_plot)
 
     frames = []
     if channels != 1 and (color_seq == 'BGR' or color_seq == 'bgr'): # BGR format
@@ -65,11 +80,10 @@ def show_frames(frames_in, color_seq='RGB', figsize=(16, 16)):
     else: # RGB or Gray format
         frames = frames_in
 
-    fig, axes = plt.subplots(nrows=num_frames, ncols=1, figsize=figsize)
+    fig, axes = plt.subplots(nrows=num_frames, ncols=1, figsize=figsize_plot)
     for i in range(num_frames):
         frame = frames[i]
         if channels == 1:
-            print("shape = ", frame.shape)
             axes[i].imshow(frame[:,:,0], interpolation='nearest', cmap=plt.cm.gray)
         else:
             axes[i].imshow(frame, interpolation='nearest')

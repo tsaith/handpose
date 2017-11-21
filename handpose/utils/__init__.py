@@ -2,8 +2,8 @@ from __future__ import absolute_import
 
 from .load_data import *
 
-from .image_utils import *
 from .plot_utils import *
+from .image_utils import *
 from .video_utils import *
 from .tracking_utils import *
 
