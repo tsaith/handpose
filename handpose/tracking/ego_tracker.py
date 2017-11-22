@@ -113,15 +113,15 @@ class EgoTracker:
         # Save the flow fields
         self._flow = flow
 
-    def is_motional(self, delta_th=0.2):
+    def is_motional(self, shift_th=0.2):
         """
         Judge if motional or not.
 
-        delta_th: float
-            Threshold of the displacement.
+        shift_th: float
+            Threshold of the shift.
         """
-        delta = np.sqrt(self.dx*self.dx + self.dy*self.dy)
-        if delta > delta_th:
+        shift = np.sqrt(self.dx*self.dx + self.dy*self.dy)
+        if shift > shift_th:
             motional = True
         else:
             motional = False
