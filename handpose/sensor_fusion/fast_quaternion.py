@@ -1,6 +1,6 @@
 import numpy as np
 import quaternion
-from numba import jit, njit, int32, float32, float64
+#from numba import jit, njit, int32, float32, float64
 
 class Quaternion(quaternion.quaternion):
     """

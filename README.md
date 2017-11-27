@@ -10,7 +10,8 @@ Python 3.6 is expected.
 * [Ipython](http://ipython.org/)
 * [scikit-learn](http://scikit-learn.org/stable/)
 * [TensorFlow](https://www.tensorflow.org/)
-* [keras](http://keras.io/)
+* [Keras](http://keras.io/)
+* [Sonnet](https://deepmind.github.io/sonnet/)
 * [PyWavelets](https://pywavelets.readthedocs.io)
 * [matplotlib](http://matplotlib.org/)
 * [Boken](http://bokeh.pydata.org)
@@ -19,8 +20,27 @@ Python 3.6 is expected.
 
 ## Installation
 
+* [Keras](http://keras.io/)
+
+With GPU support,
+```sh
+conda install keras-gpu=2.0.2
+```
+With CPU only,
+
+```sh
+conda install keras=2.0.2
+```
+
+* [Sonnet](https://deepmind.github.io/sonnet/)
+
+```sh
+pip install dm-sonnet==1.14
+```
+
+
 * [numpy-quaternion](https://github.com/moble/quaternion)
-  
+ 
 ```sh
 conda install -c moble quaternion
 ```
