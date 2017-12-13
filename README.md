@@ -20,6 +20,16 @@ Python 3.6 is expected.
 
 ## Installation
 
+* [TensorFlow](https://www.tensorflow.org/)
+
+```sh
+pip install tensorflow==1.4.0
+```
+or with GPU supported,
+```sh
+pip install tensorflow-gpu==1.4.0
+```
+
 * [Keras](http://keras.io/)
 
 With GPU support,
