@@ -350,6 +350,16 @@ class XsensMotionTracker:
     def damping(self, value):
         self._damping = value
 
+    def get_orientation_angles(self):
+        # Return the orientation angles in radain
+
+        quat_se = self.quat.inv()
+        roll = quat_se.roll
+        pitch = quat_se.pitch
+        yaw = quat_se.yaw
+
+        return roll, pitch, yaw
+
 
 # -------- Auxiliary functions --------
 

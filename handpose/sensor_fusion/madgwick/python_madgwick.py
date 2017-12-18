@@ -20,7 +20,8 @@ import warnings
 import numpy as np
 from numpy.linalg import norm
 from handpose.sensor_fusion.python_quaternion import Quaternion
-from numba import jit
+#from handpose.sensor_fusion import Quaternion
+#from numba import jit
 
 #@jit
 def ahrs_step(q, accelerometer, magnetometer, b):

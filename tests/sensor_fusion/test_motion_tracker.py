@@ -17,7 +17,6 @@ def test_motion_tracker():
     earth_dip_deg=30.0
     earth_dip = earth_dip_deg*np.pi/180
 
-
     # Sensor orientation
     angle_deg = 3.0
     angle = angle_deg*np.pi/180
@@ -68,8 +67,18 @@ def test_motion_tracker():
     quat = sf.quat
     tracker.update(gyro_in, accel_in, mag_in, quat=quat)
 
+    # Test dynamic acceleration
     assert_allclose(tracker.accel_dyn, accel_dyn_e_in, atol=1e-3)
 
+    # Test orientation angles
+    roll, pitch, yaw = tracker.get_orientation_angles()
+    roll_gt = 0.0
+    pitch_gt = angle
+    yaw_gt = 0.0
+
+    assert_allclose(roll, roll_gt, atol=1e-3)
+    assert_allclose(pitch, pitch_gt, atol=1e-3)
+    assert_allclose(yaw, yaw_gt, atol=1e-3)
 
 if __name__ == '__main__':
     pytest.main([__file__])

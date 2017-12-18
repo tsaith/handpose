@@ -63,6 +63,10 @@ q_se_simu = q_es_simu.inv()
 angle_axis_simu = q_es_simu.to_angle_axis()
 angle_deg_simu = angle_axis_simu[0]/np.pi*180
 
+# Orientation angles
+roll = tracker.get_roll() * 180.0/np.pi
+pitch = tracker.get_pitch() * 180.0/np.pi
+roll = tracker.get_yaw() * 180.0/np.pi
 
 print("----")
 print("accel_dyn_e_in = {}, ".format(accel_dyn_e_in))
@@ -73,6 +77,7 @@ print("mag_in = {}".format(mag_in))
 print("----")
 print("dynamic accel = {}".format(tracker.accel_dyn))
 print("----")
+print("roll, pitch, yaw = {}, {}, {} (degree)".format(roll, pitch, yaw))
 
 
 # Analytic dynamic acceleration in Earth axes
