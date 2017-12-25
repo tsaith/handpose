@@ -46,7 +46,7 @@ class XsensMotionTracker:
         self._accel = None
         self._mag   = None
 
-    def update(self, gyro=None, accel=None, mag=None, accel_dyn=None, video=None, quat=None):
+    def update(self, gyro=None, accel=None, mag=None, accel_dyn=None, motion_status=None, quat=None):
         """
         Update the status of tracker.
 
@@ -60,6 +60,8 @@ class XsensMotionTracker:
             Measured magnetic fields (muT)
         accel_dyn: array
             dynamic acceleration (m/s^2)
+        motion_status: int
+            motion_status prediced by optical flow.
         quat: Quaternion
             Rotation quaternion.
         """
@@ -73,13 +75,6 @@ class XsensMotionTracker:
         # Save the quatrnion for tracking
         self.quat = quat
 
-        # Predict the motion status, 0: static, 1: motional
-        self.video = video
-        if self.video is None:
-            motion_status = 1
-        else:
-            X = np.expand_dims(video, axis=0)
-            motion_status = motion_predict(X)[0]
 
         # Estimate the dynamic acceleration in Earth axes
         # The quaternion stored is used to estimate the dynamic acceleration
@@ -253,14 +248,6 @@ class XsensMotionTracker:
     @mag.setter
     def mag(self, mag_in):
         self._mag = mag_in
-
-    @property
-    def video(self):
-        return self._video
-
-    @video.setter
-    def video(self, value):
-        self._video = value
 
     @property
     def accel_dyn(self):
