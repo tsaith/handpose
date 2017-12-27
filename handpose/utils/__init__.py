@@ -7,6 +7,7 @@ from .np_utils import *
 from .image_utils import *
 from .video_utils import *
 from .tracking_utils import *
+from .rotation_utils import *
 
 from .sort_utils import *
 from .numerical import *
