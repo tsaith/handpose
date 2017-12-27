@@ -1,13 +1,15 @@
 import numpy as np
+from ..utils import est_mag
 from ..sensor_fusion import SensorFusion
 from .motion_classifier import motion_predict
+
 
 class XsensMotionTracker:
     """
     Xsens motion tracker.
     """
 
-    def __init__(self, accel_th=0e-3, vel_th=0e-3, w_th=0e-3, dt=0.01):
+    def __init__(self, accel_th=1e-4, vel_th=1e-4, w_th=1e-4, dt=0.01):
         """
         accel_th: float
             Threshold of the dynamic acceleration.
@@ -75,12 +77,14 @@ class XsensMotionTracker:
         # Save the quatrnion for tracking
         self.quat = quat
 
-
-        # Estimate the dynamic acceleration in Earth axes
-        # The quaternion stored is used to estimate the dynamic acceleration
+        # Dynamic acceleration
         self.accel_dyn = accel_dyn
-        if motion_status == 0:
+        magnitude = est_mag(self.accel_dyn)
+        if magnitude < self._accel_th: # Filter the noises
             self.accel_dyn = np.zeros(num_dim)
+
+        if motion_status == 0:
+            self.aceel_dyn = np.zeros(num_dim)
 
         # Update velocity and displacement in Earth axes
         self.dv = self.accel_dyn * self.dt
