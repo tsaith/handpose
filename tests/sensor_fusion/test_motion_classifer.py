@@ -1,8 +1,7 @@
 import pytest
 import numpy as np
 from numpy.testing import assert_allclose
-from handpose.sensor_fusion import *
-
+from handpose.tracking import *
 
 def test_motion_predict():
 

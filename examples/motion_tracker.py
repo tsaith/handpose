@@ -1,5 +1,6 @@
 import numpy as np
 from handpose.sensor_fusion import *
+from handpose.utils import *
 
 # Sensor fusion
 dt = 1e-2 # Sample period in seconds

@@ -6,21 +6,22 @@ from handpose.sensor_fusion import *
 from handpose.utils import Quaternion
 
 
-def test_motion_tracker():
+def test_xsens_motion_tracker():
 
-    # Sensor fusion
     dt = 1e-2 # Sample period in seconds
-    num_iter = 100
+    num_iter = 1000
     beta = 0.041 # The suggested beta is 0.041 in Madgwick's paper
-    fast_version = False
+    fast_version = True
 
     # Earth magnetic strength and dip angle
     earth_mag=36.0
+
     earth_dip_deg=30.0
     earth_dip = earth_dip_deg*np.pi/180
 
+
     # Sensor orientation
-    angle_deg = 3.0
+    angle_deg = 30.0
     angle = angle_deg*np.pi/180
 
     # Rotaion quaternion, sensor axes respective to user axes
@@ -45,32 +46,33 @@ def test_motion_tracker():
     imu_simulator = IMUSimulator(gyro_e, accel_dyn_e_in, q_se, earth_mag=earth_mag, earth_dip=earth_dip)
     gyro_in, accel_in, mag_in = imu_simulator.get_imu_data()
 
+    # Prepare the video
+    timesteps = 5
+    rows = 48
+    cols = 48
+    channels = 1
+    shape = (timesteps, rows, cols, channels)
+    video = np.zeros(shape, dtype=np.int32)
+    video = None
+
     # Eestimate the quaternion
     sf = SensorFusion(dt, beta, num_iter=num_iter, fast_version=fast_version)
     sf.update_ahrs(gyro_in, accel_in, mag_in)
     quat = sf.quat
 
-    # Motion tracker
-    tracker = MotionTracker()
-    tracker.update(gyro_in, accel_in, mag_in, quat=quat)
+    # Xsens motion tracker
+    tracker = XsensMotionTracker(accel_th=1e-4, vel_th=1e-5)
 
+    q_es_simu = quat
+    q_se_simu = q_es_simu.inv()
 
-    # Analytic dynamic acceleration in Earth axes
-    accel_dyn_e_in[0] = 0.1 # Dynamic acceleration in earth axes
-    accel_dyn_e_in[1] = 0.1
-    accel_dyn_e_in[2] = 0.1
+    tracker.update(gyro_in, accel_in, mag_in, accel_dyn=accel_dyn_e_in,
+                   motion_status=1, quat=q_se_simu)
 
-    # IMU simulator
-    imu_simulator = IMUSimulator(gyro_e, accel_dyn_e_in, q_se, earth_mag=earth_mag, earth_dip=earth_dip)
-    gyro_in, accel_in, mag_in = imu_simulator.get_imu_data()
+    # Test the estimated position
+    x_gt = np.array([np.cos(angle), 0, -np.sin(angle)])
 
-    # Estimate the quaternion
-    sf.update_ahrs(gyro_in, accel_in, mag_in)
-    quat = sf.quat
-    tracker.update(gyro_in, accel_in, mag_in, quat=quat)
-
-    # Test dynamic acceleration
-    assert_allclose(tracker.accel_dyn, accel_dyn_e_in, atol=1e-3)
+    assert_allclose(tracker.x, x_gt, atol=1e-3)
 
     # Test orientation angles
     roll, pitch, yaw = tracker.get_orientation_angles()

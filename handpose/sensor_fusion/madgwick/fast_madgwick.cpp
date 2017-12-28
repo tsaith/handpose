@@ -2214,10 +2214,10 @@ static const char __pyx_k_pyx_getbuffer[] = "__pyx_getbuffer";
 static const char __pyx_k_reduce_cython[] = "__reduce_cython__";
 static const char __pyx_k_sample_period[] = "sample_period";
 static const char __pyx_k_get_quat_array[] = "get_quat_array";
+static const char __pyx_k_handpose_utils[] = "handpose.utils";
 static const char __pyx_k_View_MemoryView[] = "View.MemoryView";
 static const char __pyx_k_allocate_buffer[] = "allocate_buffer";
 static const char __pyx_k_dtype_is_object[] = "dtype_is_object";
-static const char __pyx_k_fast_quaternion[] = "fast_quaternion";
 static const char __pyx_k_pyx_PickleError[] = "__pyx_PickleError";
 static const char __pyx_k_setstate_cython[] = "__setstate_cython__";
 static const char __pyx_k_pyx_unpickle_Enum[] = "__pyx_unpickle_Enum";
@@ -2295,7 +2295,6 @@ static PyObject *__pyx_n_s_dtype_is_object;
 static PyObject *__pyx_n_s_encode;
 static PyObject *__pyx_n_s_enumerate;
 static PyObject *__pyx_n_s_error;
-static PyObject *__pyx_n_s_fast_quaternion;
 static PyObject *__pyx_n_s_flags;
 static PyObject *__pyx_n_s_float64;
 static PyObject *__pyx_n_s_format;
@@ -2306,6 +2305,7 @@ static PyObject *__pyx_n_s_get_quat_array;
 static PyObject *__pyx_n_s_getstate;
 static PyObject *__pyx_kp_s_got_differing_extents_in_dimensi;
 static PyObject *__pyx_n_s_gyro;
+static PyObject *__pyx_n_s_handpose_utils;
 static PyObject *__pyx_n_s_id;
 static PyObject *__pyx_n_s_import;
 static PyObject *__pyx_n_s_itemsize;
@@ -19943,7 +19943,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_encode, __pyx_k_encode, sizeof(__pyx_k_encode), 0, 0, 1, 1},
   {&__pyx_n_s_enumerate, __pyx_k_enumerate, sizeof(__pyx_k_enumerate), 0, 0, 1, 1},
   {&__pyx_n_s_error, __pyx_k_error, sizeof(__pyx_k_error), 0, 0, 1, 1},
-  {&__pyx_n_s_fast_quaternion, __pyx_k_fast_quaternion, sizeof(__pyx_k_fast_quaternion), 0, 0, 1, 1},
   {&__pyx_n_s_flags, __pyx_k_flags, sizeof(__pyx_k_flags), 0, 0, 1, 1},
   {&__pyx_n_s_float64, __pyx_k_float64, sizeof(__pyx_k_float64), 0, 0, 1, 1},
   {&__pyx_n_s_format, __pyx_k_format, sizeof(__pyx_k_format), 0, 0, 1, 1},
@@ -19954,6 +19953,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_getstate, __pyx_k_getstate, sizeof(__pyx_k_getstate), 0, 0, 1, 1},
   {&__pyx_kp_s_got_differing_extents_in_dimensi, __pyx_k_got_differing_extents_in_dimensi, sizeof(__pyx_k_got_differing_extents_in_dimensi), 0, 0, 1, 0},
   {&__pyx_n_s_gyro, __pyx_k_gyro, sizeof(__pyx_k_gyro), 0, 0, 1, 1},
+  {&__pyx_n_s_handpose_utils, __pyx_k_handpose_utils, sizeof(__pyx_k_handpose_utils), 0, 0, 1, 1},
   {&__pyx_n_s_id, __pyx_k_id, sizeof(__pyx_k_id), 0, 0, 1, 1},
   {&__pyx_n_s_import, __pyx_k_import, sizeof(__pyx_k_import), 0, 0, 1, 1},
   {&__pyx_n_s_itemsize, __pyx_k_itemsize, sizeof(__pyx_k_itemsize), 0, 0, 1, 1},
@@ -20660,7 +20660,7 @@ static int __pyx_pymod_exec_fast_madgwick(PyObject *__pyx_pyinit_module)
   /* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":7
  * cimport fast_madgwick
  * 
- * from ..fast_quaternion import Quaternion             # <<<<<<<<<<<<<<
+ * from handpose.utils import Quaternion             # <<<<<<<<<<<<<<
  * 
  * # Define type
  */
@@ -20669,7 +20669,7 @@ static int __pyx_pymod_exec_fast_madgwick(PyObject *__pyx_pyinit_module)
   __Pyx_INCREF(__pyx_n_s_Quaternion);
   __Pyx_GIVEREF(__pyx_n_s_Quaternion);
   PyList_SET_ITEM(__pyx_t_1, 0, __pyx_n_s_Quaternion);
-  __pyx_t_2 = __Pyx_Import(__pyx_n_s_fast_quaternion, __pyx_t_1, 2); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 7, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_Import(__pyx_n_s_handpose_utils, __pyx_t_1, -1); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 7, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_Quaternion); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 7, __pyx_L1_error)

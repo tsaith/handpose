@@ -4,7 +4,7 @@ Operations of quaternion.
 
 import numpy as np
 import time
-from handpose.sensor_fusion import Quaternion
+from handpose.utils import Quaternion
 
 # Quaternion as numpy array
 angle = 0.5*np.pi # Angle for rotation

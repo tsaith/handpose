@@ -7,11 +7,11 @@ from .np_utils import *
 from .image_utils import *
 from .video_utils import *
 from .tracking_utils import *
-from .rotation_utils import *
 
 from .sort_utils import *
 from .numerical import *
 from .sampling import *
+from .quaternion import Quaternion
 from .io import *
 from .confusion_matrix import plot_confusion_matrix
 from .fft import fourier_spectrum

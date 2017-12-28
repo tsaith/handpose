@@ -16,6 +16,7 @@ class Quaternion(quaternion.quaternion):
         :param z: The third imaginary part if w_or_q is a scalar
         """
         super().__init__(w, x, y, z)
+        #self._quat = np.quaternion(w, x, y, z)
 
     def to_angle_axis(self):
         """
@@ -56,6 +57,18 @@ class Quaternion(quaternion.quaternion):
     def to_array(self):
         return quaternion.as_float_array(self)
 
+    def to_spherical(self):
+        """
+        Convert the quaternion into the spherical coordinates.
+        Returns
+        -------
+        coords: array
+            Array of spherical coordinates; [theta, phi], where
+            theta is the poloidal angle and phi is the toroidal angle.
+            The unit z vector is the reference vector.
+        """
+        return quaternion.as_spherical_coords(self)
+
     @staticmethod
     def from_angle_axis(rad, x, y, z):
         s = np.sin(0.5*rad)
@@ -65,17 +78,26 @@ class Quaternion(quaternion.quaternion):
     def from_array(a):
         return Quaternion(a[0], a[1], a[2], a[3])
 
-    @property
-    def quat(self):
-        return self._quat
+    @staticmethod
+    def from_spherical(theta, phi):
+        """
+        Return the quaternion from the spherical coordinates.
 
-    @property
-    def angle(self):
-        return  self.angle()
+        Parameters
+        ----------
+        theta: float
+            Poloidal angle.
+        phi: float
+            Toroidal angle.
 
-    @property
-    def vector(self):
-        return  self.vec
+        Returns
+        -------
+        quat: quaternion
+             Rotational quaternion.
+        """
+        q = quaternion.from_spherical_coords(theta, phi)
+        a = quaternion.as_float_array(q)
+        return Quaternion(a[0], a[1], a[2], a[3])
 
     @property
     def roll(self):

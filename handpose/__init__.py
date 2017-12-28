@@ -1,12 +1,8 @@
 
 from . import utils
-from .devices.wristband import Wristband
-
-from .sensors import ImpSensor, Accelerometer, Gyroscope, Magnetometer, PPG
-from .sensor_data import ImpSensorData
-
+#from .devices.wristband import Wristband
 
 from .faker import Faker
 
 # Version
-__version__ = '0.2.0'
+__version__ = '0.3.0'

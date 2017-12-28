@@ -4,7 +4,7 @@ cimport numpy as np
 from libcpp.vector cimport vector
 cimport fast_madgwick
 
-from ..fast_quaternion import Quaternion
+from handpose.utils import Quaternion
 
 # Define type
 ctypedef np.float64_t FLOAT64_t
