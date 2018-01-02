@@ -1,7 +1,4 @@
 import numpy as np
-#from ..utils import est_mag
-#from .motion_classifier import motion_predict
-
 
 class XsensMotionTracker:
     """

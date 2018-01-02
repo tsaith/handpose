@@ -12,6 +12,7 @@ from .sort_utils import *
 from .numerical import *
 from .sampling import *
 from .quaternion import Quaternion
+from .rotate_axes import *
 from .io import *
 from .confusion_matrix import plot_confusion_matrix
 from .fft import fourier_spectrum
