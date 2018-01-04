@@ -1,6 +1,7 @@
 import numpy as np
 import pickle
 
+from handpose.utils import track_to_image
 
 def get_motion_class(theta, phi):
     """

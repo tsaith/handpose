@@ -58,7 +58,7 @@ def color2gray(color, color_seq="BGR", has_channel=True):
 
     return gray
 
-def imshow(image, fmt):
+def imshow(image, fmt='gray'):
     """
     Show image with gray-scale.
 
