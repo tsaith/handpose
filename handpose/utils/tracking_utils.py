@@ -39,9 +39,9 @@ def broaden_stroke(image, broaden_cells=2, threshold=0):
     return image
 
 
-def track_to_image(x_arr, y_arr, shape=(28, 28), broaden_cells=0):
+def trajectory_to_image(x_arr, y_arr, shape=(28, 28), broaden_cells=0):
     """
-    Convert the 2D track into an image.
+    Convert the 2D trajectory into an image.
 
     Parameters
     ----------
