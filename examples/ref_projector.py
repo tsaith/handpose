@@ -7,23 +7,19 @@ from handpose.tracking import *
 
 vec0 = np.array([1, 0, 0])
 
-# Make first rotation
-theta = 0.0 / 180 * np.pi
-phi = 30.0 / 180 *np.pi
-q_ref = Quaternion.from_spherical(theta, phi)
-
 # Construct a reference projector
 projector = RefProjector()
 
-# Make second rotation
+# Make first rotation
 theta = 0.0 / 180 * np.pi
 phi = 30.0 / 180 *np.pi
 q_ref = Quaternion.from_spherical(theta, phi)
 
 # Vector representation in the reference axes
 vec_ref = q_ref.rotate_vector(vec0)
+projector.q_ref = q_ref # Save the reference quaternion
 
-projector.q_ref = q_ref
+# Make second rotation
 theta = 0.0 / 180 * np.pi
 phi = -60.0 / 180 *np.pi
 q_target = Quaternion.from_spherical(theta, phi)
