@@ -3,12 +3,14 @@ import tensorflow as tf
 from tensorflow.contrib import keras
 import pickle
 
+from handpose.tracking import *
+from handpose.utils import *
 
 # ---------------------------------------------------------------------
 
 class TrajectoryEngine:
     """
-    Trajectory engine.
+    Trajectory engine which predicts the type of the 3D trajectory.
     """
 
     def __init__(self, config):
@@ -20,129 +22,45 @@ class TrajectoryEngine:
         config : object
             Configuration containing the information of system,
             pre-processing and post-processing.
-
+        dt: float
+            Time duration of motion sensor.
         """
-        self._config = config
-        self._scaler = None
-        self._model_trained = None # Symbol model
+        self._ref_projector = RefProjector()
+        self._classifier = SymbolClassifier(config)
 
-        # Load the scaler
-        #self.load_scaler()
+    def set_ref_quat(self, quat):
+        self._ref_projector.q_ref = quat
 
-        # Load the trained model
-        self.load_model()
-
-    @property
-    def config(self):
-        return self._config
-
-    @config.setter
-    def config(self, val):
-        self._config = val
-
-    @property
-    def scaler(self):
-        return self._scaler
-
-    @scaler.setter
-    def scaler(self, val):
-        self._scaler = val
-
-    @property
-    def model_trained(self):
-        return self._model_trained
-
-    @model_trained.setter
-    def model_trained(self, val):
-        self._model_trained= val
-
-    def load_scaler(self):
+    def predict_proba(self, vec_arr):
         """
-        Load the scaler file.
+        Predict the type of trajectory.
 
-        Parameters
-        ----------
-        scaler_path: str
-            The scaler path.
-        """
-        scaler_path = self.config.scaler_path
-        self.scaler = pickle.load(open(scaler_path, "rb"), encoding='bytes')
-
-        return self.scaler
-
-    def load_model(self):
-        """
-        Load the traind model file.
-
-        Parameters
-        ----------
-        model_path: str
-            The model path.
-        """
-        model_path = self.config.model_path
-        self.model_trained = keras.models.load_model(model_path)
-
-        return self.model_trained
-
-    def preprocess(self, X):
-        """
-        Preprocess the input features
-
-        Parameters
-        ----------
-        scaler_path: str
-            The scaler path.
+        data: array
+            Trajectory data
         """
 
-        # Convert to spectrum
-        out = to_spectrum(X, keep_dc=False)
+        num_vec = len(vec_arr)
+        vec_proj = np.zeros_like(vec_arr)
+        for i in range(num_vec):
+            vec_proj[i] = self._ref_projector.project_vector(vec_arr[i])
 
-        # Normalization
-        out = normalize(out)
+        # Vectors on plane
+        x_plane = vec_proj[:, 1]
+        y_plane = vec_proj[:, 2]
 
-        # Scaling
-        #out = self.scaler.transform(out)
+        # Convert the 2D trajectory into an image
+        image = trajectory_to_image(x_plane, y_plane, broaden_cells=0)
 
-        # Add the channel
-        if out.ndim < 3:
-            out = np.expand_dims(out, axis=2)
+        # Preprocessing
+        X = image
+        X = np.expand_dims(X, axis=2)
+        X = np.expand_dims(X, axis=0)
+        X = self._classifier.preprocess(X)
 
-        return out
+        # Predict the probability
+        proba = self._classifier.predict_proba(X)
 
-    def predict_classes(self, x, batch_size=256, verbose=0):
-        """
-        Generate class predictions for the input samples.
+        return proba[0]
 
-        Parameters
-        ----------
-        X: array-like
-            Input features.
-        """
-
-        return self.model_trained.predict_classes(x, batch_size=batch_size, verbose=verbose)
-
-
-
-    def predict_proba(self, x, batch_size=256, verbose=0):
-        """
-        Return the predicted probabilities..
-
-        Parameters
-        ----------
-        x: array-like
-            Input features.
-        """
-        return self.model_trained.predict_proba(x, batch_size=batch_size, verbose=verbose)
-
-    def predict(self, x, batch_size=256, verbose=0):
-        """
-        Generates output predictions for the input samples.
-
-        Parameters
-        ----------
-        x: array-like
-            Input features.
-        """
-        return self.model_trained.predict(x, batch_size=batch_size, verbose=verbose)
 
 

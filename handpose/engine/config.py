@@ -1,6 +1,6 @@
 import keras
 
-class EngineConfig:
+class ModelConfig:
     """
     Engine configuration class.
     """
@@ -37,4 +37,17 @@ class EngineConfig:
     @scaler_path.setter
     def scaler_path(self, path):
         self._scaler_path = path
+
+# ---------
+
+class EngineConfig(ModelConfig):
+    """
+    Engine configuration class.
+    """
+
+    def __init__(self):
+        """
+        Constructor of engine configuration.
+        """
+        super().__init__()
 
