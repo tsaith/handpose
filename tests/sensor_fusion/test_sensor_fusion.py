@@ -21,10 +21,10 @@ def test_sensor_fusion():
     fusion = SensorFusion(dt, beta, num_iter, fast_version=fast_version)
     fusion.update_ahrs(gyro, accel, mag)
 
-    q_es_simu = fusion.quat.to_array()
-    q_es_gt = np.array([0.99965732, -0.0, -0.02617695, -0.0]) # Ground True
+    q_se_simu = fusion.quat.to_array()
+    q_se_gt = np.array([0.99965732, 0.0, 0.02617695, 0.0]) # Ground True
 
-    assert_allclose(q_es_simu, q_es_gt, rtol=1e-2)
+    assert_allclose(q_se_simu, q_se_gt, rtol=1e-2)
 
 
 if __name__ == '__main__':

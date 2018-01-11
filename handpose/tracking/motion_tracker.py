@@ -156,7 +156,7 @@ class MotionTracker:
         """
         num_dim = 3
 
-        q_se = self.quat.inv()
+        q_se = self.quat
 
         # z-vector representation of earth axes respective to sensor axes
         z_e = np.array([0, 0, 1], dtype=np.float64)
@@ -173,8 +173,7 @@ class MotionTracker:
         The representations of unit vectors of sensor axes respective to Earth axes.
         """
         # Rotation quaternion of sensor to Earth axes
-        q_es = self.quat
-        q_se = q_es.inv()
+        q_se = self.quat
 
         # z-vector representation of earth axes respective to sensor axes
         x_e = np.array([1, 0, 0], dtype=np.float64)
@@ -367,7 +366,7 @@ class MotionTracker:
     def get_orientation_angles(self):
         # Return the orientation angles in radain
 
-        quat_se = self.quat.inv()
+        quat_se = self.quat
         roll = quat_se.roll
         pitch = quat_se.pitch
         yaw = quat_se.yaw

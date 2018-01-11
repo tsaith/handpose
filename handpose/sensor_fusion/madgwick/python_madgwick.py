@@ -166,5 +166,5 @@ class MadgwickAHRS:
 
     @property
     def quat(self):
-        return self.quaternion.inv() # for q_es
-        #return self.quaternion # for q_se
+        #return self.quaternion.inv() # for q_es
+        return self.quaternion # for q_se

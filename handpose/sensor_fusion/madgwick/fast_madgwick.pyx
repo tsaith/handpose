@@ -42,22 +42,20 @@ cdef class FastMadgwick:
     def get_quat_array(self):
 
         cdef vector[float] cpp_array = self.target.get_quat_array()
-        # Inverse the inversed quaternion
-        # which should be normalized
+
         array = np.zeros(4, dtype=np.float64)
         array[0] = cpp_array[0]
-        array[1] = -cpp_array[1]
-        array[2] = -cpp_array[2]
-        array[3] = -cpp_array[3]
+        array[1] = cpp_array[1]
+        array[2] = cpp_array[2]
+        array[3] = cpp_array[3]
 
         return array
 
 
     @property
-    def quat(self):
+    def quat(self): # q_se, sensor axes respective to the Earth axes
         q = Quaternion.from_array(self.get_quat_array())
-        #q = q.inv()
-        return q # q_es
+        return q
 
     def get_counter(self):
         return self.target.get_counter()

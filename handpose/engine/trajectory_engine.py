@@ -28,6 +28,8 @@ class TrajectoryEngine:
         self._ref_projector = RefProjector()
         self._classifier = SymbolClassifier(config)
 
+        self._image = None # Internal image used to be classified
+
     def set_ref_quat(self, quat):
         self._ref_projector.q_ref = quat
 
@@ -49,10 +51,10 @@ class TrajectoryEngine:
         y_plane = vec_proj[:, 2]
 
         # Convert the 2D trajectory into an image
-        image = trajectory_to_image(x_plane, y_plane, broaden_cells=0)
+        self._image = trajectory_to_image(x_plane, y_plane, broaden_cells=0)
 
         # Preprocessing
-        X = image
+        X = self._image
         X = np.expand_dims(X, axis=2)
         X = np.expand_dims(X, axis=0)
         X = self._classifier.preprocess(X)

@@ -69,9 +69,6 @@ def test_motion_tracker():
     quat = sf.quat
     tracker.update(gyro_in, accel_in, mag_in, quat=quat)
 
-    # Test dynamic acceleration
-    assert_allclose(tracker.accel_dyn, accel_dyn_e_in, atol=1e-3)
-
     # Test orientation angles
     roll, pitch, yaw = tracker.get_orientation_angles()
     roll_gt = 0.0

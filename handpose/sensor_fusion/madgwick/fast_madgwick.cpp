@@ -3263,89 +3263,89 @@ static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12
  *     def get_quat_array(self):
  * 
  *         cdef vector[float] cpp_array = self.target.get_quat_array()             # <<<<<<<<<<<<<<
- *         # Inverse the inversed quaternion
- *         # which should be normalized
+ * 
+ *         array = np.zeros(4, dtype=np.float64)
  */
   __pyx_v_cpp_array = __pyx_v_self->target->get_quat_array();
 
-  /* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":47
- *         # Inverse the inversed quaternion
- *         # which should be normalized
+  /* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":46
+ *         cdef vector[float] cpp_array = self.target.get_quat_array()
+ * 
  *         array = np.zeros(4, dtype=np.float64)             # <<<<<<<<<<<<<<
  *         array[0] = cpp_array[0]
- *         array[1] = -cpp_array[1]
+ *         array[1] = cpp_array[1]
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 47, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 46, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_zeros); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 47, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_zeros); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 46, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 47, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 46, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 47, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 46, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_float64); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 47, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_float64); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 46, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, __pyx_t_4) < 0) __PYX_ERR(1, 47, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, __pyx_t_4) < 0) __PYX_ERR(1, 46, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_tuple_, __pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 47, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_tuple_, __pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 46, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_array = __pyx_t_4;
   __pyx_t_4 = 0;
 
-  /* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":48
- *         # which should be normalized
+  /* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":47
+ * 
  *         array = np.zeros(4, dtype=np.float64)
  *         array[0] = cpp_array[0]             # <<<<<<<<<<<<<<
- *         array[1] = -cpp_array[1]
- *         array[2] = -cpp_array[2]
+ *         array[1] = cpp_array[1]
+ *         array[2] = cpp_array[2]
  */
-  __pyx_t_4 = PyFloat_FromDouble((__pyx_v_cpp_array[0])); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 48, __pyx_L1_error)
+  __pyx_t_4 = PyFloat_FromDouble((__pyx_v_cpp_array[0])); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 47, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (unlikely(__Pyx_SetItemInt(__pyx_v_array, 0, __pyx_t_4, long, 1, __Pyx_PyInt_From_long, 0, 0, 1) < 0)) __PYX_ERR(1, 48, __pyx_L1_error)
+  if (unlikely(__Pyx_SetItemInt(__pyx_v_array, 0, __pyx_t_4, long, 1, __Pyx_PyInt_From_long, 0, 0, 1) < 0)) __PYX_ERR(1, 47, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+
+  /* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":48
+ *         array = np.zeros(4, dtype=np.float64)
+ *         array[0] = cpp_array[0]
+ *         array[1] = cpp_array[1]             # <<<<<<<<<<<<<<
+ *         array[2] = cpp_array[2]
+ *         array[3] = cpp_array[3]
+ */
+  __pyx_t_4 = PyFloat_FromDouble((__pyx_v_cpp_array[1])); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 48, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  if (unlikely(__Pyx_SetItemInt(__pyx_v_array, 1, __pyx_t_4, long, 1, __Pyx_PyInt_From_long, 0, 0, 1) < 0)) __PYX_ERR(1, 48, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
   /* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":49
- *         array = np.zeros(4, dtype=np.float64)
  *         array[0] = cpp_array[0]
- *         array[1] = -cpp_array[1]             # <<<<<<<<<<<<<<
- *         array[2] = -cpp_array[2]
- *         array[3] = -cpp_array[3]
+ *         array[1] = cpp_array[1]
+ *         array[2] = cpp_array[2]             # <<<<<<<<<<<<<<
+ *         array[3] = cpp_array[3]
+ * 
  */
-  __pyx_t_4 = PyFloat_FromDouble((-(__pyx_v_cpp_array[1]))); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 49, __pyx_L1_error)
+  __pyx_t_4 = PyFloat_FromDouble((__pyx_v_cpp_array[2])); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 49, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (unlikely(__Pyx_SetItemInt(__pyx_v_array, 1, __pyx_t_4, long, 1, __Pyx_PyInt_From_long, 0, 0, 1) < 0)) __PYX_ERR(1, 49, __pyx_L1_error)
+  if (unlikely(__Pyx_SetItemInt(__pyx_v_array, 2, __pyx_t_4, long, 1, __Pyx_PyInt_From_long, 0, 0, 1) < 0)) __PYX_ERR(1, 49, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
   /* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":50
- *         array[0] = cpp_array[0]
- *         array[1] = -cpp_array[1]
- *         array[2] = -cpp_array[2]             # <<<<<<<<<<<<<<
- *         array[3] = -cpp_array[3]
- * 
- */
-  __pyx_t_4 = PyFloat_FromDouble((-(__pyx_v_cpp_array[2]))); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 50, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  if (unlikely(__Pyx_SetItemInt(__pyx_v_array, 2, __pyx_t_4, long, 1, __Pyx_PyInt_From_long, 0, 0, 1) < 0)) __PYX_ERR(1, 50, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-
-  /* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":51
- *         array[1] = -cpp_array[1]
- *         array[2] = -cpp_array[2]
- *         array[3] = -cpp_array[3]             # <<<<<<<<<<<<<<
+ *         array[1] = cpp_array[1]
+ *         array[2] = cpp_array[2]
+ *         array[3] = cpp_array[3]             # <<<<<<<<<<<<<<
  * 
  *         return array
  */
-  __pyx_t_4 = PyFloat_FromDouble((-(__pyx_v_cpp_array[3]))); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 51, __pyx_L1_error)
+  __pyx_t_4 = PyFloat_FromDouble((__pyx_v_cpp_array[3])); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 50, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (unlikely(__Pyx_SetItemInt(__pyx_v_array, 3, __pyx_t_4, long, 1, __Pyx_PyInt_From_long, 0, 0, 1) < 0)) __PYX_ERR(1, 51, __pyx_L1_error)
+  if (unlikely(__Pyx_SetItemInt(__pyx_v_array, 3, __pyx_t_4, long, 1, __Pyx_PyInt_From_long, 0, 0, 1) < 0)) __PYX_ERR(1, 50, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":53
- *         array[3] = -cpp_array[3]
+  /* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":52
+ *         array[3] = cpp_array[3]
  * 
  *         return array             # <<<<<<<<<<<<<<
  * 
@@ -3379,12 +3379,12 @@ static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12
   return __pyx_r;
 }
 
-/* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":57
+/* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":56
  * 
  *     @property
- *     def quat(self):             # <<<<<<<<<<<<<<
+ *     def quat(self): # q_se, sensor axes respective to the Earth axes             # <<<<<<<<<<<<<<
  *         q = Quaternion.from_array(self.get_quat_array())
- *         #q = q.inv()
+ *         return q
  */
 
 /* Python wrapper */
@@ -3411,19 +3411,19 @@ static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12
   PyObject *__pyx_t_5 = NULL;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":58
+  /* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":57
  *     @property
- *     def quat(self):
+ *     def quat(self): # q_se, sensor axes respective to the Earth axes
  *         q = Quaternion.from_array(self.get_quat_array())             # <<<<<<<<<<<<<<
- *         #q = q.inv()
- *         return q # q_es
+ *         return q
+ * 
  */
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_Quaternion); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 58, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_Quaternion); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 57, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_from_array); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 58, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_from_array); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 57, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_quat_array); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 58, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_quat_array); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 57, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __pyx_t_5 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_4))) {
@@ -3436,10 +3436,10 @@ static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12
     }
   }
   if (__pyx_t_5) {
-    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 58, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 57, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   } else {
-    __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 58, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 57, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
@@ -3454,14 +3454,14 @@ static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12
     }
   }
   if (!__pyx_t_4) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 58, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 57, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_GOTREF(__pyx_t_1);
   } else {
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_3)) {
       PyObject *__pyx_temp[2] = {__pyx_t_4, __pyx_t_2};
-      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 58, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 57, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -3470,20 +3470,20 @@ static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
       PyObject *__pyx_temp[2] = {__pyx_t_4, __pyx_t_2};
-      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 58, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 57, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     } else
     #endif
     {
-      __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 58, __pyx_L1_error)
+      __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 57, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_4); __pyx_t_4 = NULL;
       __Pyx_GIVEREF(__pyx_t_2);
       PyTuple_SET_ITEM(__pyx_t_5, 0+1, __pyx_t_2);
       __pyx_t_2 = 0;
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 58, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 57, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     }
@@ -3492,10 +3492,10 @@ static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12
   __pyx_v_q = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":60
+  /* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":58
+ *     def quat(self): # q_se, sensor axes respective to the Earth axes
  *         q = Quaternion.from_array(self.get_quat_array())
- *         #q = q.inv()
- *         return q # q_es             # <<<<<<<<<<<<<<
+ *         return q             # <<<<<<<<<<<<<<
  * 
  *     def get_counter(self):
  */
@@ -3504,12 +3504,12 @@ static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12
   __pyx_r = __pyx_v_q;
   goto __pyx_L0;
 
-  /* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":57
+  /* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":56
  * 
  *     @property
- *     def quat(self):             # <<<<<<<<<<<<<<
+ *     def quat(self): # q_se, sensor axes respective to the Earth axes             # <<<<<<<<<<<<<<
  *         q = Quaternion.from_array(self.get_quat_array())
- *         #q = q.inv()
+ *         return q
  */
 
   /* function exit code */
@@ -3528,8 +3528,8 @@ static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12
   return __pyx_r;
 }
 
-/* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":62
- *         return q # q_es
+/* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":60
+ *         return q
  * 
  *     def get_counter(self):             # <<<<<<<<<<<<<<
  *         return self.target.get_counter()
@@ -3554,20 +3554,20 @@ static PyObject *__pyx_pf_8handpose_13sensor_fusion_8madgwick_13fast_madgwick_12
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("get_counter", 0);
 
-  /* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":63
+  /* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":61
  * 
  *     def get_counter(self):
  *         return self.target.get_counter()             # <<<<<<<<<<<<<<
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->target->get_counter()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 63, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->target->get_counter()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 61, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":62
- *         return q # q_es
+  /* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":60
+ *         return q
  * 
  *     def get_counter(self):             # <<<<<<<<<<<<<<
  *         return self.target.get_counter()
@@ -20030,14 +20030,14 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":47
- *         # Inverse the inversed quaternion
- *         # which should be normalized
+  /* "handpose/sensor_fusion/madgwick/fast_madgwick.pyx":46
+ *         cdef vector[float] cpp_array = self.target.get_quat_array()
+ * 
  *         array = np.zeros(4, dtype=np.float64)             # <<<<<<<<<<<<<<
  *         array[0] = cpp_array[0]
- *         array[1] = -cpp_array[1]
+ *         array[1] = cpp_array[1]
  */
-  __pyx_tuple_ = PyTuple_Pack(1, __pyx_int_4); if (unlikely(!__pyx_tuple_)) __PYX_ERR(1, 47, __pyx_L1_error)
+  __pyx_tuple_ = PyTuple_Pack(1, __pyx_int_4); if (unlikely(!__pyx_tuple_)) __PYX_ERR(1, 46, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple_);
   __Pyx_GIVEREF(__pyx_tuple_);
 

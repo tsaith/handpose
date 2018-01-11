@@ -63,8 +63,7 @@ def test_xsens_motion_tracker():
     # Xsens motion tracker
     tracker = XsensMotionTracker(accel_th=1e-4, vel_th=1e-5)
 
-    q_es_simu = quat
-    q_se_simu = q_es_simu.inv()
+    q_se_simu = quat
 
     tracker.update(gyro_in, accel_in, mag_in, accel_dyn=accel_dyn_e_in,
                    motion_status=1, quat=q_se_simu)
