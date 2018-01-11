@@ -28,30 +28,35 @@ class TrajectoryEngine:
         self._ref_projector = RefProjector()
         self._classifier = SymbolClassifier(config)
 
-        self._image = None # Internal image used to be classified
+        # Position projected on the reference plane.
+        self._x_plane = None
+        self._y_plane = None
+
+        # Internal image used to be classified
+        self._image = None
 
     def set_ref_quat(self, quat):
         self._ref_projector.q_ref = quat
 
-    def predict_proba(self, vec_arr):
+    def projected_vector(self, vec):
+        """
+        Return the projected vector on the reference plane.
+
+        vec: array
+            3D position vector.
+        """
+        return self._ref_projector.project_vector(vec)
+
+    def predict_proba(self, vec_proj):
         """
         Predict the type of trajectory.
 
-        data: array
-            Trajectory data
+        vec_proj: array
+            Projected vectors.
         """
 
-        num_vec = len(vec_arr)
-        vec_proj = np.zeros_like(vec_arr)
-        for i in range(num_vec):
-            vec_proj[i] = self._ref_projector.project_vector(vec_arr[i])
-
-        # Vectors on plane
-        x_plane = vec_proj[:, 1]
-        y_plane = vec_proj[:, 2]
-
-        # Convert the 2D trajectory into an image
-        self._image = trajectory_to_image(x_plane, y_plane, broaden_cells=0)
+        # Convert the (y, z) of projected vectors into an image
+        self._image = trajectory_to_image(vec_proj[:, 1], vec_proj[:, 2], broaden_cells=0)
 
         # Preprocessing
         X = self._image
