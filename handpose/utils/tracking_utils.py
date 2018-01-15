@@ -50,7 +50,7 @@ def trajectory_to_image(x_arr, y_arr, shape=(28, 28), broaden_cells=0):
     y_arr: array
         The y array.
     shape: tuple
-        The shape of image whose shape is assumed as square.
+        The shape of image which is assumed as square.
     broaden_cells: int
         Number of cells to be broadened.
 
@@ -60,10 +60,15 @@ def trajectory_to_image(x_arr, y_arr, shape=(28, 28), broaden_cells=0):
         Image.
     """
 
-    width, height = shape
+    # Image shape
+    height, width = shape
 
     # Cells of margin
     len_margin = 3
+
+    # Threshold of dispacement
+    # Possible position ranges from -1 to 1.
+    len_th = 0.02
 
     # Number of data points
     num = len(x_arr)
@@ -81,6 +86,9 @@ def trajectory_to_image(x_arr, y_arr, shape=(28, 28), broaden_cells=0):
     len_y = y_max - y_min
     len_max = max(len_x, len_y)
 
+    # Motional or not
+    motional = False if len_max < len_th else True
+
     # Scale
     scale = 1.0*(width-2*len_margin)/len_max
 
@@ -88,16 +96,20 @@ def trajectory_to_image(x_arr, y_arr, shape=(28, 28), broaden_cells=0):
     xp_mean = 0.5*width
     yp_mean = 0.5*height
 
-    xp = (x_arr - x_mean) * scale + xp_mean
-    yp = (y_arr - y_mean) * scale + yp_mean
+    if motional:
+        xp = (x_arr - x_mean) * scale + xp_mean
+        yp = (y_arr - y_mean) * scale + yp_mean
+    else:
+        xp = np.zeros_like(x_arr) + xp_mean
+        yp = np.zeros_like(y_arr) + yp_mean
 
     xp = xp.astype(int)
     yp = yp.astype(int)
 
     # Create an image
-    image = np.zeros((width, height), dtype=np.uint8)
+    image = np.zeros((height, width), dtype=np.uint8)
     for i in range(num):
-        image[xp[i], yp[i]] = 255
+        image[yp[i], xp[i]] = 255
 
     # Broaden the stroke
     broaden_stroke(image, broaden_cells=broaden_cells)
