@@ -48,3 +48,56 @@ def fft_windows(wins):
         spectra[i] = Y
 
     return spectra
+
+def interp1d(data, num_out):
+    """
+    Interpolation of 1D data.
+
+    Parameters
+    ----------
+    data: array
+        Data array of 1D.
+    num_out: int
+        number of data after interpolation.
+
+    Returns
+    -------
+    y_out: array
+        Data array after interpolation.
+    """
+
+    num_in = len(data)
+
+    xa = 0.0
+    xz = 1.0
+    x_in = np.linspace(xa, xz, num=num_in)
+    y_in = data
+
+    x_out = np.linspace(xa, xz, num=num_out)
+    y_out = np.interp(x_out, x_in, y_in)
+
+    return y_out
+
+def interp3d(data, num_out):
+    """
+    Interpolation of 3D data.
+
+    Parameters
+    ----------
+    data: array
+        Data array of 3D.
+    num_out: int
+        number of data after interpolation.
+
+    Returns
+    -------
+    y_out: array
+        Data array after interpolation.
+    """
+
+    out = np.zeros((num_out, 3))
+    out[:, 0] = interp1d(data[:, 0], num_out)
+    out[:, 1] = interp1d(data[:, 1], num_out)
+    out[:, 2] = interp1d(data[:, 2], num_out)
+
+    return out
