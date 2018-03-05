@@ -1,6 +1,6 @@
 import numpy as np
 
-def est_mag(vec):
+def to_magnitude(vec):
     """
     Estimate the magnitude of a vector.
     """

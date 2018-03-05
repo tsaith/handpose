@@ -1,21 +1,15 @@
-import tensorflow as tf
-import tensorlayer as tl
+import numpy as np
 
-
-def model_test(sess, network, X_test, Y_test, x_, y_, cost=None, acc=None, batch_size=None):
+def get_reduced_proba(pd):
     """
-    Test the trained model.
+    Return the reduced probability.
+
+    pd: nd-array
+        Probability distribution with shape of (num_preds, num_classes).
+
     """
-    test_loss, test_acc, batches = 0, 0, 0
-    for X_batch, Y_batch in tl.iterate.minibatches(X_test, Y_test, batch_size, shuffle=True):
-        dp_dict = tl.utils.dict_to_one(network.all_drop) # disable dropout
-        feed_dict = {x_: X_batch, y_: Y_batch}
-        feed_dict.update(dp_dict)
-        loss_batch, acc_batch = sess.run([cost, acc], feed_dict=feed_dict)
-        test_loss += loss_batch; test_acc += acc_batch; batches += 1
-    test_loss /= batches
-    test_acc /= batches
+    index_pred, index_class = np.unravel_index(pd.argmax(), pd.shape)
+    reduced_proba = pd[index_pred]
 
-    return test_loss, test_acc
-
+    return reduced_proba
 

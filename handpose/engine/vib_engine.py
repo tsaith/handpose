@@ -1,7 +1,7 @@
 import numpy as np
 import tensorflow as tf
 from tensorflow.contrib import keras
-from handpose.vib import to_spectrum, normalize
+from handpose.vib import to_spectrum, normalize_ts
 import pickle
 
 
@@ -101,36 +101,21 @@ class VibEngine:
             The scaler path.
         """
 
+        out = X.copy()
+
         # Convert to spectrum
-        out = to_spectrum(X, keep_dc=False)
+        out = to_spectrum(out, keep_dc=False)
 
         # Normalization
-        out = normalize(out)
+        out = normalize_ts(out)
 
         # Scaling
         #out = self.scaler.transform(out)
 
-        # Add the channel
-        if out.ndim < 3:
-            out = np.expand_dims(out, axis=2)
-
         return out
 
-    def predict_classes(self, x, batch_size=256, verbose=0):
-        """
-        Generate class predictions for the input samples.
 
-        Parameters
-        ----------
-        X: array-like
-            Input features.
-        """
-
-        return self.model_trained.predict_classes(x, batch_size=batch_size, verbose=verbose)
-
-
-
-    def predict_proba(self, x, batch_size=256, verbose=0):
+    def predict_proba(self, X, batch_size=256, verbose=0):
         """
         Return the predicted probabilities..
 
@@ -139,18 +124,8 @@ class VibEngine:
         x: array-like
             Input features.
         """
-        return self.model_trained.predict_proba(x, batch_size=batch_size, verbose=verbose)
-
-    def predict(self, x, batch_size=256, verbose=0):
-        """
-        Generates output predictions for the input samples.
-
-        Parameters
-        ----------
-        x: array-like
-            Input features.
-        """
-        return self.model_trained.predict(x, batch_size=batch_size, verbose=verbose)
+        X = np.expand_dims(X, axis=0)
+        return self.model_trained.predict_proba(X, batch_size=batch_size, verbose=verbose)[0]
 
 
 # -----------------------------------------------------------------------------

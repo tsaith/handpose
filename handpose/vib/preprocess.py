@@ -13,6 +13,14 @@ def accel_abs(accel):
 
     return a_abs
 
+def norm_3d(data):
+
+    x = data[:, 0]
+    y = data[:, 1]
+    z = data[:, 2]
+
+    return np.sqrt(x*x + y*y + z*z)
+
 def find_seg_indexes(data, size=None, peak_ratio=0.25, verbose=0):
     """
     Find the indexes of segmentations.
@@ -163,6 +171,23 @@ def to_magnitude(data):
 
     return out
 
+def to_ts_format(data, dof=3):
+    """
+    Convert into time-series format.
+    """
+
+    num_features = len(data)
+    assert num_features % dof == 0
+    num_tdata = int(num_features / dof)
+
+    out = np.zeros((num_tdata, dof))
+    for d in range(dof):
+        ja = d*num_tdata
+        jz = ja+ num_tdata
+        out[:, d] = data[ja:jz]
+
+    return out
+
 def roll_axis(data, shift, axis=None):
     """
     Roll the data about the specific axis.
@@ -180,7 +205,24 @@ def roll_axis(data, shift, axis=None):
 
     return out
 
-def to_spectrum(data, keep_dc=True):
+def to_spectrum(data, keep_dc=False):
+    """
+    Convert the time-series data into Fourier spectrum.
+    """
+    size, dof = data.shape
+    spec = np.zeros((int(size/2), dof))
+    dt = 1.0 # Time duration in seconds
+
+    for d in range(dof):
+        spec[:, d], _ = fourier_spectrum(data[:, d], dt, spectrum_type='power')
+
+        # Filter the DC component
+        if not keep_dc:
+             spec[0, d] = 0.0
+
+    return spec
+
+def to_spectrum_old(data, keep_dc=False):
 
     num_dims = 3
     num_samples, num_features = data.shape
@@ -202,6 +244,18 @@ def to_spectrum(data, keep_dc=True):
         out[s] = np.hstack(spec[s])
 
     return np.array(out)
+
+def normalize_ts(data, to='max'):
+    """
+    Normalize time-series data with shape of (num_tdata, DOF).
+    """
+
+    num_tdata, dof = data.shape
+    arr_abs = np.linalg.norm(data, axis=0)
+    max_abs = np.max(arr_abs)
+    out = data / max_abs
+
+    return out
 
 def normalize(data, to='max'):
 

@@ -8,6 +8,7 @@ from .image_utils import *
 from .video_utils import *
 from .tracking_utils import *
 
+from .model_utils import *
 from .sort_utils import *
 from .numerical import *
 from .sampling import *
