@@ -1,7 +1,6 @@
 import numpy as np
 
-from handpose.vib import  VibEnsemble
-from handpose.engine import VibConfig, VibModel
+from handpose.vib import  VibEnsemble, VibConfig, VibModel
 from handpose.utils import get_reduced_proba
 
 # Please note that this example is incomplete for execution.
