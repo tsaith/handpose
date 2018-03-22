@@ -125,6 +125,7 @@ class VibModel:
             Input features.
         """
         X = np.expand_dims(X, axis=0)
-        return self.model_trained.predict_proba(X, batch_size=batch_size, verbose=verbose)[0]
+        return self.model_trained.predict(X, batch_size=batch_size, verbose=verbose)[0]
+        #return self.model_trained.predict_proba(X, batch_size=batch_size, verbose=verbose)[0]
 
 
