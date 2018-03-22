@@ -44,14 +44,8 @@ def find_seg_indexes(data, size=None, peak_ratio=0.25, verbose=0):
     # Absolute difference
     diff_abs = np.abs(data - mag_static)
 
-    # Max. peak value
-    peak_abs = np.max(diff_abs)
-
-    if verbose > 0:
-        print("---- abs. peak = {}".format(peak_abs))
-
     # Determining the threshold
-    threshold = peak_abs * peak_ratio
+    threshold = peak_ratio
     if verbose > 0:
         print("---- threshod = {}".format(threshold))
 
@@ -66,7 +60,7 @@ def find_seg_indexes(data, size=None, peak_ratio=0.25, verbose=0):
         i += 1
         if diff_abs[i] > threshold:
             ia_indexes.append(i-back)
-            i += size
+            i += size - back
 
     for e in ia_indexes:
         iz_indexes.append(e + size)
@@ -89,7 +83,7 @@ def get_train_data(data_raw, ia_indexes, iz_indexes):
 
 
 def vib_file_factory(dir_path, keyword="_rec_",
-                     seg_size=None, peak_ratio=0.25, verbose=0):
+                     dof=6, seg_size=None, peak_ratio=0.25, verbose=0):
     """
     File factory of vibrational data.
     """
@@ -111,7 +105,6 @@ def vib_file_factory(dir_path, keyword="_rec_",
         if verbose > 0:
             print("...loading {}".format(fpath))
         accel = csv2numpy(fpath, start_col=1)
-
         # Find the indexes of segmentations
         ax = accel[:,0]
         ay = accel[:,1]
@@ -120,14 +113,20 @@ def vib_file_factory(dir_path, keyword="_rec_",
         ia_indexes, iz_indexes = find_seg_indexes(a_abs, size=seg_size,
             peak_ratio=peak_ratio, verbose=verbose)
 
+        # check if accel array size is less than seg_indexes, then complement by the last data.
+        if accel.shape[0] < iz_indexes[-1]:
+            print("Warning: seg index size {} is bigger than raw data size {}".format(iz_indexes[-1], accel.shape[0]))
+            fill_rows = iz_indexes[-1] - accel.shape[0];
+            for i in range(fill_rows):
+                accel = np.vstack((accel, accel[-1]))
+ 
         # Prepare the output data
         num_rows = len(ia_indexes)
-        num_cols = 3*seg_size
+        num_cols = dof*seg_size
         data = np.zeros((num_rows, num_cols))
-
         i = 0
         for ia, iz in zip (ia_indexes, iz_indexes):
-            data[i, :] = np.hstack((accel[ia:iz,0], accel[ia:iz,1], accel[ia:iz,2]))
+            data[i, :] = np.hstack((accel[ia:iz]))
             i += 1
 
         # Generate output file

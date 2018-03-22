@@ -1,6 +1,6 @@
 import numpy as np
 
-def has_gesture(X):
+def has_gesture(X, thresh = 0.2):
     """
     Detect if it has a gesture.
 
@@ -14,7 +14,6 @@ def has_gesture(X):
     out : bool
         True when it has gesture else False.
     """
-    thresh = 0.2 # Threshold for gesture detection (g)
     noise_level = 0.2
     bound_cells = 50 # Number of boundary cells
 
@@ -22,9 +21,9 @@ def has_gesture(X):
     num_features = len(X)
     size = int(num_features / num_dims)
 
-    ax = X[:size]
-    ay = X[size:2*size]
-    az = X[2*size:3*size]
+    ax = X[:, 0]
+    ay = X[:, 1]
+    az = X[:, 2]
 
     mag = np.sqrt(ax*ax + ay*ay + az*az)
     mag_static = 1.0 # Static magnitude of acceleration is 1(g)

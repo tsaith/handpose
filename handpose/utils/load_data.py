@@ -60,7 +60,7 @@ def find_class_files(class_label, dir_path):
     return filenames       
 
 def load_class_data(candidates, dir_path,
-    num_cols=None, equal_weight=True, start_col=0, header='infer', verbose=0):
+    dof=6, num_cols=None, equal_weight=True, start_col=0, header='infer', verbose=0):
     """
     Load the training data for classification.
 
@@ -93,7 +93,6 @@ def load_class_data(candidates, dir_path,
     for c in range(num_classes):
         filenames = find_class_files(candidates[c], dir_path)
         class_files[c].append(filenames)
-
         # Prepare class data
         for filename in filenames:
             file_path = "{}/{}".format(dir_path, filename)
@@ -103,9 +102,10 @@ def load_class_data(candidates, dir_path,
             arr = arr[:, start_col:] # Remove the timestamp
             if verbose > 0:
                 print("The shape of data is {}".format(arr.shape))
-
             if num_cols == None:
                 num_cols = arr.shape[1]
+            
+            arr = arr.reshape(arr.shape[0], int(arr.shape[1]/dof), dof)
             class_data[c].append(arr[:, :num_cols])
 
         class_data[c] = np.concatenate(class_data[c])
@@ -138,10 +138,10 @@ def load_class_data(candidates, dir_path,
     labels = np.concatenate(class_labels)
 
     if verbose > 0:
-        num_instances, num_features = data.shape
+        num_instances, num_features_rows, num_features_cols = data.shape
         print("--------")
         print("Instance number is {}".format(num_instances))
-        print("Feature number is {}".format(num_features))
+        print("Feature number is {} {}".format(num_features_rows, num_features_cols))
 
     return data, labels
 
