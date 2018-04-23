@@ -115,7 +115,7 @@ def vib_file_factory(dir_path, keyword="_rec_",
 
         # check if accel array size is less than seg_indexes, then complement by the last data.
         if accel.shape[0] < iz_indexes[-1]:
-            print("Warning: seg index size {} is bigger than raw data size {}".format(iz_indexes[-1], accel.shape[0]))
+            print("Warning: seg index size {} is bigger than raw data size {}, then complement by the last data.".format(iz_indexes[-1], accel.shape[0]))
             fill_rows = iz_indexes[-1] - accel.shape[0];
             for i in range(fill_rows):
                 accel = np.vstack((accel, accel[-1]))

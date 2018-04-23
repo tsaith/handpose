@@ -16,8 +16,8 @@ class VibEnsemble:
         self._period_b = int(0.2*sampling_rate) # Period 2
 
         # Data buffer
-        accel_init = [0.0, 0.0, 1.0] # Magnitude is one
-        self._buffer = [np.asarray(accel_init) for i in range(sampling_rate)]
+        accel_gryo_init = [0.0, 0.0, 1.0, 0.0, 0.0, 0.0] # Magnitude is one
+        self._buffer = [np.asarray(accel_gryo_init) for i in range(sampling_rate)]
 
         self._detect = True
         self._has_gesture = False
@@ -48,7 +48,7 @@ class VibEnsemble:
 
         # Perform detection
         if self._detect:
-            accel = data[0:3]
+            accel = data[:3]
             diff_a = to_magnitude(accel) - 1.0
 
             # Has a gesture?
