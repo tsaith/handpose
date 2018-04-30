@@ -1,5 +1,24 @@
 import numpy as np
 
+def downsample(data, step=1):
+    """
+    Downsampling.
+
+    Parameters
+    ----------
+    data: array-like
+        Input data.
+    step: int
+        Step used to pick signals.
+    """
+
+    num_samples = len(data)
+
+    out = [data[i, ::step] for i in range(num_samples)]
+    out = np.asarray(out)
+
+    return out
+
 def sampling_window_frames(data, ia, size, hop):
     """
     Sampling window frames.
