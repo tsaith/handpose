@@ -1,6 +1,7 @@
 import numpy as np
-import tensorflow as tf
-from tensorflow.contrib import keras
+import keras
+#import tensorflow as tf
+#from tensorflow.contrib import keras
 from handpose.vib import to_spectrum, normalize_ts
 import pickle
 
@@ -104,7 +105,7 @@ class VibModel:
         out = X.copy()
 
         # Convert to spectrum
-        out = to_spectrum(out, keep_dc=False)
+        #out = to_spectrum(out, keep_dc=False)
 
         # Normalization
         out = normalize_ts(out)
