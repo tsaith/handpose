@@ -6,8 +6,8 @@ from handpose.utils import fourier_spectrum
 
 def test_fourier_spectrum():
 
-    ground_true = np.array([3.15544362e-32, 1.00000000e+00, 4.00000000e+00,
-                            3.27979796e-32, 1.24622240e-30])
+    ground_true = np.array([1.262177e-31, 1.000000e+00, 4.000000e+00,
+                            6.812569e-32, 1.466206e-31])
 
     fs = 10.0  # Sampling rate
     dt = 1.0/fs # Sampling interval
@@ -19,7 +19,7 @@ def test_fourier_spectrum():
 
     spectrum, _ = fourier_spectrum(y, dt, spectrum_type='power')
 
-    assert_allclose(spectrum, ground_true)
+    assert_allclose(spectrum, ground_true, rtol=1e-03)
 
 
 if __name__ == '__main__':
