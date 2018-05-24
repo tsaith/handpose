@@ -36,13 +36,13 @@ def find_seg_indexes(data, size=None, peak_ratio=0.25, verbose=0):
     num_samples = len(data) # Number of samples
 
     # Move back to set the left bound.
-    back = int(size/3)
+    back = int(size/4)
 
     # When static, the magnitude of acceleration is one
     mag_static = 1.0
 
     # Absolute difference
-    diff_abs = np.abs(data - mag_static)
+    diff_abs = np.abs(data) - mag_static
 
     # Determining the threshold
     threshold = peak_ratio
