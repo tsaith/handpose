@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 import os
+import random
 from ..utils import csv2numpy, list_files, fourier_spectrum
 
 def accel_abs(accel):
@@ -186,6 +187,13 @@ def to_ts_format(data, dof=3):
         out[:, d] = data[ja:jz]
 
     return out
+
+def time_shift(data, backward=-10, forward=30):
+    """
+    Random shift the data's time dimension.
+    """
+    return np.roll(data, random.randint(backward, forward),axis=0)
+
 
 def roll_axis(data, shift, axis=None):
     """
