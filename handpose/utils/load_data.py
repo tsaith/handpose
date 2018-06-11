@@ -118,20 +118,38 @@ def load_class_data(candidates, dir_path,
             print("There are {} instances in class {} (labeled as {})".format(len(class_labels[c]), candidates[c], c))
 
     # Truncate instances for equal weighting
-    if equal_weight:
+    if equal_weight == True:
         num_min = 100000000
+        min_class = 0
+        num_max = 0
+        max_class =0
         for c in range(num_classes):
             num_instances = len(class_data[c])
+            if num_max < num_instances:
+                num_max = num_instances
+                max_class = c
             if num_min > num_instances:
                 num_min = num_instances
+                min_class = c
 
+        print("--------")
         for c in range(num_classes):
-            class_data[c] = class_data[c][:num_min, :]
-            class_labels[c] = class_labels[c][:num_min]
+            num_instances = len(class_data[c])
+            supplement_num = num_max - num_instances
+            while supplement_num > 0:
+                increase_num = supplement_num % num_instances
+                if increase_num == 0:
+                    increase_num = num_instances
+                supplement_data = class_data[c][:increase_num,:]
+                supplement_labels = class_labels[c][:increase_num]
+                class_data[c] = np.vstack((class_data[c], supplement_data))
+                class_labels[c] = np.hstack((class_labels[c], supplement_labels))
+                supplement_num -= increase_num
+            print("class {} Instance number is {} will scale to {}".format(c, num_instances, num_max))
 
-        if verbose > 0:
-            print("--------")
-            print("For equal weight, each class uses {} instances".format(num_min))
+    if verbose > 0:
+        print("--------")
+        print("For equal weight, each class uses {} instances.".format(num_max))
 
     # Concatenate data and labels
     data = np.concatenate(class_data)
