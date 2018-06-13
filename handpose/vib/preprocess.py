@@ -192,7 +192,7 @@ def time_shift(data, backward=-10, forward=30):
     """
     Random shift the data's time dimension.
     """
-    return np.roll(data, random.randint(backward, forward),axis=0)
+    return np.roll(data, random.randint(backward, forward), axis=0)
 
 
 def roll_axis(data, shift, axis=None):

@@ -51,13 +51,13 @@ def find_class_files(class_label, dir_path):
     """
 
     ext = "csv"
-    
+
     filenames = []
     for f in os.listdir(dir_path):
         if f.startswith(class_label) and f.endswith(ext):
             filenames.append(f)
 
-    return filenames       
+    return filenames
 
 def load_class_data(candidates, dir_path,
     dof=6, num_cols=None, equal_weight=True, start_col=0, header='infer', verbose=0):
@@ -104,10 +104,11 @@ def load_class_data(candidates, dir_path,
                 print("The shape of data is {}".format(arr.shape))
             if num_cols == None:
                 num_cols = arr.shape[1]
-            
+
             arr = arr.reshape(arr.shape[0], int(arr.shape[1]/dof), dof)
             class_data[c].append(arr[:, :num_cols])
 
+        # Convert as numpy array
         class_data[c] = np.concatenate(class_data[c])
 
         # Prepare the class labels
@@ -145,7 +146,7 @@ def load_class_data(candidates, dir_path,
                 class_data[c] = np.vstack((class_data[c], supplement_data))
                 class_labels[c] = np.hstack((class_labels[c], supplement_labels))
                 supplement_num -= increase_num
-            print("class {} Instance number is {} will scale to {}".format(c, num_instances, num_max))
+            print("class {:10s} instance number is {} will scale to {}".format(candidates[c], num_instances, num_max))
 
     if verbose > 0:
         print("--------")

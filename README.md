@@ -1,6 +1,5 @@
 # Handpose library
 
-Python 3.6 is expected.
 
 ## Packages required
 
@@ -17,6 +16,11 @@ Python 3.6 is expected.
 * [Boken](http://bokeh.pydata.org)
 * [OpenCV](https://opencv.org/)
 
+## Version information
+* Python: 3.6
+* Keras: 2.1.5
+* Tensorflow: 1.4.0
+* Pytorch: 0.4.0
 
 ## Installation
 
