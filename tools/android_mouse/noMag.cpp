@@ -8,13 +8,16 @@
 #include "Fusion.h"
 #include "mouse.h"
 
+#define SCREEN_WIDTH 1366
+#define SCREEN_HIGHT 768
+
 struct  timeval    begin_tv;
 struct  timeval    cur_tv;
 struct  timeval    end_tv;
 int mGyroTime;
 int mAccTime;
 float dT;
-Fusion mFusion;
+Fusion *mFusion = NULL;
 bool mEnabled[NUM_FUSION_MODE];
 float mEstimatedGyroRate;
 vec4_t mAttitudes[NUM_FUSION_MODE];
@@ -24,6 +27,7 @@ using namespace std;
 #define MAX_PAYLOAD_SIZE  10 * 1024
 #define WS_SERVER "192.168.43.88"
 static volatile int exit_sig = 0;
+static int reset_flag = 0;
  
 void sighdl( int sig ) {
     lwsl_notice( "%d traped", sig );
@@ -86,6 +90,7 @@ int callback( struct lws *wsi, enum lws_callback_reasons reason, void *user, voi
             float rotationMatrix[16];
             int leftClick = 0;
             int rightClick = 0;
+            int resetClick = 0;
             int i = 0;
             //436f6479,watch_imu,2175,-0.02566,-0.08788,0.96874,-0.00143,-0.00159,-0.00052,
             while(std::getline(ss, token, ',')) {
@@ -101,31 +106,42 @@ int callback( struct lws *wsi, enum lws_callback_reasons reason, void *user, voi
                         leftClick = stoi(token);
                     }else if (i == 14){
                         rightClick = stoi(token);
+                    }else if (i == 15){
+                        resetClick = stoi(token);
                     }
                 }catch(...) {
                     std::cout << token << '\n';
                     exit_sig = 1;
+                    reset_flag = 1;
                 }
             }
             if (leftClick==1 || rightClick==1)
             	printf("left:[%d],right=[%d]\n",leftClick,rightClick);
+            if (resetClick == 1) {
+                resetClick = 0;
+                reset_flag = 1;
+                printf("reset\n");
+                break;
+            }
             float dT = 20000 / 1000000.0f;
             const float freq = 1 / dT;
-            mFusion.handleGyro(gyroData, dT);
-            mFusion.handleAcc(accData, dT);
-            //mFusion.handleMag(magData);
-            if (mFusion.hasEstimate()) {
-                const vec4_t q(mFusion.getAttitude());
+            mFusion->handleGyro(gyroData, dT);
+            mFusion->handleAcc(accData, dT);
+            //mFusion->handleMag(magData);
+            if (mFusion->hasEstimate()) {
+                const vec4_t q(mFusion->getAttitude());
                 getRotationMatrixFromVector(rotationMatrix, q);
                 //lwsl_notice("%2f,%2f,%2f,%2f\n",q.x,q.y,q.z,q.w);
-                //lwsl_notice("\n 0[%2.3f]\n 1[%1.3f]\n 2[%1.3f]\n 3[%1.3f]\n 4[%1.3f]\n 5[%1.3f]\n 6[%1.3f]\n 7[%1.3f]\n 8[%1.3f]\n 9[%1.3f]\n10[%1.3f]\n",                        rotationMatrix[0], rotationMatrix[1], rotationMatrix[2], rotationMatrix[3], rotationMatrix[4], rotationMatrix[5],rotationMatrix[6], rotationMatrix[7], rotationMatrix[8], rotationMatrix[9], rotationMatrix[10]);
+                lwsl_notice("\n 0[%2.3f]\n 1[%1.3f]\n 2[%1.3f]\n 3[%1.3f]\n 4[%1.3f]\n 5[%1.3f]\n 6[%1.3f]\n 7[%1.3f]\n 8[%1.3f]\n 9[%1.3f]\n10[%1.3f]\n",                        rotationMatrix[0], rotationMatrix[1], rotationMatrix[2], rotationMatrix[3], rotationMatrix[4], rotationMatrix[5],rotationMatrix[6], rotationMatrix[7], rotationMatrix[8], rotationMatrix[9], rotationMatrix[10]);
             }
-            int x = 960 - (1920 * rotationMatrix[0]);
-            int y = 540 - (1080 * rotationMatrix[9]);
+#define SCREEN_WIDTH 1366
+#define SCREEN_HIGHT 768
+            int x = (SCREEN_WIDTH/2) - (SCREEN_WIDTH * rotationMatrix[0]);
+            int y = (SCREEN_HIGHT/2) - (SCREEN_HIGHT * rotationMatrix[9]);
             x =(x<0)?0:x;
-            x =(x>1920)?1920:x;
+            x =(x>SCREEN_WIDTH)?SCREEN_WIDTH:x;
             y =(y<0)?0:y;
-            y =(y>1080)?1080:y;
+            y =(y>SCREEN_HIGHT)?SCREEN_HIGHT:y;
 
             move_mouse_pointer(x,y);
             if (leftClick)
@@ -194,9 +210,9 @@ int main(int argc, char const *argv[]) {
     conn_info.host = addr_port;
     conn_info.origin = addr_port;
     conn_info.protocol = protocols[ 0 ].name;
-
-    mFusion.init(FUSION_NOMAG); // normal, no_mag, no_gyro
-    //mFusion.init(FUSION_9AXIS); // normal, no_mag, no_gyro
+    mFusion = new Fusion();
+    mFusion->init(FUSION_NOMAG); // normal, no_mag, no_gyro
+    //mFusion->init(FUSION_9AXIS); // normal, no_mag, no_gyro
     mEnabled[FUSION_9AXIS] = true;
     mEnabled[FUSION_NOMAG] = true;
     mEnabled[FUSION_NOGYRO] = true;
@@ -219,6 +235,14 @@ int main(int argc, char const *argv[]) {
          */
         if (connected == 0) {
             lws_callback_on_writable( wsi );
+        }
+        if (reset_flag == 1) {
+            reset_flag = 0;
+            delete mFusion;
+            mFusion = NULL; 
+            mFusion = new Fusion();
+            printf("Fusion reset\n");
+            mFusion->init(FUSION_NOMAG); // normal, no_mag, no_gyro
         }
     }
     // 销毁上下文对象

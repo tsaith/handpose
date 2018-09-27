@@ -171,6 +171,13 @@ public:
 // -----------------------------------------------------------------------
 
 Fusion::Fusion() {
+    init();
+}
+
+void Fusion::init(int mode) {
+    printf("%s,%d: mode[%d]\n",__func__,__LINE__,mode);
+    mInitState = 0;
+
     Phi[0][1] = 0;
     Phi[1][1] = 1;
 
@@ -182,15 +189,16 @@ Fusion::Fusion() {
     Bm.y = 1;
     Bm.z = 0;
 
-    x0 = 0;
-    x1 = 0;
+    x0.x = 0;
+    x0.y = 0;
+    x0.z = 1;
+    x0.w = 0;
+    //x0 = 0;
+    //x1 = 0;
+    x1.x = 0;
+    x1.y = 0;
+    x1.z = 1;
 
-    init();
-}
-
-void Fusion::init(int mode) {
-    printf("%s,%d: mode[%d]\n",__func__,__LINE__,mode);
-    mInitState = 0;
 
     mGyroRate = 0;
 
