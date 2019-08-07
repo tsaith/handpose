@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Diagnostic</string>
+   <string>ImageStudio</string>
   </property>
   <widget class="QWidget" name="central_widget">
    <property name="sizePolicy">
@@ -49,40 +49,6 @@
         <property name="sizeConstraint">
          <enum>QLayout::SetDefaultConstraint</enum>
         </property>
-        <item row="3" column="2">
-         <widget class="QLineEdit" name="edit_recording_time">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="2">
-         <widget class="QLineEdit" name="edit_exported_height">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="0">
-         <widget class="QLabel" name="lb_recording_time">
-          <property name="text">
-           <string>Recording time (sec):</string>
-          </property>
-         </widget>
-        </item>
-        <item row="8" column="0">
-         <widget class="QPushButton" name="btn_play">
-          <property name="text">
-           <string>Play</string>
-          </property>
-         </widget>
-        </item>
         <item row="2" column="2">
          <widget class="QComboBox" name="cb_device">
           <property name="editable">
@@ -108,54 +74,40 @@
           </item>
          </widget>
         </item>
-        <item row="5" column="2">
-         <widget class="QLineEdit" name="edit_exported_width">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="3">
-         <widget class="QLabel" name="lb_remaining_time">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
+        <item row="3" column="0">
+         <widget class="QLabel" name="lb_num_images_max">
           <property name="text">
-           <string>Remaining time:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="lb_device">
-          <property name="text">
-           <string>Device:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="0">
-         <widget class="QLabel" name="lb_exported_width">
-          <property name="text">
-           <string>Exported width:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="8" column="3">
-         <widget class="QPushButton" name="btn_stop">
-          <property name="text">
-           <string>Stop recording</string>
+           <string>num_images_max:</string>
           </property>
          </widget>
         </item>
         <item row="6" column="0">
-         <widget class="QLabel" name="lb_exported_height">
+         <widget class="QLabel" name="lb_saved_height">
           <property name="text">
-           <string>Exported height:</string>
+           <string>Saved height:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="3">
+         <widget class="QLabel" name="lb_num_images">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>num_images</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="2">
+         <widget class="QLineEdit" name="edit_saved_height">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
           </property>
          </widget>
         </item>
@@ -166,14 +118,68 @@
           </property>
          </widget>
         </item>
-        <item row="8" column="4">
-         <widget class="QLabel" name="lb_operation_status">
+        <item row="5" column="0">
+         <widget class="QLabel" name="lb_saved_width">
           <property name="text">
-           <string>Operation status</string>
+           <string>Saved width:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="8" column="0">
+         <widget class="QPushButton" name="btn_open">
+          <property name="text">
+           <string>Open</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="lb_device">
+          <property name="text">
+           <string>Device:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="8" column="3">
+         <widget class="QPushButton" name="btn_stop">
+          <property name="text">
+           <string>Stop recording</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="2">
+         <widget class="QLineEdit" name="edit_num_images_max">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="2">
+         <widget class="QLineEdit" name="edit_saved_width">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
           </property>
          </widget>
         </item>
        </layout>
+      </item>
+      <item>
+       <widget class="QLabel" name="lb_status">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>Status</string>
+        </property>
+       </widget>
       </item>
       <item>
        <layout class="QHBoxLayout" name="view_layout">
@@ -216,7 +222,7 @@
      <x>0</x>
      <y>0</y>
      <width>1123</width>
-     <height>20</height>
+     <height>36</height>
     </rect>
    </property>
   </widget>

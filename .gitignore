@@ -17,6 +17,7 @@ doc/_build
 *.h5
 
 # Temporary files
+*~
 tmp/
 wrap.cpp
 *.o

@@ -8,7 +8,7 @@ class Webcam(object):
         self.vc = None # Video capture
         self.frame = None
 
-    def set_device(device):
+    def open(self, device):
         # Set the target device.
 
         self.device = device
@@ -17,7 +17,11 @@ class Webcam(object):
     def is_open(self):
         # Device is open or not.
 
-        return self.vc.isOpened()
+        if self.vc:
+            return self.vc.isOpened()
+        else:
+            return False
+
 
     def read(self):
         # Read the frame.
@@ -35,5 +39,7 @@ class Webcam(object):
 
     def release(self):
         # Release the resource.
-        self.vc.release()
+
+        if self.is_open():
+            self.vc.release()
 

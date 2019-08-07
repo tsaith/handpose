@@ -1,5 +1,6 @@
 import sys
-import types
+import os
+import glob
 
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
@@ -12,7 +13,7 @@ import numpy as np
 
 from ui_main import Ui_MainWindow
 from webcam import Webcam
-
+from PIL import Image
 
 class Studio(QMainWindow, Ui_MainWindow):
 
@@ -27,64 +28,153 @@ class Studio(QMainWindow, Ui_MainWindow):
         # Webcam
         self.webcam = Webcam()
 
+        # Image
+        self.image_dir = 'images'
+        self.image_prefix = 'img_'
+        self.image_ext = 'jpg'
+        self.num_images_max_default = 10
+        self.num_images_max = self.num_images_max_default
+        self.num_images = 0
+
         self.image_width = 800
-        self.image_height = 600
+        self.image_height = 800
 
         self.view_width = 800
-        self.view_height = 600
+        self.view_height = 800
 
-        self.exported_width_default = 800 # In pixel
-        self.exported_height_default = 600
-        self.exported_width = self.exported_width_default
-        self.exported_height = self.exported_height_default
+        self.saved_width_default = 800 # In pixel
+        self.saved_height_default = 800
+        self.saved_width = self.saved_width_default
+        self.saved_height = self.saved_height_default
 
-        self.recording_time_default = 10 # In seconds
-        self.recording_time = self.recording_time_default
-        self.remaining_time = 0  # In seconds
 
+        # Recording flag
+        self.is_recording = False
 
         # Timer
+        self.timer_is_on = False
+        self.timer_duration = 100 # msec
         self.timer = QTimer(self)
-        self.timer.start(500)
-        self.timer.timeout.connect(self.refresh_view)
+        self.timer.timeout.connect(self.process_image)
 
         # Plot min/max
         self.plot_min = 0.0
         self.plot_max = -1.0
 
-        # Set the initial values for UI
-        self.set_ui_values()
-
-        # Connect the signal and slot
-
-        self.cb_device.activated[str].connect(self.set_device)
-        self.edit_recording_time.textChanged.connect(self.set_recording_time)
-        self.edit_exported_width.textChanged.connect(self.set_exported_width)
-        self.edit_exported_height.textChanged.connect(self.set_exported_height)
+        # Initialize
+        self.initialize()
 
 
-        self.btn_play.clicked.connect(self.play_webcam)
+    def open_webcam(self):
 
+        # Release the resource which had been used.
+        if self.webcam.is_open():
+            self.webcam.release()
 
-    def play_webcam(self):
+        self.webcam.open(self.device)
+        self.process_image()
+
+        # Show message
+        self.show_message('webcam is opened.')
+
+        # Start the timer
+        if not self.timer_is_on:
+            self.start_timer()
+
+    def start_timer(self):
+        self.timer_is_on = True
+        self.timer.start(self.timer_duration)
+
+    def stop_timer(self):
+        self.timer_is_on = False
+        self.timer.stop()
+
+    def start_recording(self):
+
+        self.is_recording = True
+        self.num_images = 0
+        self.show_message('recording frames.')
+
+    def stop_recording(self):
+
+        self.is_recording = False
+        self.show_message('stop recording.')
+
+    def show_message(self, msg):
+        text = 'Status: ' + msg
+        self.lb_status.setText(text)
+
+    def show_num_images(self):
+
+        text = '{}/{}'.format(self.num_images, self.num_images_max)
+        self.lb_num_images.setText(text)
+
+    def get_image_path(self, n):
+
+        filename = self.image_prefix + str(n) + '.' + self.image_ext
+
+        path = os.path.join(self.image_dir, filename)
+
+        return path
+
+    def save_image(self):
+        # Save the image.
+
+        self.num_images += 1  
+
+        if self.num_images <= self.num_images_max:
+            image_path = self.get_image_path(self.num_images)
+            frame = self.webcam.get_frame()
+            image = Image.fromarray(frame)
+            size = (self.saved_width, self.saved_height)
+            image = image.resize(size)
+            image.save(image_path)
+
+        else:    
+            self.num_images =  self.num_images_max 
+            self.stop_recording()
+
+        # Show the number of images
+        self.show_num_images()
+
+    def process_image(self):
 
         if self.webcam.is_open():
-            frame = self.webcam.read()
 
+            # Show frame
+            frame = self.webcam.read()
+        
             image = QImage(frame.data, frame.shape[1], frame.shape[0], QImage.Format_RGB888)
             pixmap = QPixmap.fromImage(image)
+
             self.lb_image.setPixmap(pixmap)
 
-    def set_ui_values(self):
+            # Record frame
+            if self.is_recording:
+                self.save_image()
 
-        text = str(self.recording_time)
-        self.edit_recording_time.setText(text)
+    def initialize(self):
 
-        text = str(self.exported_width)
-        self.edit_exported_width.setText(text)
+        # Connect the signal and slot
+        self.cb_device.activated[str].connect(self.set_device)
+        self.edit_num_images_max.textChanged.connect(self.set_num_images_max)
+        self.edit_saved_width.textChanged.connect(self.set_saved_width)
+        self.edit_saved_height.textChanged.connect(self.set_saved_height)
 
-        text = str(self.exported_height)
-        self.edit_exported_height.setText(text)
+
+        self.btn_open.clicked.connect(self.open_webcam)
+        self.btn_record.clicked.connect(self.start_recording)
+        self.btn_stop.clicked.connect(self.stop_recording)
+
+        # UI
+        text = str(self.num_images_max)
+        self.edit_num_images_max.setText(text)
+
+        text = str(self.saved_width)
+        self.edit_saved_width.setText(text)
+
+        text = str(self.saved_height)
+        self.edit_saved_height.setText(text)
 
     def set_device(self):
 
@@ -97,43 +187,41 @@ class Studio(QMainWindow, Ui_MainWindow):
 
         self.device = value
 
-        # Set the device of webcam
-        self.webcam.set_device(self.device)
 
-    def set_recording_time(self):
+    def set_num_images_max(self):
 
-        value = self.edit_recording_time.text()
+        value = self.edit_num_images_max.text()
 
         try:
             value = int(value)
         except:
-            value = self.recording_time_default
+            value = self.num_images_max_default
 
-        self.recording_time = value
-
-
-    def set_exported_width(self):
-
-        value = self.edit_exported_width.text()
-
-        try:
-            value = int(value)
-        except:
-            value = self.exported_width_default
-
-        self.exported_width = value
+        self.num_images_max = value
 
 
-    def set_exported_height(self):
+    def set_saved_width(self):
 
-        value = self.edit_exported_height.text()
+        value = self.edit_saved_width.text()
 
         try:
             value = int(value)
         except:
-            value = self.edit_exported_height_default
+            value = self.saved_width_default
 
-        self.exported_height = value
+        self.saved_width = value
+
+
+    def set_saved_height(self):
+
+        value = self.edit_saved_height.text()
+
+        try:
+            value = int(value)
+        except:
+            value = self.edit_saved_height_default
+
+        self.saved_height = value
 
     def add_widget(self, widget):
 
@@ -148,8 +236,17 @@ class Studio(QMainWindow, Ui_MainWindow):
 
     def refresh_view(self):
 
-        text = 'Remianing time: {} (sec)'.format(self.remaining_time)
-        self.lb_remaining_time.setText(text)
+        text = 'Remianing time: {} (sec)'.format(self.num_images)
+        self.lb_num_images.setText(text)
+
+
+
+    def closeEvent(self, event):
+
+        self.webcam.release()
+
+
+
 
 
 if __name__ == '__main__':
