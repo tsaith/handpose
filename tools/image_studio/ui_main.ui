@@ -139,13 +139,6 @@
           </property>
          </widget>
         </item>
-        <item row="8" column="3">
-         <widget class="QPushButton" name="btn_stop">
-          <property name="text">
-           <string>Stop recording</string>
-          </property>
-         </widget>
-        </item>
         <item row="3" column="2">
          <widget class="QLineEdit" name="edit_num_images_max">
           <property name="sizePolicy">

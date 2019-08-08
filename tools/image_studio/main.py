@@ -1,6 +1,5 @@
 import sys
 import os
-import glob
 
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
@@ -10,9 +9,10 @@ import pyqtgraph as pg
 
 import numpy as np
 
-
 from ui_main import Ui_MainWindow
 from webcam import Webcam
+from handpose.utils.image_utils import make_square
+
 from PIL import Image
 
 class Studio(QMainWindow, Ui_MainWindow):
@@ -36,14 +36,8 @@ class Studio(QMainWindow, Ui_MainWindow):
         self.num_images_max = self.num_images_max_default
         self.num_images = 0
 
-        self.image_width = 800
-        self.image_height = 800
-
-        self.view_width = 800
-        self.view_height = 800
-
-        self.saved_width_default = 800 # In pixel
-        self.saved_height_default = 800
+        self.saved_width_default = 416 # In pixel
+        self.saved_height_default = 416
         self.saved_width = self.saved_width_default
         self.saved_height = self.saved_height_default
 
@@ -63,7 +57,6 @@ class Studio(QMainWindow, Ui_MainWindow):
 
         # Initialize
         self.initialize()
-
 
     def open_webcam(self):
 
@@ -95,10 +88,10 @@ class Studio(QMainWindow, Ui_MainWindow):
         self.num_images = 0
         self.show_message('recording frames.')
 
-    def stop_recording(self):
+    def finish_recording(self):
 
         self.is_recording = False
-        self.show_message('stop recording.')
+        self.show_message('recording is finished.')
 
     def show_message(self, msg):
         text = 'Status: ' + msg
@@ -127,12 +120,14 @@ class Studio(QMainWindow, Ui_MainWindow):
             frame = self.webcam.get_frame()
             image = Image.fromarray(frame)
             size = (self.saved_width, self.saved_height)
+            image = make_square(image)
+
             image = image.resize(size)
             image.save(image_path)
 
         else:    
             self.num_images =  self.num_images_max 
-            self.stop_recording()
+            self.finish_recording()
 
         # Show the number of images
         self.show_num_images()
@@ -164,7 +159,6 @@ class Studio(QMainWindow, Ui_MainWindow):
 
         self.btn_open.clicked.connect(self.open_webcam)
         self.btn_record.clicked.connect(self.start_recording)
-        self.btn_stop.clicked.connect(self.stop_recording)
 
         # UI
         text = str(self.num_images_max)

@@ -1,6 +1,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import cv2
+from PIL import Image
+
+
 
 def plot_vfield(image, flow, fmt='BGR', figsize=None, scale=None, edgecolor='b', linewidth=1.0):
     """
