@@ -1,0 +1,8 @@
+frame[100, 100] = H
+box[0] = 245
+box[3] = 63
+mat[100, 100] = 72
+box.x = 245
+box.y = 244
+box.width  = 69
+box.height = 63
