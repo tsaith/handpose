@@ -11,6 +11,7 @@ import numpy as np
 
 from ui_main import Ui_MainWindow
 from webcam import Webcam
+from handpose.utils.file import to_str_digits
 from handpose.utils.image import make_square
 
 from PIL import Image
@@ -29,8 +30,7 @@ class Studio(QMainWindow, Ui_MainWindow):
         self.webcam = Webcam()
 
         # Image
-        self.image_dir = 'images'
-        self.image_prefix = 'img_'
+        self.image_dir = 'outputs'
         self.image_ext = 'jpg'
         self.num_images_max_default = 10
         self.num_images_max = self.num_images_max_default
@@ -40,7 +40,9 @@ class Studio(QMainWindow, Ui_MainWindow):
         self.saved_height_default = 416
         self.saved_width = self.saved_width_default
         self.saved_height = self.saved_height_default
-
+        
+        # Filename prefix
+        self.filename_prefix = 'class_memo'
 
         # Recording flag
         self.is_recording = False
@@ -104,7 +106,8 @@ class Studio(QMainWindow, Ui_MainWindow):
 
     def get_image_path(self, n):
 
-        filename = self.image_prefix + str(n) + '.' + self.image_ext
+        str_num = to_str_digits(n, num_digits=5) 
+        filename = self.filename_prefix + '_' + str_num + '.' + self.image_ext
 
         path = os.path.join(self.image_dir, filename)
 
@@ -155,6 +158,7 @@ class Studio(QMainWindow, Ui_MainWindow):
         self.edit_num_images_max.textChanged.connect(self.set_num_images_max)
         self.edit_saved_width.textChanged.connect(self.set_saved_width)
         self.edit_saved_height.textChanged.connect(self.set_saved_height)
+        self.edit_filename_prefix.textChanged.connect(self.set_filename_prefix)
 
 
         self.btn_open.clicked.connect(self.open_webcam)
@@ -169,6 +173,9 @@ class Studio(QMainWindow, Ui_MainWindow):
 
         text = str(self.saved_height)
         self.edit_saved_height.setText(text)
+
+        text = str(self.filename_prefix)
+        self.edit_filename_prefix.setText(text)
 
     def set_device(self):
 
@@ -216,6 +223,11 @@ class Studio(QMainWindow, Ui_MainWindow):
             value = self.edit_saved_height_default
 
         self.saved_height = value
+
+    def set_filename_prefix(self):
+
+        value = self.edit_filename_prefix.text()
+        self.filename_prefix = value
 
     def add_widget(self, widget):
 

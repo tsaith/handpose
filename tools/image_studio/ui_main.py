@@ -2,12 +2,11 @@
 
 # Form implementation generated from reading ui file 'ui_main.ui'
 #
-# Created by: PyQt5 UI code generator 5.12.2
+# Created by: PyQt5 UI code generator 5.9.2
 #
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -96,14 +95,14 @@ class Ui_MainWindow(object):
         self.lb_filename_prefix = QtWidgets.QLabel(self.central_widget)
         self.lb_filename_prefix.setObjectName("lb_filename_prefix")
         self.control_layout.addWidget(self.lb_filename_prefix, 7, 0, 1, 1)
-        self.lineEdit = QtWidgets.QLineEdit(self.central_widget)
+        self.edit_filename_prefix = QtWidgets.QLineEdit(self.central_widget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.lineEdit.sizePolicy().hasHeightForWidth())
-        self.lineEdit.setSizePolicy(sizePolicy)
-        self.lineEdit.setObjectName("lineEdit")
-        self.control_layout.addWidget(self.lineEdit, 7, 2, 1, 1)
+        sizePolicy.setHeightForWidth(self.edit_filename_prefix.sizePolicy().hasHeightForWidth())
+        self.edit_filename_prefix.setSizePolicy(sizePolicy)
+        self.edit_filename_prefix.setObjectName("edit_filename_prefix")
+        self.control_layout.addWidget(self.edit_filename_prefix, 7, 2, 1, 1)
         self.main_layout.addLayout(self.control_layout)
         self.lb_status = QtWidgets.QLabel(self.central_widget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
@@ -132,7 +131,7 @@ class Ui_MainWindow(object):
         self.tool_bar.setObjectName("tool_bar")
         MainWindow.addToolBar(QtCore.Qt.TopToolBarArea, self.tool_bar)
         self.menu_bar = QtWidgets.QMenuBar(MainWindow)
-        self.menu_bar.setGeometry(QtCore.QRect(0, 0, 1123, 20))
+        self.menu_bar.setGeometry(QtCore.QRect(0, 0, 1123, 36))
         self.menu_bar.setObjectName("menu_bar")
         MainWindow.setMenuBar(self.menu_bar)
         self.actionCopy = QtWidgets.QAction(MainWindow)
@@ -203,7 +202,7 @@ class Ui_MainWindow(object):
         self.btn_open.setText(_translate("MainWindow", "Open"))
         self.lb_device.setText(_translate("MainWindow", "Device:"))
         self.lb_filename_prefix.setText(_translate("MainWindow", "Filename prefix"))
-        self.lineEdit.setText(_translate("MainWindow", "class_memo"))
+        self.edit_filename_prefix.setText(_translate("MainWindow", "class_memo"))
         self.lb_status.setText(_translate("MainWindow", "Status"))
         self.lb_image.setText(_translate("MainWindow", "Image"))
         self.tool_bar.setWindowTitle(_translate("MainWindow", "toolBar"))
@@ -222,5 +221,4 @@ class Ui_MainWindow(object):
         self.actionItalic.setShortcut(_translate("MainWindow", "Ctrl+I"))
         self.actionUnderline.setText(_translate("MainWindow", "Underline"))
         self.actionFillShapes.setText(_translate("MainWindow", "Fill Shapes?"))
-
 
