@@ -1,5 +1,19 @@
 import os
 
+def to_str_digits(n, num_digits=4):
+    # Convert a number into a string with specified number of digits.
+
+    def add_zero(target):
+        return '0' + target
+
+    s = str(n)
+    num = len(s)
+    num_diff = num_digits - num
+
+    for i in range(num_diff):
+        s = add_zero(s)
+    return s
+
 
 def get_file_list(dir_path, ext='jpeg'):
     """

@@ -11,7 +11,7 @@ import numpy as np
 
 from ui_main import Ui_MainWindow
 from webcam import Webcam
-from handpose.utils.image_utils import make_square
+from handpose.utils.image import make_square
 
 from PIL import Image
 
