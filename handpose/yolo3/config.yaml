@@ -1,0 +1,58 @@
+# Operation phase: train / eval / predict
+phase: train 
+
+classes: ['face']
+
+# Train / eval / predict paths
+train_images_path: /home/andrew/projects/datasets/faces/train/images
+train_ann_path: /home/andrew/projects/datasets/faces/train/xml
+val_images_path: /home/andrew/projects/datasets/faces/train/images
+val_ann_path: /home/andrew/projects/datasets/faces/train/xml
+detect_images_path: /home/andrew/projects/datasets/faces/train/images
+detect_output_path: output
+
+# Model settings
+model_params: 
+    backbone_name: darknet_53
+    backbone_pretrained: /home/andrew/model_zoo/yolov3/darknet53_weights_cpu.pth #  set empty to disable
+
+# YOLO settings
+yolo:
+    anchors: [[[52, 47], [67, 72], [89, 86]], 
+              [[55, 76], [73, 95], [96, 115]], 
+              [[65, 85], [83, 105], [119, 147]]]
+    
+# Optimization    
+lr:
+    backbone_lr: 0.001
+    other_lr: 0.001
+    freeze_backbone: False   #  freeze backbone wegiths to finetune
+    decay_gamma: 0.1
+    decay_step: 10           #  decay lr in every ? epochs
+    patience: 10 # Scheduler uses this number of epochs to delay lr
+    
+optimizer:
+    type: adm # adam or sgd
+    weight_decay: 0.00004 #4e-05, note that yaml doesn't support scientific notation
+
+    
+batch_size: 12  #16
+epochs: 3 #200    # Training epochs
+image_h: 416 # Height
+image_w: 416 # Width
+gpu_devices: [0, 1] #[0, 1, 2]                 #  config GPU devices
+#gpu_devices: [3]                 #  config GPU devices
+working_dir: /home/andrew/model_zoo/marker/run  #  replace with your working dir
+model_pretrained: /home/andrew/model_zoo/marker/run/model_pretrained.pth
+#model_pretrained: 
+evaluate_type": "" 
+try: 0
+
+confidence: 0.6 
+confidence_thresh: 0.6
+nms_thresh: 0.8
+iou_thresh: 0.8
+
+export_onnx: False
+
+

@@ -1,6 +1,13 @@
-import numpy as np
-import pandas as pd
 import os
+
+
+def get_file_list(dir_path, ext='jpeg'):
+    """
+    Get the file list from a directory.
+    """
+    keyword = '.' + ext
+
+    return list_files(dir_path, keyword=keyword)
 
 def list_files(dir_path, keyword="_rec_"):
     """

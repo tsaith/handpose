@@ -1,4 +1,34 @@
-import numpy as np
+from PIL import Image, ImageDraw, ImageFont
+
+
+def open_image(path):
+    # Open an image with PIL format.
+    return Image.open(path)
+
+
+def draw_bbox(image, bbox, label='label', color=None):
+
+    draw = ImageDraw.Draw(image)
+    draw.rectangle(bbox, outline=color)
+
+    # Put the label
+    x = bbox[0]
+    y = bbox[1] - 13
+    draw.text((x, y), label, color)
+
+
+def make_square(im, mode='RGB', bg_color='black'):
+    # Make a square image.
+
+    w, h = im.size
+    w_out = max(w, h)
+    h_out = w_out
+    im_out = Image.new(mode, (w_out, w_out), bg_color)
+    im_out.paste(im, (int((w_out - w) / 2), int((h_out - h) / 2)))
+
+    return im_out
+
+
 
 class patch_extractor:
     """

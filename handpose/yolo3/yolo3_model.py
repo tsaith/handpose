@@ -5,6 +5,7 @@ import torch.nn as nn
 
 from .nets import ModelMain, YOLOLoss
 from .common.utils import non_max_suppression, bbox_iou
+from .read_config import read_config
 
 
 class YOLO3_MODEL:
