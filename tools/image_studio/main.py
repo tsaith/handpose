@@ -40,7 +40,7 @@ class Studio(QMainWindow, Ui_MainWindow):
         self.saved_height_default = 416
         self.saved_width = self.saved_width_default
         self.saved_height = self.saved_height_default
-        
+
         # Filename prefix
         self.filename_prefix = 'class_memo'
 
@@ -49,7 +49,7 @@ class Studio(QMainWindow, Ui_MainWindow):
 
         # Timer
         self.timer_is_on = False
-        self.timer_duration = 100 # msec
+        self.timer_duration = 500 # msec
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.process_image)
 
@@ -116,7 +116,7 @@ class Studio(QMainWindow, Ui_MainWindow):
     def save_image(self):
         # Save the image.
 
-        self.num_images += 1  
+        self.num_images += 1
 
         if self.num_images <= self.num_images_max:
             image_path = self.get_image_path(self.num_images)
@@ -128,8 +128,8 @@ class Studio(QMainWindow, Ui_MainWindow):
             image = image.resize(size)
             image.save(image_path)
 
-        else:    
-            self.num_images =  self.num_images_max 
+        else:
+            self.num_images =  self.num_images_max
             self.finish_recording()
 
         # Show the number of images
@@ -141,9 +141,12 @@ class Studio(QMainWindow, Ui_MainWindow):
 
             # Show frame
             frame = self.webcam.read()
-        
             image = QImage(frame.data, frame.shape[1], frame.shape[0], QImage.Format_RGB888)
-            pixmap = QPixmap.fromImage(image)
+
+            # Flip the image horizontally
+            image_fliped = image.mirrored(True, False)
+
+            pixmap = QPixmap.fromImage(image_fliped)
 
             self.lb_image.setPixmap(pixmap)
 
