@@ -3,7 +3,14 @@ import matplotlib.pyplot as plt
 import cv2
 from PIL import Image
 
+def get_contour_center(c):
+    # Get the center of contour.
 
+    M = cv2.moments(c)
+    cx = int((M["m10"] / M["m00"]))
+    cy = int((M["m01"] / M["m00"]))
+
+    return cx, cy
 
 def plot_vfield(image, flow, fmt='BGR', figsize=None, scale=None, edgecolor='b', linewidth=1.0):
     """
@@ -61,7 +68,7 @@ def color2gray(color, color_seq="BGR", has_channel=True):
 
     return gray
 
-def imshow(image, fmt='gray'):
+def imshow(image, fmt='bgr', figsize=(5, 5)):
     """
     Show image with gray-scale.
 
@@ -74,6 +81,8 @@ def imshow(image, fmt='gray'):
         channels = 1
     else: # Color or gray
         height, width, channels = image.shape
+
+    plt.figure(figsize = figsize)
 
     if fmt == 'BGR' or fmt == 'bgr':
         rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
