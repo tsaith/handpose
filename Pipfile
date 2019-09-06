@@ -12,6 +12,7 @@ scipy = "*"
 matplotlib = "*"
 cython = "*"
 pyqt5 = "*"
+Pillow = '*'
 
 [requires]
 python_version = "3.7"
