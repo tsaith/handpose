@@ -2,11 +2,13 @@
 
 # Form implementation generated from reading ui file 'ui_main.ui'
 #
-# Created by: PyQt5 UI code generator 5.9.2
+# Created by: PyQt5 UI code generator 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -103,6 +105,9 @@ class Ui_MainWindow(object):
         self.edit_filename_prefix.setSizePolicy(sizePolicy)
         self.edit_filename_prefix.setObjectName("edit_filename_prefix")
         self.control_layout.addWidget(self.edit_filename_prefix, 7, 2, 1, 1)
+        self.cb_flip_image = QtWidgets.QCheckBox(self.central_widget)
+        self.cb_flip_image.setObjectName("cb_flip_image")
+        self.control_layout.addWidget(self.cb_flip_image, 2, 3, 1, 1)
         self.main_layout.addLayout(self.control_layout)
         self.lb_status = QtWidgets.QLabel(self.central_widget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
@@ -131,7 +136,7 @@ class Ui_MainWindow(object):
         self.tool_bar.setObjectName("tool_bar")
         MainWindow.addToolBar(QtCore.Qt.TopToolBarArea, self.tool_bar)
         self.menu_bar = QtWidgets.QMenuBar(MainWindow)
-        self.menu_bar.setGeometry(QtCore.QRect(0, 0, 1123, 36))
+        self.menu_bar.setGeometry(QtCore.QRect(0, 0, 1123, 22))
         self.menu_bar.setObjectName("menu_bar")
         MainWindow.setMenuBar(self.menu_bar)
         self.actionCopy = QtWidgets.QAction(MainWindow)
@@ -203,6 +208,7 @@ class Ui_MainWindow(object):
         self.lb_device.setText(_translate("MainWindow", "Device:"))
         self.lb_filename_prefix.setText(_translate("MainWindow", "Filename prefix"))
         self.edit_filename_prefix.setText(_translate("MainWindow", "class_memo"))
+        self.cb_flip_image.setText(_translate("MainWindow", "flip_image"))
         self.lb_status.setText(_translate("MainWindow", "Status"))
         self.lb_image.setText(_translate("MainWindow", "Image"))
         self.tool_bar.setWindowTitle(_translate("MainWindow", "toolBar"))
@@ -221,4 +227,3 @@ class Ui_MainWindow(object):
         self.actionItalic.setShortcut(_translate("MainWindow", "Ctrl+I"))
         self.actionUnderline.setText(_translate("MainWindow", "Underline"))
         self.actionFillShapes.setText(_translate("MainWindow", "Fill Shapes?"))
-
