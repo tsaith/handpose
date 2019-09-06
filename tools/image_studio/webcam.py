@@ -37,7 +37,7 @@ class Webcam(object):
         # Read the frame.
 
         is_capturing, frame = self.vc.read()
-        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        #frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
         # Save the frame
         self.frame = frame
