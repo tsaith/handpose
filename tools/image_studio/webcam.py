@@ -8,11 +8,21 @@ class Webcam(object):
         self.vc = None # Video capture
         self.frame = None
 
-    def open(self, device):
+    def open(self, device, width=1920, height=1080, brightness=1, contrast=40, saturation=50,
+             hue=50, exposure=50):
         # Set the target device.
 
         self.device = device
         self.vc = cv2.VideoCapture(self.device)
+
+        # Set the camera parameters
+        self.vc.set(cv2.CAP_PROP_FRAME_WIDTH, width)
+        self.vc.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
+        #self.vc.set(cv2.CAP_PROP_BRIGHTNESS, brightness)
+        #self.vc.set(cv2.CAP_PROP_CONTRAST, contrast)
+        #self.vc.set(cv2.CAP_PROP_SATURATION, saturation)
+        #self.vc.set(cv2.CAP_PROP_HUE, hue)
+        #self.vc.set(cv2.CAP_PROP_EXPOSURE, exposure)
 
     def is_open(self):
         # Device is open or not.
