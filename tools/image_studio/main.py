@@ -41,6 +41,9 @@ class Studio(QMainWindow, Ui_MainWindow):
         self.saved_width = self.saved_width_default
         self.saved_height = self.saved_height_default
 
+        self.flip_image = False
+        self.cb_flip_image.stateChanged.connect(self.change_flip_image)
+
         # Filename prefix
         self.filename_prefix = 'class_memo'
 
@@ -83,6 +86,13 @@ class Studio(QMainWindow, Ui_MainWindow):
     def stop_timer(self):
         self.timer_is_on = False
         self.timer.stop()
+
+    def change_flip_image(self):
+
+        if self.cb_flip_image.isChecked():
+            self.flip_image = True
+        else:
+            self.flip_image = False
 
     def start_recording(self):
 
@@ -144,9 +154,12 @@ class Studio(QMainWindow, Ui_MainWindow):
             image = QImage(frame.data, frame.shape[1], frame.shape[0], QImage.Format_RGB888)
 
             # Flip the image horizontally
-            image_fliped = image.mirrored(True, False)
+            image_flipped = image.mirrored(True, False)
 
-            pixmap = QPixmap.fromImage(image_fliped)
+            if self.flip_image:
+                pixmap = QPixmap.fromImage(image_flipped)
+            else:
+                pixmap = QPixmap.fromImage(image)
 
             self.lb_image.setPixmap(pixmap)
 
